@@ -11,18 +11,17 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
-async function run() {
+export async function dbConnection() {
   try {
-    // Connect the client to the server (optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
         '\x1b[33m%s\x1b[0m','Conexíon a MongoDB realizada con éxito!'
     );
-  } finally {
-    // Ensures that the client will close when you finish/error
+  } catch (error) {
+    console.log('\x1b[31s%s\x1b[0m', error)
+  }
+  finally {
     await client.close();
   }
 }
-run().catch(console.dir);
