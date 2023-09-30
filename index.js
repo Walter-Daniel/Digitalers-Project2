@@ -1,6 +1,5 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import cors from 'cors';
 import { dbConnection } from './config/dbConnection.js';
 import authRoute from './routes/auth.routes.js';
 
@@ -9,21 +8,22 @@ dotenv.config();
 
 //Crear servidor
 const app = express();
+const port = process.env.PORT || 8080;
+
 
 //Conexión de la basde de datos
-dbConnection();
+// dbConnection();
 
-//CORS
-app.use(cors)
+//Lectura y parseo del body
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 //Routing
 app.use('/api/auth', authRoute);
 
-//Lectura y parseo del body
-app.use(express.urlencoded({extended:true}));
-app.use(express.json());
+
 
 //Escuchar peticiones
-app.listen(process.env.PORT, ()=>{
-    console.log('\x1b[35m%s\x1b[0m',`El servidor esta funcionado en el puerto: ${process.env.PORT}`)
+app.listen(port, ()=>{
+    console.log('\x1b[35m%s\x1b[0m',`El servidor esta funcionado en el puerto: ${port}`)
 });
