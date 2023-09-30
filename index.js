@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { dbConnection } from './config/dbConnection.js';
+import authRoute from './routes/auth.routes.js';
+
 
 dotenv.config();
 
@@ -13,6 +15,9 @@ dbConnection();
 
 //CORS
 app.use(cors)
+
+//Routing
+app.use('/api/auth', authRoute);
 
 //Lectura y parseo del body
 app.use(express.urlencoded({extended:true}));

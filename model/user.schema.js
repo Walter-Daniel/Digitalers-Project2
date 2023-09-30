@@ -1,9 +1,10 @@
 import { Schema } from 'mongoose';
 
-const userSchema = new Schema({
+const UserSchema = new Schema({
     firstname:String,
     lastname: String,
-    email: String
+    email: String,
+    active: Boolean
 });
 
-export const userModel = mongoose.model('user', userSchema);
+export const UserModel = mongoose.model('User', UserSchema);
