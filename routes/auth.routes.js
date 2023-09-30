@@ -1,7 +1,5 @@
-
-
 import express from 'express';
-import { register } from '../controllers/user.controller.js';
+import { register } from '../controllers/auth.constroller.js';
 const router = express.Router();
 
 //Rutas
