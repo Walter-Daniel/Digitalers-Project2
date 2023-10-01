@@ -1,54 +1,75 @@
 // import { UserModel } from '../model/user.schema';  <-- Se agrega al instalar moongose
 import { MongoClient, ObjectId } from 'mongodb';
 import {config} from 'dotenv';
+import User from '../model/user.schema.js';
 config();
 
-const url = process.env.DB_URL;
-const client = new MongoClient(url);
+// const url = process.env.DB_URL;
+// const client = new MongoClient(url);
 
 export const register = async(req, res) => {
 
-    const { firstname, lastname, email, password } = req.body;
+    // const { firstname, lastname, email, password } = req.body;
+    const body = req.body;
 
-    async function run() {
-        try {
-            const database = client.db("db_doctors");
-            const users = database.collection("users");
-            
-            const doc = {
-                firstname,
-                lastname,
-                email,
-                password,
-                rol
-            };
+    try {
 
-            const filter = { email };
-            const resp = await users.findOne(filter);
-            if( resp ) {
-                return res.status(400).json({
-                    ok: false,
-                    msg: 'El correo ya se encuentra registrado'
-                });
-            }
-            const result = await users.insertOne(doc);
-            res.status(201).json({
-                ok: true,
-                msg: 'Usuario creado con éxito',
-                email,
-                result
-            });
-            await client.close();
+        const user = new User( body );
+        await user.save();
 
-        }catch(err) {
-            res.status(500).json({
-                ok: false,
-                msg: 'Error al crear un nuevo usuario',
-                err
-            });
-        }
+        res.status(201).json({
+            ok: true,
+            msg: 'Usuario creado con éxito',
+            user
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Error al crear un nuevo usuario',
+            error: error.message
+        });
     }
-    run();
+
+    // async function run() {
+    //     try {
+    //         const database = client.db("db_doctors");
+    //         const users = database.collection("users");
+            
+    //         const doc = {
+    //             firstname,
+    //             lastname,
+    //             email,
+    //             password,
+    //             rol
+    //         };
+
+    //         const filter = { email };
+    //         const resp = await users.findOne(filter);
+    //         if( resp ) {
+    //             return res.status(400).json({
+    //                 ok: false,
+    //                 msg: 'El correo ya se encuentra registrado'
+    //             });
+    //         }
+    //         const result = await users.insertOne(doc);
+    //         res.status(201).json({
+    //             ok: true,
+    //             msg: 'Usuario creado con éxito',
+    //             email,
+    //             result
+    //         });
+    //         await client.close();
+
+    //     }catch(err) {
+    //         res.status(500).json({
+    //             ok: false,
+    //             msg: 'Error al crear un nuevo usuario',
+    //             err
+    //         });
+    //     }
+    // }
+    // run();
 };
 
 //SI EL ROL ES ADMIN => REDIRECCIONAR A LA PAG DE ADMINISTARCIÓN
@@ -83,7 +104,6 @@ export const login = async(req, res) => {
                 id: resp._id
             }
         });
-
 
     } catch (error) {
         res.status(500).json({

@@ -13,7 +13,7 @@ const port = process.env.PORT || 8080;
 
 
 //Conexión de la basde de datos
-// dbConnection();
+dbConnection();
 
 //Lectura y parseo del body
 app.use(express.json());
