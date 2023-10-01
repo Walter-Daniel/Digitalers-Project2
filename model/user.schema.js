@@ -40,7 +40,10 @@ const UserSchema = new mongoose.Schema({
         default: VALID_ROLES[1],
     }
 });
-
+UserSchema.methods.toJSON = function(){
+    const {  __v, password, ...user } = this.toObject();
+    return user
+}
 const UserModel = mongoose.model('User', UserSchema);
 
 export default UserModel;
