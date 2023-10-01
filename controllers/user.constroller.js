@@ -1,5 +1,6 @@
 // import { UserModel } from '../model/user.schema';  <-- Se agrega al instalar moongose
 import { MongoClient, ObjectId } from 'mongodb';
+import bcrypt from 'bcryptjs';
 import {config} from 'dotenv';
 import User from '../model/user.schema.js';
 config();
@@ -9,12 +10,15 @@ config();
 
 export const register = async(req, res) => {
 
-    // const { firstname, lastname, email, password } = req.body;
-    const body = req.body;
+    const { firstname, lastname, email, password } = req.body;
 
     try {
 
-        const user = new User( body );
+        const user = new User({firstname, lastname, email, password });
+        //Encriptar contraseña
+        const salt = bcrypt.genSaltSync();
+        user.password = bcrypt.hashSync(password, salt);
+
         await user.save();
 
         res.status(201).json({
