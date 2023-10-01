@@ -1,7 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { dbConnection } from './config/dbConnection.js';
-import authRoute from './routes/auth.routes.js';
 import userRoute from './routes/user.routes.js';
 
 
@@ -20,7 +19,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 //Routing
-app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
 
 
