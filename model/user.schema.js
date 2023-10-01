@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
 const VALID_ROLES = [
     'ADMIN_ROLE',
@@ -6,8 +6,14 @@ const VALID_ROLES = [
     'DOCTOR_ROLE'
 ];
 
-const UserSchema = new Schema({
-    fullName: { 
+const UserSchema = new mongoose.Schema({
+    firstname: { 
+        type: String, 
+        required: true, 
+        minlength: 5, 
+        maxlength: 40 
+    },
+    lastname: { 
         type: String, 
         required: true, 
         minlength: 5, 
@@ -31,8 +37,10 @@ const UserSchema = new Schema({
     role: {
         type: String,
         enum: VALID_ROLES,
-        default: VALID_ROLES[1]
+        default: VALID_ROLES[1],
     }
 });
 
-export const UserModel = mongoose.model('User', UserSchema);
+const UserModel = mongoose.model('User', UserSchema);
+
+export default UserModel;
