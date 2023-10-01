@@ -1,21 +1,15 @@
-// import { UserModel } from '../model/user.schema';  <-- Se agrega al instalar moongose
-import { MongoClient, ObjectId } from 'mongodb';
 import bcrypt from 'bcryptjs';
 import {config} from 'dotenv';
 import User from '../model/user.schema.js';
 config();
 
-// const url = process.env.DB_URL;
-// const client = new MongoClient(url);
-
 export const register = async(req, res) => {
 
-    const { firstname, lastname, email, password } = req.body;
+    const { firstname, lastname, email, password, role } = req.body;
 
     try {
 
-        const user = new User({firstname, lastname, email, password });
-        //Encriptar contraseña
+        const user = new User({firstname, lastname, email, password, role });
         const salt = bcrypt.genSaltSync();
         user.password = bcrypt.hashSync(password, salt);
 
@@ -26,13 +20,15 @@ export const register = async(req, res) => {
             msg: 'Usuario creado con éxito',
             user
         });
+
     } catch (error) {
-        console.log(error);
+
         res.status(500).json({
             ok: false,
             msg: 'Error al crear un nuevo usuario',
             error: error.message
         });
+
     }
 
     // async function run() {
