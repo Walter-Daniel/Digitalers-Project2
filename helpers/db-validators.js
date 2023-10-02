@@ -2,7 +2,6 @@ import Role from '../model/role.schema.js';
 import User from '../model/user.schema.js';
 import Category from '../model/category.schema.js';
 import Doctor from '../model/doctor.schema.js';
-import { log } from 'console';
 
 export const isRole = async(role = '')  => {
     const existRol = await Role.findOne({ role });

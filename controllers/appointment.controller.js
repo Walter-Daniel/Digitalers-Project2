@@ -179,7 +179,6 @@ export const getUsers = async(req, res) => {
             const filter = { _id: new ObjectId(userID)};
     
             const result = await collection.deleteOne(filter);
-            console.log(result);
             if (result.deletedCount === 1) {
                 return res.status(200).send({
                     ok: true,
