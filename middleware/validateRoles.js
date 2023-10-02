@@ -36,8 +36,7 @@ export const hasARole = (...roles) => {
                 msg: 'No posee los permisos necesarios para realizar esta acción.'
             })
         }
-        console.log(roles, req.user.role);
-
+        
         next();
     }
 
