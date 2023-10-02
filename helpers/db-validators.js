@@ -28,3 +28,9 @@ export const fromControl = async( from ) => {
         throw new Error(`From: ${from} es inválido. Por favor, ingrese un número.`);
     }
 }
+
+export const isAdmin = async( role ) => {
+    if(role !== 'ADMIN_ROLE'){
+        throw new Error('No posees los permisos para realizar la siguiente accion');
+    }
+}
