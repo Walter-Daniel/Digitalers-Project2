@@ -1,12 +1,16 @@
 import express from 'express';
 import { check } from 'express-validator';
-import { deleteUser, getUsers, login, createUser, updateUser } from '../controllers/user.constroller.js';
-import { validateFields } from '../middleware/validateFields.js';
+
+import { deleteUser, getUsers, createUser, updateUser } from '../controllers/user.constroller.js';
 import { emailExist, isRole, findUserId, fromControl } from '../helpers/db-validators.js';
+import { validateFields, isAdminRole, validateJWT } from '../middleware/index.js';
+
 const router = express.Router();
 
-router.post('/register', [
+router.post('/create', [
 
+    validateJWT,
+    isAdminRole,
     check('firstname', 'El nombre es obligatorio').notEmpty(),
     check('lastname', 'El apellido es obligatorio').notEmpty(),
     check('email', 'El correo no es válido').isEmail(),
@@ -19,6 +23,8 @@ router.post('/register', [
 
 router.put('/:id', [
 
+    validateJWT,
+    isAdminRole,
     check('id', 'No es un id válido!').isMongoId(),
     check('id').custom( findUserId ),
     check('role').custom( isRole ),
@@ -27,19 +33,22 @@ router.put('/:id', [
 ], updateUser);
 router.get('/', [
 
+    validateJWT,
+    isAdminRole,
     check('from').custom( fromControl ),
     validateFields
     
 ], getUsers);
 router.delete('/:id',[
 
+    validateJWT,
+    isAdminRole,
+    // hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
     check('id', 'No es un id válido!').isMongoId(),
     check('id').custom( findUserId ),
     validateFields
 
 ], deleteUser);
-
-router.post('/login', login);
 
 
 export default router;

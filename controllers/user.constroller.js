@@ -32,46 +32,6 @@ export const createUser = async(req, res) => {
     }
 };
 
-//SI EL ROL ES ADMIN => REDIRECCIONAR A LA PAG DE ADMINISTARCIÓN
-//SI EL ROL ES DOCTOR => REDIRECCIONAR A LA PAGINA DE CITAS Y CONSULTAS
-//SI EL ROL ES USER => REDIRECCIONAR AL INICIO + BOX DE BIENVENIDA
-
-export const login = async(req, res) => {
-
-    const { email, password } = req.body;
-
-    try {
-        const database = client.db("db_doctors");
-        const users = database.collection("users");
-
-
-        const filter = { email };
-        const resp = await users.findOne(filter);
-
-        if( !resp || resp.password !== password) {
-            return res.status(500).json({
-                ok: false,
-                msg: 'Las credenciales no son correctas'
-            });
-        }
-
-        res.status(201).json({
-            ok: true,
-            msg: 'Inicio de sesión exitoso',
-            user:{
-                name: resp.firstname,
-                lastname: resp.lastname,
-                id: resp._id
-            }
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            ok: false,
-            msg: 'Error al iniciar sesión'
-        });
-    };   
-};
 
 export const getUsers = async(req, res) => {
 
@@ -111,52 +71,52 @@ export const getUsers = async(req, res) => {
    }
 };
 
-  export const updateUser = async(req, res) => {
+export const updateUser = async(req, res) => {
 
-    try {
-        const {_id, password, email, ...rest }= req.body;
-        const { id } = req.params;
+try {
+    const {_id, password, email, ...rest }= req.body;
+    const { id } = req.params;
 
-        if( password ){
-            const salt = bcrypt.genSaltSync();
-            rest.password = bcrypt.hashSync(password, salt);
-        }
-
-        const user = await User.findByIdAndUpdate( id, rest );
-
-        return res.status(200).json({
-            ok: true,
-            message: 'Usuario actualizado con éxito',
-            user
-        });
-    } catch (error) {
-        return res.status(500).send({
-            ok: false,
-            message: 'Error al intentar actualizar el usuario',
-            error: error.message
-        });
+    if( password ){
+        const salt = bcrypt.genSaltSync();
+        rest.password = bcrypt.hashSync(password, salt);
     }
-  };
+
+    const user = await User.findByIdAndUpdate( id, rest );
+
+    return res.status(200).json({
+        ok: true,
+        message: 'Usuario actualizado con éxito',
+        user
+    });
+} catch (error) {
+    return res.status(500).send({
+        ok: false,
+        message: 'Error al intentar actualizar el usuario',
+        error: error.message
+    });
+}
+};
 
   //El usuario no se elimina de la DB para mantener la integridad referencial, se modifica su 'active': false
   //La petición para traer los usuarios, trae a todos menos a los usuarios con 'active': false.
-  export const deleteUser = async(req, res) => {
-        try {
-            const userID = req.params.id;
+export const deleteUser = async(req, res) => {
+    try {
+        
+        const userID = req.params.id;
+        const user = await User.findByIdAndUpdate( userID, { active: false });
 
-            const user = await User.findByIdAndUpdate( userID, { active: false });
+        return res.status(200).send({
+            ok: true,
+            message: 'Usuario eliminado con éxito',
+            user,
+        });
 
-            return res.status(200).send({
-                ok: true,
-                message: 'Usuario eliminado con éxito',
-                user
-            });
-
-        } catch (error) {
-            return res.status(500).send({
-                ok: false,
-                message: 'Error al intentar eliminar el usuario',
-                error
-            });
-        }
-  };
+    } catch (error) {
+        return res.status(500).send({
+            ok: false,
+            message: 'Error al intentar eliminar el usuario',
+            error
+        });
+    }
+};
