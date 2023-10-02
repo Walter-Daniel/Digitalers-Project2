@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import hbs from 'express-handlebars';
 
 import userRoute from './routes/user.routes.js';
 import authRoute from './routes/auth.routes.js';
@@ -29,6 +30,13 @@ app.use(express.urlencoded({extended:true}));
 
 //Static files
 app.use(express.static(path.join(__dirname + 'public')));
+app.engine('.hbs', hbs.engine({
+    defaultLayout: 'main',
+    layoutsDir: path.join(app.get('views'), 'layouts'),
+    partialsDir: path.join(app.get('views'), 'partials'),
+    extname: '.hbs'
+}))
+app.set('view engine', '.hbs');
 
 //Routing
 app.use('/api/auth', authRoute);
