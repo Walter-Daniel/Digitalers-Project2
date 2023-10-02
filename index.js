@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { dbConnection } from './config/dbConnection.js';
 import userRoute from './routes/user.routes.js';
 import authRoute from './routes/auth.routes.js';
+import doctorRoute from './routes/doctor.routes.js';
 
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(express.urlencoded({extended:true}));
 //Routing
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
+app.use('/api/doctor', doctorRoute);
 
 //Escuchar peticiones
 app.listen(port, ()=>{
