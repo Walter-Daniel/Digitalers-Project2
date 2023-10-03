@@ -1,3 +1,16 @@
+:root {
+    --shadow-color: 0deg 0% 65%;
+    --shadow-elevation-high:
+      0.3px 0.2px 0.4px hsl(var(--shadow-color) / 0.28),
+      1.5px 1.1px 2.1px -0.4px hsl(var(--shadow-color) / 0.28),
+      2.7px 2px 3.8px -0.7px hsl(var(--shadow-color) / 0.28),
+      4.4px 3.3px 6.2px -1.1px hsl(var(--shadow-color) / 0.28),
+      6.9px 5.2px 9.7px -1.4px hsl(var(--shadow-color) / 0.28),
+      10.8px 8.1px 15.2px -1.8px hsl(var(--shadow-color) / 0.28),
+      16.4px 12.3px 23.1px -2.1px hsl(var(--shadow-color) / 0.28),
+      24.2px 18.1px 34px -2.5px hsl(var(--shadow-color) / 0.28);
+}
+
 @font-face {
     font-family: myFontRoboto;
     src: url(../font/Roboto-Light.ttf);
@@ -21,4 +34,24 @@
     padding: 0;
     font-family: myFontRoboto;
     font-weight: 400;
+}
+
+/*****************************************************
+                    REGISTER
+******************************************************/
+form {
+    border: 1px solid rgb(225, 225, 225);
+    padding: 3rem;
+    box-shadow: var(--shadow-elevation-high);
+}
+.title-form {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.center-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }

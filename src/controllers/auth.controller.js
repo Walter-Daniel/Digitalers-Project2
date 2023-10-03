@@ -9,7 +9,14 @@ config();
 //SI EL ROL ES ADMIN => REDIRECCIONAR A LA PAG DE ADMINISTARCIÓN
 //SI EL ROL ES DOCTOR => REDIRECCIONAR A LA PAGINA DE CITAS Y CONSULTAS
 //SI EL ROL ES USER => REDIRECCIONAR AL INICIO + BOX DE BIENVENIDA
+export const renderLoginForm = (req, res=response)=> {
 
+    res.render('auth/login', {
+        pageName: 'Iniciar Sesión',
+        navbar: false,
+        renderHero: false
+    })
+}
 export const login = async(req, res) => {
 
     const { email, password } = req.body;
