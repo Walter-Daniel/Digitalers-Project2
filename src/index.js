@@ -40,9 +40,9 @@ const hbs = exphbs.create({
 
 //Routing
 app.use('/', indexRoute);
-app.use('/api/auth', authRoute);
-app.use('/api/user', userRoute);
-app.use('/api/doctor', doctorRoute);
+app.use('/auth', authRoute);
+app.use('/user', userRoute);
+app.use('/doctor', doctorRoute);
 
 //Static files
 app.use(express.static(join(__dirname , 'public')));
