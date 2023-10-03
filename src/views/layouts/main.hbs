@@ -3,15 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digitalers Medicine</title>
+    <title>{{pageName}}</title>
     <!-------------- BOOTSTRAP STYLES  ----------------->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-------------- CUSTOM STYLES  ----------------->
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-
-                       {{{body}}}
+    {{#if navbar}}
+        {{>navegation}}
+    {{/if}}
+    <header>
+        {{#if renderHero}}
+            {{>hero}}
+        {{/if}}
+    </header>
+    <main class="container p-2">
+        {{{body}}}
+    </main>
 
 
       <script src="/js/bootstrap.bundle.min.js"></script>

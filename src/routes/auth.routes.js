@@ -17,6 +17,7 @@ router.post('/login', [
 
 ], login)
 
+router.get('/register')
 router.post('/register', [
 
     check('firstname', 'El nombre es obligatorio').notEmpty(),

@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import userRoute from './routes/user.routes.js';
 import authRoute from './routes/auth.routes.js';
 import doctorRoute from './routes/doctor.routes.js';
+import indexRoute from './routes/index.routes.js'
 
 import { dbConnection } from './config/dbConnection.js';
 
@@ -37,11 +38,8 @@ const hbs = exphbs.create({
   app.engine('.hbs', hbs.engine);
   app.set('view engine', '.hbs');
 
-app.get('/', (req, res) => {
-    res.render(join('partials', 'index'))
-})
-
 //Routing
+app.use('/', indexRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
 app.use('/api/doctor', doctorRoute);
