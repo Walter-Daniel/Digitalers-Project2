@@ -1,47 +1,51 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import path from 'path';
+import { dirname, join } from 'path';
+import exphbs from 'express-handlebars';
 import { fileURLToPath } from 'url';
-import hbs from 'express-handlebars';
 
 import userRoute from './routes/user.routes.js';
 import authRoute from './routes/auth.routes.js';
 import doctorRoute from './routes/doctor.routes.js';
+import indexRoute from './routes/index.routes.js'
 
 import { dbConnection } from './config/dbConnection.js';
 
 dotenv.config();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 //Crear servidor
 const app = express();
 const port = process.env.PORT || 8080;
 
 //Settings
-app.set('views', path.join(__dirname + 'views'));
+app.set('views', join(__dirname, 'views'));
 
 //Conexión de la basde de datos
 dbConnection();
 
 //Lectura y parseo del body
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({extended:false}));
 
-//Static files
-app.use(express.static(path.join(__dirname + 'public')));
-app.engine('.hbs', hbs.engine({
+//config view engine
+const hbs = exphbs.create({
     defaultLayout: 'main',
-    layoutsDir: path.join(app.get('views'), 'layouts'),
-    partialsDir: path.join(app.get('views'), 'partials'),
-    extname: '.hbs'
-}))
-app.set('view engine', '.hbs');
+    layoutsDir: join(app.get('views'), 'layouts'),
+    partialsDir: join(app.get('views'), 'partials'),
+    extname: '.hbs',
+  });
+  app.engine('.hbs', hbs.engine);
+  app.set('view engine', '.hbs');
 
 //Routing
+app.use('/', indexRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
 app.use('/api/doctor', doctorRoute);
+
+//Static files
+app.use(express.static(join(__dirname , 'public')));
 
 //Escuchar peticiones
 app.listen(port, ()=>{
