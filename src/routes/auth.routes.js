@@ -2,13 +2,13 @@ import express from 'express';
 import { check } from 'express-validator';
 
 import { validateFields } from '../middleware/validateFields.js';
-import { login, renderRegisterForm } from '../controllers/auth.controller.js';
+import { login, renderLoginForm, renderRegisterForm } from '../controllers/auth.controller.js';
 import { createUser } from '../controllers/user.constroller.js';
 import { emailExist } from '../helpers/db-validators.js';
 
 const router = express.Router();
 
-
+router.get('/login', renderLoginForm)
 router.post('/login', [
 
     check('email', 'El correo es obligatorio').isEmail(),
