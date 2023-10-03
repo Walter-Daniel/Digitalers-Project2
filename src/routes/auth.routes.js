@@ -18,7 +18,8 @@ router.post('/login', [
 ], login)
 
 router.get('/register', renderRegisterForm)
-router.post('/register', [
+router.post('/register',
+ [
 
     check('firstname', 'El nombre es obligatorio').notEmpty(),
     check('lastname', 'El apellido es obligatorio').notEmpty(),
@@ -27,6 +28,7 @@ router.post('/register', [
     check('password', 'El password debe tener entre 4 y 9 carácteres').notEmpty().isLength({ min: 4, max: 9 }),
     validateFields
 
-], createUser);
+],
+ createUser);
 
 export default router;

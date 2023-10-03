@@ -26,7 +26,7 @@ dbConnection();
 
 //Lectura y parseo del body
 app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({extended:true}));
 
 //config view engine
 const hbs = exphbs.create({
