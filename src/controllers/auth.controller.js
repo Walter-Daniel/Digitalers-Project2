@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import {config} from 'dotenv';
 import User from '../model/user.schema.js';
 import { createJWT } from '../middleware/jwtValidation.js';
+import { response } from 'express';
 config();
 
 
@@ -54,3 +55,12 @@ export const login = async(req, res) => {
         });
     };   
 };
+
+export const renderRegisterForm = (req, res=response)=> {
+
+    res.render('auth/register', {
+        pageName: 'Registro',
+        navbar: false,
+        renderHero: false
+    })
+}

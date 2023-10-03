@@ -2,7 +2,7 @@ import express from 'express';
 import { check } from 'express-validator';
 
 import { validateFields } from '../middleware/validateFields.js';
-import { login } from '../controllers/auth.controller.js';
+import { login, renderRegisterForm } from '../controllers/auth.controller.js';
 import { createUser } from '../controllers/user.constroller.js';
 import { emailExist } from '../helpers/db-validators.js';
 
@@ -17,7 +17,7 @@ router.post('/login', [
 
 ], login)
 
-router.get('/register')
+router.get('/register', renderRegisterForm)
 router.post('/register', [
 
     check('firstname', 'El nombre es obligatorio').notEmpty(),
