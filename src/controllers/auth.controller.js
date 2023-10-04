@@ -20,47 +20,89 @@ export const renderLoginForm = (req, res=response)=> {
 export const login = async(req, res) => {
 
     const { email, password } = req.body;
-
     try {
-       
         const user = await User.findOne({ email })
-        //Verificar si el correo existe
         if(!user){
-            res.status(400).json({
-                ok: false,
-                msg: 'Credenciales incorrectas'
+            req.flash('alert-danger', 'Credenciales Incorrectas');
+            return res.render('auth/login',{
+                pageName: 'Iniciar Sesión',
+                messages: req.flash(),
+                data: req.body
             })
         }
-        //Verificar si se encuentra activo
         if(!user.active){
-            res.status(400).json({
-                ok: false,
-                msg: 'Credenciales incorrectas'
+            req.flash('alert-danger', 'Credenciales Incorrectas');
+            return res.render('auth/login',{
+                pageName: 'Iniciar Sesión',
+                messages: req.flash(),
+                data: req.body
             })
         }
-        //Verificar contraseña
         const validPassword = bcrypt.compareSync( password, user.password )
         if(!validPassword){
-            res.status(400).json({
-                ok: false,
-                msg: 'Credenciales incorrectas'
+            req.flash('alert-danger', 'Credenciales Incorrectas');
+            return res.render('auth/login',{
+                pageName: 'Iniciar Sesión',
+                messages: req.flash(),
+                data: req.body
             })
         }
-        //se genera el JWT
         const token = await createJWT(user._id)
-        res.status(201).json({
-            ok: true,
-            msg: 'Inicio de sesión exitoso',
-            user,
-            token
-        });
+        res.cookie('token', token, { httpOnly: true });
 
+        
+        res.redirect(`/user/${user.id}`);
+        
     } catch (error) {
-        res.status(500).json({
-            ok: false,
-            msg: 'Error al iniciar sesión'
-        });
-    };   
+        console.log('estou en error')
+    }
+    // try {
+       
+    //     const user = await User.findOne({ email })
+    //     //Verificar si el correo existe
+    //     if(!user){
+    //         res.status(400).json({
+    //             ok: false,
+    //             msg: 'Credenciales incorrectas'
+    //         })
+    //     }
+    //     //Verificar si se encuentra activo
+    //     if(!user.active){
+    //         res.status(400).json({
+    //             ok: false,
+    //             msg: 'Credenciales incorrectas'
+    //         })
+    //     }
+    //     //Verificar contraseña
+    //     const validPassword = bcrypt.compareSync( password, user.password )
+    //     if(!validPassword){
+    //         res.status(400).json({
+    //             ok: false,
+    //             msg: 'Credenciales incorrectas'
+    //         })
+    //     }
+    //     //se genera el JWT
+    //     const token = await createJWT(user._id)
+        
+    //     //Guardar JWT en localstorage
+    //     localStorage.setItem("miToken", token);
+
+    //     // res.redirect('user/profile')
+    //     res.status(201).json({
+    //         ok: true,
+    //         msg: 'Inicio de sesión exitoso',
+    //         user,
+    //         token
+    //     });
+        
+    // } catch (error) {
+    //     res.status(500).json({
+    //         ok: false,
+    //         msg: 'Error al iniciar sesión',
+    //         error
+    //     });
+    // };   
+    // return;
 };
 
 export const renderRegisterForm = (req, res=response)=> {

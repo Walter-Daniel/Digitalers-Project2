@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import exphbs from 'express-handlebars';
 import session from 'express-session';
 import flash from 'connect-flash';
-import { showAlerts } from './helpers/alerts.js'
+import cookieParser from 'cookie-parser';
 
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
@@ -12,6 +12,7 @@ import userRoute from './routes/user.routes.js';
 import authRoute from './routes/auth.routes.js';
 import doctorRoute from './routes/doctor.routes.js';
 import indexRoute from './routes/index.routes.js'
+import { showAlerts } from './helpers/alerts.js'
 
 import { dbConnection } from './config/dbConnection.js';
 
@@ -31,6 +32,7 @@ dbConnection();
 //Lectura y parseo del body
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(cookieParser());
 
 //config view engine
 const hbs = exphbs.create({

@@ -1,9 +1,10 @@
 import express from 'express';
 import { check } from 'express-validator';
 
-import { deleteUser, getUsers, createUser, updateUser } from '../controllers/user.constroller.js';
+import { deleteUser, getUsers, createUser, updateUser, renderUserProfile } from '../controllers/user.constroller.js';
 import { emailExist, isRole, findUserId, fromControl } from '../helpers/db-validators.js';
 import { validateFields, isAdminRole, validateJWT } from '../middleware/index.js';
+import { tokenInHeader } from '../middleware/jwtHeader.js';
 
 const router = express.Router();
 
@@ -31,14 +32,17 @@ router.put('/:id', [
     validateFields
 
 ], updateUser);
-router.get('/', [
 
+//Traer usuarios de la base de datos
+router.get('/:id',[tokenInHeader, validateJWT], renderUserProfile)
+router.get('/', [
     validateJWT,
     isAdminRole,
     check('from').custom( fromControl ),
     validateFields
     
 ], getUsers);
+
 router.delete('/:id',[
 
     validateJWT,
