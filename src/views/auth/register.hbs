@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6 offset-md-3 center-form">
-      <form action="/auth/register" method="POST">
+      <form action="/auth/register" method="POST" class="fade-in">
         <fieldset>
           <legend class="title-form">Crear Cuenta</legend>
           <div class="form-group">
@@ -11,7 +11,7 @@
               class="form-control"
               name="firstname"
               id="firstname"
-              placeholder="Ingresa tu nombre"
+              value="{{data.firstname}}"
             />
           </div>
           <div class="form-group">
@@ -21,7 +21,7 @@
               class="form-control"
               name="lastname"
               id="lastname"
-              placeholder="Ingresa tu apellido"
+              value="{{data.lastname}}"
             />
           </div>
           <div class="form-group">
@@ -34,7 +34,7 @@
               class="form-control"
               name="email"
               id="email"
-              placeholder="Ingresa tu correo"
+              value="{{data.email}}"
             />
             <small id="emailHelp" class="form-text text-muted">No compartiremos con nadie tu correo</small>
           </div>
@@ -48,12 +48,13 @@
               class="form-control"
               name="password"
               id="password"
-              placeholder="Ingresa tu contraseña"
               autocomplete="off"
             />
           </div>
           <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Registrarse</button>
-            <small id="emailHelp" class="form-text text-muted mt-3">Ya tienes una cuenta? Inicia Sesión</small>
+            <small id="emailHelp" class="form-text text-muted mt-3">Ya tienes una cuenta? <a href="/auth/login">Inicia Sesión</a></small>
+            <br />
+            <small id="emailHelp" class="form-text text-muted mt-3">Regresar al <a href="/">inicio</a></small>
         </fieldset>
       </form>
     </div>

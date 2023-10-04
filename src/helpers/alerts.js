@@ -4,7 +4,7 @@ export const showAlerts = ( errors= {}, alerts) => {
     let html = '';
     if(category.length){
         errors[category].forEach(element => {
-            html += `<div class="alert ${category} alert-dismissible fade show" role="alert">
+            html += `<div class="alert ${category} alert-dismissible fade-in show" role="alert">
                 ${element}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
