@@ -19,6 +19,13 @@
         {{/if}}
     </header>
     <main class="container">
+        {{#if messages }}
+            <div class="alerts">
+                {{#showAlerts messages}}
+                {{/showAlerts}}
+            </div>
+        {{/if}}
+
         {{{body}}}
     </main>
 

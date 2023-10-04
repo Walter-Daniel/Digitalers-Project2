@@ -1,7 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { dirname, join } from 'path';
 import exphbs from 'express-handlebars';
+import session from 'express-session';
+import flash from 'connect-flash';
+import { showAlerts } from './helpers/alerts.js'
+
+import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 import userRoute from './routes/user.routes.js';
@@ -30,13 +34,35 @@ app.use(express.urlencoded({extended:true}));
 
 //config view engine
 const hbs = exphbs.create({
-    defaultLayout: 'main',
-    layoutsDir: join(app.get('views'), 'layouts'),
-    partialsDir: join(app.get('views'), 'partials'),
+   
+    helpers: { 
+
+      defaultLayout: 'main',
+      layoutsDir: join(app.get('views'), 'layouts'),
+      partialsDir: join(app.get('views'), 'partials'),
+      showAlerts,
+    },
     extname: '.hbs',
   });
   app.engine('.hbs', hbs.engine);
   app.set('view engine', '.hbs');
+
+// Configura express-session
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  key: process.env.KEY,
+  resave: false,
+  saveUninitialized: true,
+}));
+
+// Configura connect-flash
+app.use(flash());
+
+//Crear middleware
+app.use((req, res, next) => {
+  res.locals.messages = req.flash(); 
+  next();
+});
 
 //Routing
 app.use('/', indexRoute);

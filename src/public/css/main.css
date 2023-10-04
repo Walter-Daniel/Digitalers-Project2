@@ -55,3 +55,15 @@ form {
     align-items: center;
     min-height: 100vh;
 }
+
+
+/*****************************************************
+                    ALERTAS
+******************************************************/
+.alerts {
+    text-align: center;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 65px;
+}
