@@ -21,11 +21,11 @@ router.get('/register', renderRegisterForm)
 router.post('/register',
  [
 
-    check('firstname', 'El nombre es obligatorio').notEmpty(),
-    check('lastname', 'El apellido es obligatorio').notEmpty(),
+    check('firstname').notEmpty().withMessage('El nombre es obligatorio').isLength({ min: 4, max: 25 }).withMessage('Nombre(s) debe tener entre 4 y 25 carácteres'),
+    check('lastname').notEmpty().withMessage('El apellido es obligatorio').isLength({ min: 4, max: 25 }).withMessage('Apellido(s) debe tener entre 4 y 25 carácteres'),
     check('email', 'El correo no es válido').isEmail(),
     check('email').custom( emailExist ),
-    check('password', 'El password debe tener entre 4 y 9 carácteres').notEmpty().isLength({ min: 4, max: 9 }),
+    check('password').notEmpty().withMessage('Debe ingresar una contraseña').isLength({ min: 4, max: 9 }).withMessage('La contraseña debe tener entre 4 y 9 carácteres'),
     validateFields
 
 ],

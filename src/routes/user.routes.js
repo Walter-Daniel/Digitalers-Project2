@@ -15,7 +15,7 @@ router.post('/create', [
     check('lastname', 'El apellido es obligatorio').notEmpty(),
     check('email', 'El correo no es válido').isEmail(),
     check('email').custom( emailExist ),
-    check('password', 'El password debe tener entre 4 y 9 carácteres').notEmpty().isLength({ min: 4, max: 9 }),
+    check('password').notEmpty().withMessage('Debe ingresar su contraseña').isLength({ min: 4, max: 9 }).withMessage('La contraseña debe tener entre 4 y 9 carácteres'),
     check('role').custom( isRole ),
     validateFields
 

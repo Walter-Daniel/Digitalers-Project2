@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6 offset-md-3 center-form">
-      <form>
+      <form action="/auth/login" method="POST" class="fade-in">
         <fieldset>
           <legend class="title-form">Iniciar Sesión</legend>
           <div class="form-group">
@@ -31,7 +31,9 @@
             />
           </div>
           <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Ingresar</button>
-            <small id="emailHelp" class="form-text text-muted mt-3">No tienes una cuenta? Registrate</small>
+            <small id="emailHelp" class="form-text text-muted mt-3">No tienes una cuenta? <a href="/auth/register">Registrate</a></small>
+            <br />
+            <small id="emailHelp" class="form-text text-muted mt-3">Regresar al <a href="/">inicio</a></small>
         </fieldset>
       </form>
     </div>
