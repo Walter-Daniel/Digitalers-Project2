@@ -4,6 +4,7 @@ import { check } from 'express-validator';
 import { deleteUser, getUsers, createUser, updateUser, renderUserProfile } from '../controllers/user.constroller.js';
 import { emailExist, isRole, findUserId, fromControl } from '../helpers/db-validators.js';
 import { validateFields, isAdminRole, validateJWT } from '../middleware/index.js';
+import { tokenInHeader } from '../middleware/jwtHeader.js';
 
 const router = express.Router();
 
@@ -33,9 +34,8 @@ router.put('/:id', [
 ], updateUser);
 
 //Traer usuarios de la base de datos
-router.get('/profile', renderUserProfile)
+router.get('/:id',[tokenInHeader, validateJWT], renderUserProfile)
 router.get('/', [
-
     validateJWT,
     isAdminRole,
     check('from').custom( fromControl ),

@@ -51,7 +51,7 @@ export const login = async(req, res) => {
         res.cookie('token', token, { httpOnly: true });
 
         
-        res.redirect('/user/profile');
+        res.redirect(`/user/${user.id}`);
         
     } catch (error) {
         console.log('estou en error')
