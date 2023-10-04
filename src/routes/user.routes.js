@@ -1,7 +1,7 @@
 import express from 'express';
 import { check } from 'express-validator';
 
-import { deleteUser, getUsers, createUser, updateUser } from '../controllers/user.constroller.js';
+import { deleteUser, getUsers, createUser, updateUser, renderUserProfile } from '../controllers/user.constroller.js';
 import { emailExist, isRole, findUserId, fromControl } from '../helpers/db-validators.js';
 import { validateFields, isAdminRole, validateJWT } from '../middleware/index.js';
 
@@ -31,6 +31,9 @@ router.put('/:id', [
     validateFields
 
 ], updateUser);
+
+//Traer usuarios de la base de datos
+router.get('/profile', renderUserProfile)
 router.get('/', [
 
     validateJWT,
@@ -39,6 +42,7 @@ router.get('/', [
     validateFields
     
 ], getUsers);
+
 router.delete('/:id',[
 
     validateJWT,

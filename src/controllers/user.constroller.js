@@ -41,7 +41,12 @@ export const createUser = async(req, res=response) => {
     }
 };
 
+export const renderUserProfile = (req, res=response) => {
 
+    res.render('profile/user', {
+        pageName: 'Perfil del Usuario',
+    })
+}
 export const getUsers = async(req, res) => {
 
    try {
