@@ -1,9 +1,10 @@
 import bcrypt from 'bcryptjs';
 import {config} from 'dotenv';
 import User from '../model/user.schema.js';
+import { response } from 'express';
 config();
 
-export const createUser = async(req, res) => {
+export const createUser = async(req, res=response) => {
 
     const { firstname, lastname, email, password, role } = req.body;
 
@@ -15,11 +16,19 @@ export const createUser = async(req, res) => {
 
         await user.save();
 
-        res.status(201).json({
-            ok: true,
-            msg: 'Usuario creado con éxito',
-            user
-        });
+        req.flash('alert-success', 'Su cuenta ha sido creada con éxito');
+
+        // res.status(201).json({
+        //     ok: true,
+        //     msg: 'Usuario creado con éxito',
+        //     user
+        // });
+
+        res.render('auth/register', {
+            pageName: 'Registro',
+            messages: req.flash()
+        })
+        return;
 
     } catch (error) {
 
