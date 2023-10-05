@@ -54,5 +54,8 @@ router.delete('/:id',[
 
 ], deleteUser);
 
+//panel de administracion
+
+
 
 export default router;

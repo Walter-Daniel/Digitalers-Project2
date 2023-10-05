@@ -43,7 +43,6 @@ export const createUser = async(req, res=response) => {
 
 export const renderUserProfile = (req, res=response) => {
 
-    const token = req.cookies.token;
     const { role } = req.user;
 
     if(role === 'ADMIN_ROLE'){
