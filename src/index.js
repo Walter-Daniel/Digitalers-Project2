@@ -12,8 +12,8 @@ import userRoute from './routes/user.routes.js';
 import authRoute from './routes/auth.routes.js';
 import doctorRoute from './routes/doctor.routes.js';
 import indexRoute from './routes/index.routes.js'
-import { showAlerts } from './helpers/alerts.js'
 
+import { showAlerts } from './helpers/alerts.js'
 import { dbConnection } from './config/dbConnection.js';
 
 dotenv.config();

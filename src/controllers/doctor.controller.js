@@ -39,7 +39,7 @@ export const getDoctors = async(req, res) => {
         // const { limit = 10, from } = req.query;
         const query = { role: 'DOCTOR_ROLE' }
         const [doctors, total] = await Promise.all([
-            Doctor.find(query),
+            Doctor.find(query).lean(),
                
             Doctor.count(query)
         ]);
@@ -50,7 +50,10 @@ export const getDoctors = async(req, res) => {
                 message: 'No se encontró ningun doctor'
             })
         }
-
+        return res.render('doctor/listDoctors',{
+            pageName: 'Lista de usuarios',
+            doctors
+        })
         return res.status(200).send({
                 ok: true,
                 message: 'Doctores obtenidos correctamente',

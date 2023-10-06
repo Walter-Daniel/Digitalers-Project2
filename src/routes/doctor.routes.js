@@ -4,11 +4,13 @@ import { check } from 'express-validator';
 import { createDoctor, updateDoctor, getDoctors, deleteDoctor } from '../controllers/doctor.controller.js';
 import { emailExist, isRole, findUserId, fromControl, setCategory, findID } from '../helpers/db-validators.js';
 import { validateFields, isAdminRole, validateJWT, hasARole } from '../middleware/index.js';
+import { tokenInHeader } from '../middleware/jwtHeader.js';
 
 const router = express.Router();
 
 router.post('/create', [
 
+    tokenInHeader,
     validateJWT,
     isAdminRole,
     check('firstname', 'El nombre es obligatorio').notEmpty(),
@@ -26,18 +28,19 @@ router.post('/create', [
 
 router.put('/:id', [
 
+    tokenInHeader,
     validateJWT,
     hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
     check('id', 'No es un id válido!').isMongoId(),
     // check('id').custom( findUserId ),
     findID('Doctor'),
-    
     validateFields
 
 ], updateDoctor);
 
 router.get('/', [
 
+    tokenInHeader,
     validateJWT,
     hasARole('ADMIN_ROLE', 'SECRETARY_ROLE'),
     // check('from').custom( fromControl ),
@@ -47,6 +50,7 @@ router.get('/', [
 
 router.delete('/:id',[
 
+    tokenInHeader,
     validateJWT,
     isAdminRole,
     check('id', 'No es un id válido!').isMongoId(),
