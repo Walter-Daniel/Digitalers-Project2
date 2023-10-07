@@ -1,7 +1,24 @@
 import bcrypt from 'bcryptjs';
 import {config} from 'dotenv';
 import Doctor from '../model/doctor.schema.js';
+import Category from '../model/category.schema.js';
+import Role from '../model/role.schema.js'
 config();
+
+
+// Renderizado del formulario y registro de un DOCTOR
+export const renderFormCreate = async(req,res) => {
+
+    const categories = await Category.find({}).lean();
+    const roles = await Role.find({}).lean();
+    res.render('doctor/create',{
+        pageName: 'Registrar un nuevo Doctor',
+        data: {
+            categories,
+            roles
+        }
+    })
+}
 
 export const createDoctor = async(req, res) => {
 
@@ -15,11 +32,18 @@ export const createDoctor = async(req, res) => {
 
         await doctor.save();
 
-        res.status(201).json({
-            ok: true,
-            msg: 'Doctor creado con éxito',
-            doctor
-        });
+        req.flash('alert-success', 'se ha creado un nuevo doctor');
+
+        res.render('doctor/create', {
+            pageName: 'Registrar un nuevo Doctor',
+            messages: req.flash()
+        })
+
+        // res.status(201).json({
+        //     ok: true,
+        //     msg: 'Doctor creado con éxito',
+        //     doctor
+        // });
 
     } catch (error) {
 
@@ -50,6 +74,7 @@ export const getDoctors = async(req, res) => {
                 message: 'No se encontró ningun doctor'
             })
         }
+        console.log(doctors);
         return res.render('doctor/listDoctors',{
             pageName: 'Lista de usuarios',
             doctors
@@ -74,29 +99,32 @@ export const getDoctors = async(req, res) => {
 
 export const updateDoctor = async(req, res) => {
 
-    try {
-        const {_id, password, email, ...rest }= req.body;
-        const { id } = req.params;
+    const { id } = req.params;
+    console.log(id)
 
-        if( password ){
-            const salt = bcrypt.genSaltSync();
-            rest.password = bcrypt.hashSync(password, salt);
-        }
+    // try {
+    //     const {_id, password, email, ...rest }= req.body;
+    //     const { id } = req.params;
 
-        const doctor = await Doctor.findByIdAndUpdate( id, rest );
+    //     if( password ){
+    //         const salt = bcrypt.genSaltSync();
+    //         rest.password = bcrypt.hashSync(password, salt);
+    //     }
 
-        return res.status(200).json({
-            ok: true,
-            message: 'Doctor actualizado con éxito',
-            doctor
-        });
-    } catch (error) {
-        return res.status(500).send({
-            ok: false,
-            message: 'Error al intentar actualizar el doctor',
-            error: error.message
-        });
-    }
+    //     const doctor = await Doctor.findByIdAndUpdate( id, rest );
+
+    //     return res.status(200).json({
+    //         ok: true,
+    //         message: 'Doctor actualizado con éxito',
+    //         doctor
+    //     });
+    // } catch (error) {
+    //     return res.status(500).send({
+    //         ok: false,
+    //         message: 'Error al intentar actualizar el doctor',
+    //         error: error.message
+    //     });
+    // }
 };
 
 export const deleteDoctor = async(req, res) => {

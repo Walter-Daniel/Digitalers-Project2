@@ -1,6 +1,6 @@
-<div class="d-flex">
+{{!-- <div class="d-flex"> --}}
   <!---------------- ASIDE ----------------->
-  <aside>
+  {{!-- <aside>
     <h3>Clínica Digitalers</h3>
     <p>Administración</p>
     <hr />
@@ -42,13 +42,13 @@
         </ul>
       </div>
     </nav>
-  </aside>
+  </aside> --}}
   <!---------------- LIST ----------------->
-  <div class="container">
+  {{!-- <div class="container">
     <div class="row">
       <div class="d-flex justify-content-between p-3">
         <h2>Tabla de Doctóres</h2>
-        <a href="" class="btn btn-primary" role="button">Crear Doctor</a>
+        <a href="doctor/create" class="btn btn-primary" role="button">Crear Doctor</a>
       </div>
     </div>
     <div class="row">
@@ -67,8 +67,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="table-active">
             {{#each doctors}}
+            <tr> 
               <td>{{_id}}</td>
               <td>{{firstname}}</td>
               <td>{{lastname}}</td>
@@ -81,12 +81,51 @@
                 <a href="" class="btn btn-success">Editar</a>
                 <a href="" class="btn btn-danger">Eliminar</a>
               </td>
+          </tr>
             {{/each}}
             
-          </tr>
         </tbody>
       </table>
     </div>
-  </div>
+  </div> --}}
 
+<div class="container">
+  <div class="d-flex justify-content-between p-3">
+        <h2>Tabla de Doctóres</h2>
+        <a href="doctor/create" class="btn btn-primary d-flex align-items-center" role="button">Crear Doctor</a>
+      </div>
+  <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+             <tr>
+              <th>ID</th>
+              <th>Nombre(s)</th>
+              <th>Apellido(s)</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Precio Consulta</th>
+              <th>Categoría</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+           {{#each doctors}}
+            <tr> 
+                <td>{{_id}}</td>
+                <td>{{firstname}}</td>
+                <td>{{lastname}}</td>
+                <td>{{email}}</td>
+                <td>{{phoneNumber}}</td>
+                <td>{{consultationPrice}}</td>
+                <td>{{category}}</td>
+                <td>{{active}}</td>
+                <td>
+                  <a href="doctor/{{_id}}"  class="btn btn-success"><i class="fa-solid fa-pen"></i></a>
+                  <a href="" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
 </div>
+{{!-- </div>s --}}
