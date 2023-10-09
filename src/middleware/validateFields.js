@@ -8,7 +8,6 @@ export const validateFields = (req=request, res, next) => {
     if(!errors.isEmpty()){
         req.flash('alert-danger', errors.array().map(e => e.msg));
         let urlOriginal = req.originalUrl;
-        console.log(req.body)
         const url = urlOriginal.slice(1)
         let pageName = '';
         if(url.includes('register')){

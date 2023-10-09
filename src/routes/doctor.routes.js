@@ -1,7 +1,7 @@
 import express from 'express';
 import { check } from 'express-validator';
 
-import { createDoctor, updateDoctor, getDoctors, deleteDoctor, renderFormCreate } from '../controllers/doctor.controller.js';
+import { createDoctor, updateDoctor, getDoctors, deleteDoctor, renderFormCreate, renderFormUpdate } from '../controllers/doctor.controller.js';
 import { emailExist, isRole, findUserId, fromControl, setCategory, findID } from '../helpers/db-validators.js';
 import { validateFields, isAdminRole, validateJWT, hasARole } from '../middleware/index.js';
 import { tokenInHeader } from '../middleware/jwtHeader.js';
@@ -32,6 +32,13 @@ router.post('/create', [
 
 ], createDoctor);
 
+router.get('/:id', [
+
+    tokenInHeader,
+    validateJWT,
+    validateFields
+
+], renderFormUpdate);
 router.put('/:id', [
 
     tokenInHeader,
