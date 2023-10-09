@@ -1,94 +1,3 @@
-{{!-- <div class="d-flex"> --}}
-  <!---------------- ASIDE ----------------->
-  {{!-- <aside>
-    <h3>Clínica Digitalers</h3>
-    <p>Administración</p>
-    <hr />
-
-    <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
-      <div class="position-sticky">
-        <ul class="nav flex-column ms-4">
-          <li class="nav-item btn-aside">
-            <a class="nav-link active d-flex" href="#">
-              <i class="fa-solid fa-house icon"></i>
-              <p class="text">Dashboard</p>
-            </a>
-          </li>
-          <li class="nav-item btn-aside">
-            <a class="nav-link active d-flex" href="#">
-              <i class="fa-solid fa-user-doctor icon"></i>
-              <p class="text">Médicos</p>
-            </a>
-          </li>
-          <li class="nav-item btn-aside">
-            <a class="nav-link active d-flex" href="#">
-              <i class="fa-solid fa-hospital-user icon"></i>
-              <p class="text">Pacientes</p>
-            </a>
-          </li>
-          <li class="nav-item btn-aside">
-            <a class="nav-link active d-flex" href="#">
-              <i class="fa-solid fa-laptop-medical icon"></i>
-              <p class="text">Consultas</p>
-            </a>
-          </li>
-          <li class="nav-item btn-aside">
-            <a class="nav-link active d-flex" href="#">
-              <i class="fa-solid fa-book-medical icon"></i>
-              <p class="text">Expedientes</p>
-            </a>
-          </li>
-
-        </ul>
-      </div>
-    </nav>
-  </aside> --}}
-  <!---------------- LIST ----------------->
-  {{!-- <div class="container">
-    <div class="row">
-      <div class="d-flex justify-content-between p-3">
-        <h2>Tabla de Doctóres</h2>
-        <a href="doctor/create" class="btn btn-primary" role="button">Crear Doctor</a>
-      </div>
-    </div>
-    <div class="row">
-      <table class="table table-hover p-2">
-        <thead class="table-primary">
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Nombre(s)</th>
-            <th scope="col">Apellido(s)</th>
-            <th scope="col">Email</th>
-            <th scope="col">Teléfono</th>
-            <th scope="col">Precio Consulta</th>
-            <th scope="col">Categoría</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-            {{#each doctors}}
-            <tr> 
-              <td>{{_id}}</td>
-              <td>{{firstname}}</td>
-              <td>{{lastname}}</td>
-              <td>{{email}}</td>
-              <td>{{phoneNumber}}</td>
-              <td>{{consultationPrice}}</td>
-              <td>{{category}}</td>
-              <td>{{active}}</td>
-              <td>
-                <a href="" class="btn btn-success">Editar</a>
-                <a href="" class="btn btn-danger">Eliminar</a>
-              </td>
-          </tr>
-            {{/each}}
-            
-        </tbody>
-      </table>
-    </div>
-  </div> --}}
-
 <div class="container">
   <div class="d-flex justify-content-between p-3">
         <h2>Tabla de Doctóres</h2>
@@ -120,7 +29,7 @@
                 <td>{{category}}</td>
                 <td>{{active}}</td>
                 <td>
-                  <a href="doctor/{{_id}}"  class="btn btn-success"><i class="fa-solid fa-pen"></i></a>
+                  <a href="doctor/{{_id}}" class="btn btn-success read-button" >hola</a>
                   <a href="" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>

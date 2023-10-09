@@ -15,7 +15,9 @@ export const renderFormCreate = async(req,res) => {
         pageName: 'Registrar un nuevo Doctor',
         data: {
             categories,
-            roles
+            roles,
+            create: 'create'
+
         }
     })
 }
@@ -74,7 +76,6 @@ export const getDoctors = async(req, res) => {
                 message: 'No se encontró ningun doctor'
             })
         }
-        console.log(doctors);
         return res.render('doctor/listDoctors',{
             pageName: 'Lista de usuarios',
             doctors
@@ -96,6 +97,24 @@ export const getDoctors = async(req, res) => {
         })
    }
 };
+
+// Renderizado del formulario y registro de un DOCTOR
+export const renderFormUpdate = async(req,res) => {
+
+    try {
+        const { id } = req.params;
+
+        const doctor = await Doctor.findById(id).lean();
+
+        res.render('doctor/create', {
+            pageName: 'Editar Doctor',
+            data: doctor,
+            edit: 'edit'
+    })
+    } catch (error) {
+        req.flash('alert-danger', 'No se encontro un Doctor')
+    }
+}
 
 export const updateDoctor = async(req, res) => {
 
