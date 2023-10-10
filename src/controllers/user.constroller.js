@@ -41,9 +41,13 @@ export const createUser = async(req, res=response) => {
     }
 };
 
-export const renderUserProfile = (req, res=response) => {
+export const renderUserProfile = async(req, res=response) => {
 
     const { role } = req.user;
+    const { id } = req.params;
+
+
+    const user = await User.findById(id).lean();
 
     if(role === 'ADMIN_ROLE'){
         res.render('profile/admin', {
@@ -52,6 +56,7 @@ export const renderUserProfile = (req, res=response) => {
     }else if(role === 'USER_ROLE'){
         res.render('profile/user', {
             pageName: 'Perfil del Usuario',
+            user
         })
     }
 }
