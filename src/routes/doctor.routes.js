@@ -41,13 +41,13 @@ router.get('/:id', [
 ], renderFormUpdate);
 router.put('/:id', [
 
-    tokenInHeader,
-    validateJWT,
-    hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
-    check('id', 'No es un id válido!').isMongoId(),
-    // check('id').custom( findUserId ),
-    findID('Doctor'),
-    validateFields
+    // tokenInHeader,
+    // validateJWT,
+    // hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
+    // check('id', 'No es un id válido!').isMongoId(),
+    // // check('id').custom( findUserId ),
+    // findID('Doctor'),
+    // validateFields
 
 ], updateDoctor);
 

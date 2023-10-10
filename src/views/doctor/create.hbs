@@ -1,7 +1,7 @@
 <div class="container">
   {{#if edit}}
-      <form action="/doctor/update" method="PUT" class="fade-in" >
-
+      <form action="/doctor/{{data._id}}?_method=PUT" method="POST" class="fade-in" >
+          <input type="hidden" name="_method" value="PUT">
   {{/if}}
   {{#if create}}
       <form action="/doctor/create" method="POST" class="fade-in" >
@@ -132,14 +132,19 @@
     </div>
     <hr />
     <div class="row mt-3">
-        <div class="col-4">
-
-          <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Crear</button>
-        </div>
-        <div class="col-4">
-          <button type="reset" class="btn btn-warning mt-3 mb-1 w-100">Resetear Formulario</button>
-
-        </div>
+         {{#if create}}
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Crear</button>
+          </div>
+          <div class="col-4">
+            <button type="reset" class="btn btn-warning mt-3 mb-1 w-100">Resetear Formulario</button>
+          </div>
+        {{/if}}
+        {{#if edit}}
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Editar</button>
+          </div>
+        {{/if}}
         <div class="col-4">
           <a href="/doctor" class="btn btn-danger mt-3 mb-1 w-100">Cancelar</a>
 

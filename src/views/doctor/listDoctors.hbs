@@ -1,7 +1,10 @@
 <div class="container">
   <div class="d-flex justify-content-between p-3">
         <h2>Tabla de Doctóres</h2>
-        <a href="doctor/create" class="btn btn-primary d-flex align-items-center" role="button">Crear Doctor</a>
+        <a href="doctor/create" class="btn btn-primary d-flex justify-content-center align-items-center h-100" role="button">
+          <span><i class="fa-solid fa-user-plus pe-2"></i></span>
+          Crear
+        </a>
       </div>
   <table id="example" class="table table-striped" style="width:100%">
         <thead>
@@ -29,7 +32,7 @@
                 <td>{{category}}</td>
                 <td>{{active}}</td>
                 <td>
-                  <a href="doctor/{{_id}}" class="btn btn-success read-button" >hola</a>
+                  <a href="doctor/{{_id}}" class="btn btn-success read-button" ><i class="fa-regular fa-pen-to-square"></i></a>
                   <a href="" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>
@@ -37,4 +40,3 @@
         </tbody>
     </table>
 </div>
-{{!-- </div>s --}}

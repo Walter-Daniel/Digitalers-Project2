@@ -4,6 +4,7 @@ import exphbs from 'express-handlebars';
 import session from 'express-session';
 import flash from 'connect-flash';
 import cookieParser from 'cookie-parser';
+import methodOverride from 'method-override';
 
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
@@ -33,6 +34,7 @@ dbConnection();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
+
 
 //config view engine
 const hbs = exphbs.create({
@@ -66,6 +68,8 @@ app.use((req, res, next) => {
   res.locals.data = req.flash('data');
   next();
 });
+
+app.use(methodOverride('_method'));
 
 //Routing
 app.use('/', indexRoute);
