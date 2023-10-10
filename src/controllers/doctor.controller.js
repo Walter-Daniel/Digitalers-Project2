@@ -78,7 +78,8 @@ export const getDoctors = async(req, res) => {
         }
         return res.render('doctor/listDoctors',{
             pageName: 'Lista de usuarios',
-            doctors
+            doctors,
+            navbar: true
         })
         return res.status(200).send({
                 ok: true,
@@ -109,7 +110,8 @@ export const renderFormUpdate = async(req,res) => {
         res.render('doctor/create', {
             pageName: 'Editar Doctor',
             data: doctor,
-            edit: 'edit'
+            navbar: true,
+            edit: true
     })
     } catch (error) {
         req.flash('alert-danger', 'No se encontro un Doctor')
@@ -118,32 +120,38 @@ export const renderFormUpdate = async(req,res) => {
 
 export const updateDoctor = async(req, res) => {
 
-    const { id } = req.params;
-    console.log(id)
+    try {
+        const {_id, password, email, ...rest }= req.body;
+        const { id } = req.params;
 
-    // try {
-    //     const {_id, password, email, ...rest }= req.body;
-    //     const { id } = req.params;
+        if( password ){
+            const salt = bcrypt.genSaltSync();
+            rest.password = bcrypt.hashSync(password, salt);
+        }
 
-    //     if( password ){
-    //         const salt = bcrypt.genSaltSync();
-    //         rest.password = bcrypt.hashSync(password, salt);
-    //     }
+        const doctor = await Doctor.findByIdAndUpdate( id, rest );
+        req.flash('alert-success', 'Información editada con éxito');
 
-    //     const doctor = await Doctor.findByIdAndUpdate( id, rest );
+        return res.render('doctor/create', {
+            pageName: 'Editar Doctorr',
+            messages: req.flash(),
+            edit: true,
+            navbar: true,
+            data: req.body
+        })
 
-    //     return res.status(200).json({
-    //         ok: true,
-    //         message: 'Doctor actualizado con éxito',
-    //         doctor
-    //     });
-    // } catch (error) {
-    //     return res.status(500).send({
-    //         ok: false,
-    //         message: 'Error al intentar actualizar el doctor',
-    //         error: error.message
-    //     });
-    // }
+        return res.status(200).json({
+            ok: true,
+            message: 'Doctor actualizado con éxito',
+            doctor
+        });
+    } catch (error) {
+        return res.status(500).send({
+            ok: false,
+            message: 'Error al intentar actualizar el doctor',
+            error: error.message
+        });
+    }
 };
 
 export const deleteDoctor = async(req, res) => {

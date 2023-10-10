@@ -5,14 +5,25 @@ export const validateJWT = async(req, res, next) => {
 
     const token = req.header('x-token');
 
+
     if(!token){
-
-        return res.status(401).json({
-            ok: false,
-            msg: 'No hay token en la petición'
-        });
-
+        req.flash('alert-danger', 'Token expirado');
+        return res.render('auth/login', {
+            pageName: 'Iniciar Sesión',
+            message: req.flash('')
+        })
     }
+
+    // if(!token){
+
+    //     return res.redirection('auth/login')
+
+    //     return res.status(401).json({
+    //         ok: false,
+    //         msg: 'No hay token en la petición'
+    //     });
+
+    // }
 
     try {
 
