@@ -1,3 +1,14 @@
-<h2>
-    Desde home
-</h2>
+<div class="container">
+    <div class="row">
+        {{#each doctors}}
+        <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{firstname}}</h5>
+                <p class="card-text">{{category}}</p>
+                <a href="doctor/public/{{_id}}" class="btn btn-primary w-100">Ver Perfil</a>
+            </div>
+        </div>
+    {{/each}}
+    </div>
+</div>

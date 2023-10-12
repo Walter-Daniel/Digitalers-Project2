@@ -5,9 +5,22 @@ import { Schema } from 'mongoose';
 
 const appointmentSchema = new Schema({
     //Se tiene que asociar al usario y al doctor
-    date: Date.now(),
-    acive: Boolean,
-    require: true
+    date: { 
+        type: date, 
+        required: true, 
+    },
+    doctor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Doctor',
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Doctor',
+    },
+    active: {
+        type: Boolean,
+        default: true
+    }
 });
 
 export const appointmentModel = mongoose.model('appointment', appointmentSchema);
