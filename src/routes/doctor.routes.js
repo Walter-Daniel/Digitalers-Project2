@@ -1,7 +1,7 @@
 import express from 'express';
 import { check } from 'express-validator';
 
-import { createDoctor, updateDoctor, getDoctors, deleteDoctor, renderFormCreate, renderFormUpdate } from '../controllers/doctor.controller.js';
+import { createDoctor, updateDoctor, getDoctors, deleteDoctor, renderFormCreate, renderFormUpdate, renderProfile } from '../controllers/doctor.controller.js';
 import { emailExist, isRole, findUserId, fromControl, setCategory, findID } from '../helpers/db-validators.js';
 import { validateFields, isAdminRole, validateJWT, hasARole } from '../middleware/index.js';
 import { tokenInHeader } from '../middleware/jwtHeader.js';
@@ -31,7 +31,22 @@ router.post('/create', [
     validateFields
 
 ], createDoctor);
+//Renderizar el perfil del doctor
 
+router.get('/public/:id', [
+
+    tokenInHeader,
+    validateJWT,
+    validateFields
+
+], renderProfile);
+router.get('/:id', [
+
+    tokenInHeader,
+    validateJWT,
+    validateFields
+
+], renderFormUpdate);
 router.get('/:id', [
 
     tokenInHeader,
@@ -51,15 +66,7 @@ router.put('/:id', [
 
 ], updateDoctor);
 
-router.get('/', [
-
-    tokenInHeader,
-    validateJWT,
-    hasARole('ADMIN_ROLE', 'SECRETARY_ROLE'),
-    // check('from').custom( fromControl ),
-    validateFields
-    
-], getDoctors);
+router.get('/', getDoctors);
 
 router.delete('/:id',[
 

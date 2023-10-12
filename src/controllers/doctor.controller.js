@@ -5,6 +5,13 @@ import Category from '../model/category.schema.js';
 import Role from '../model/role.schema.js'
 config();
 
+//Render profile
+export const renderProfile = async(req, res) => {
+    res.render('publicProfile',{
+        pageName: 'Registrar un nuevo Doctor',
+        navbar: true
+    })
+}
 
 // Renderizado del formulario y registro de un DOCTOR
 export const renderFormCreate = async(req,res) => {
@@ -76,6 +83,7 @@ export const getDoctors = async(req, res) => {
                 message: 'No se encontró ningun doctor'
             })
         }
+
         return res.render('doctor/listDoctors',{
             pageName: 'Lista de usuarios',
             doctors,
