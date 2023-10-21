@@ -12,7 +12,8 @@ import { fileURLToPath } from 'url';
 import userRoute from './routes/user.routes.js';
 import authRoute from './routes/auth.routes.js';
 import doctorRoute from './routes/doctor.routes.js';
-import indexRoute from './routes/index.routes.js'
+import indexRoute from './routes/index.routes.js';
+import imagesRoute from './routes/images.routes.js';
 
 import { showAlerts } from './helpers/alerts.js'
 import { dbConnection } from './config/dbConnection.js';
@@ -76,6 +77,7 @@ app.use('/', indexRoute);
 app.use('/auth', authRoute);
 app.use('/user', userRoute);
 app.use('/doctor', doctorRoute);
+app.use('/images', imagesRoute);
 
 //Static files
 app.use(express.static(join(__dirname , 'public')));

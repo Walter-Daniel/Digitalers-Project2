@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const DoctorSchema = new mongoose.Schema({
     firstname: { 
@@ -43,6 +43,10 @@ const DoctorSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true
+    },
+    image: {
+        type: Schema.Types.ObjectId,
+        ref: 'Image'
     }
 });
 DoctorSchema.methods.toJSON = function(){
