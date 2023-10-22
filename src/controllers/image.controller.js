@@ -41,8 +41,16 @@ export const getImages = async( req, res ) => {
 
 export const uploadImagesCloudinary = async(req, res ) => {
 
+    const imgPath = req.files.image.tempFilePath
 
-    console.log(req.files)
+    if (uploadedFile.mimetype !== 'image/jpeg') {
+        return res.status(400).send('Only JPG files are allowed.');
+    }
+
+    // const res =  await cloudinary.uploader.upload(imgPath);
+
+    // const user = await User.findByIdAndUpdate( id, secure_url, rest);
+
 
     // cloudinary.uploader.upload()
 };
