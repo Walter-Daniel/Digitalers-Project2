@@ -5,6 +5,7 @@ import session from 'express-session';
 import flash from 'connect-flash';
 import cookieParser from 'cookie-parser';
 import methodOverride from 'method-override';
+import fileUpload from 'express-fileupload';
 
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
@@ -71,6 +72,12 @@ app.use((req, res, next) => {
 });
 
 app.use(methodOverride('_method'));
+
+// Image upload
+app.use(fileUpload({
+  useTempFiles : true,
+  tempFileDir : '/tmp/',
+}));
 
 //Routing
 app.use('/', indexRoute);

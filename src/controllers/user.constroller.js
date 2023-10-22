@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import {config} from 'dotenv';
 import User from '../model/user.schema.js';
-import { response } from 'express';
+import { request, response } from 'express';
 config();
 
 export const createUser = async(req, res=response) => {
@@ -98,23 +98,34 @@ export const getUsers = async(req, res) => {
    }
 };
 
-export const updateUser = async(req, res) => {
+export const updateUser = async(req=request, res) => {
+
+    const imgPath = req.files.image.tempFilePath
+    console.log(imgPath)
+
 
 try {
-    const {_id, password, email, ...rest }= req.body;
-    const { id } = req.params;
+    // const {_id, password, email, ...rest }= req.body;
+    // const { id } = req.params;
+    const imgPath = req.files.image.tempFilePath
 
-    if( password ){
-        const salt = bcrypt.genSaltSync();
-        rest.password = bcrypt.hashSync(password, salt);
+    // if( password ){
+    //     const salt = bcrypt.genSaltSync();
+    //     rest.password = bcrypt.hashSync(password, salt);
+    // }
+
+    if (uploadedFile.mimetype !== 'image/jpeg') {
+        return res.status(400).send('Only JPG files are allowed.');
     }
 
-    const user = await User.findByIdAndUpdate( id, rest );
+    // const res =  await cloudinary.uploader.upload(imgPath);
+
+    // const user = await User.findByIdAndUpdate( id, secure_url, rest);
 
     return res.status(200).json({
         ok: true,
         message: 'Usuario actualizado con éxito',
-        user
+        res
     });
 } catch (error) {
     return res.status(500).send({
