@@ -1,5 +1,5 @@
 <div class="container">
-<form action="/images/{{user._id}}?_method=PUT" method="POST" class="fade-in mb-5 mt-5" enctype="multipart/form-data">
+<form action="/images/{{user._id}}?_method=PUT" method="POST" class="fade-in mb-5 mt-5 needs-validation" novalidate enctype="multipart/form-data">
   <input type="hidden" name="_method" value="PUT">
   <fieldset>
     <legend>Foto de perfil</legend>
@@ -10,7 +10,10 @@
                     class="form-control"
                     name="image"
                     accept="image/*"
-                    required>
+                    id="image" required>
+        <div class="invalid-feedback">
+        Selecciona una imagen.
+      </div>
     </div>
     {{#if user.image}}
       <img src={{user.image}} alt="avatar" class="rounded-circle img-profile">
@@ -31,7 +34,7 @@
         </div>
   </div>
 </form>
-<form action="/user/{{data._id}}?_method=PUT" method="POST" class="fade-in" >
+<form action="/user/{{data._id}}?_method=PUT" method="POST" class="fade-in needs-validation" novalidate>
     <input type="hidden" name="_method" value="PUT">
   <fieldset>
     <legend>Editar información personal</legend> 
@@ -44,7 +47,11 @@
               name="firstname"
               id="firstname"
               value="{{user.firstname}}"
-            />
+              required
+            >
+            <div class="invalid-feedback">
+              Debes ingresar un nombre
+            </div>
           </div>
           <div class="form-group col-6">
             <label for="lastname" class="form-label mt-3">Apellido(s):</label>
@@ -54,7 +61,11 @@
               name="lastname"
               id="lastname"
               value="{{user.lastname}}"
+              required
             />
+            <div class="invalid-feedback">
+              Debes ingresar un apellido
+            </div>
           </div>
     </div>
     <div class="row">
@@ -69,7 +80,11 @@
               name="email"
               id="email"
               value="{{user.email}}"
+              required
             />
+            <div class="invalid-feedback">
+              Debes ingresar un email
+            </div>
           </div>
           <div class="form-group col-6">
             <label
@@ -82,7 +97,11 @@
               name="password"
               id="password"
               autocomplete="off"
+              required
             />
+            <div class="invalid-feedback">
+              Debes ingresar la contraseña
+            </div>
           </div>
     </div>
     <div class="row">
@@ -97,7 +116,11 @@
             name="phoneNumber"
             id="phoneNumber"
             value="{{user.phoneNumber}}"
+            required
           />
+          <div class="invalid-feedback">
+              Debes ingresar un número de teléfono
+          </div>
         </div>
         <div class="form-group col-6">
           <label
@@ -110,7 +133,11 @@
             name="cellphone"
             id="cellphone"
             value="{{user.cellphone}}"
+            required
           />
+          <div class="invalid-feedback">
+              Debes ingresar un número de celular
+          </div>
         </div>       
     </div>
     <div class="row">
@@ -122,7 +149,11 @@
           name="adress"
           id="adress"
           value="{{user.adress}}"
+          required
         />
+        <div class="invalid-feedback">
+            Debes ingresar tu dirección
+        </div>
       </div>
       <div class="col-6">
         <label for="locality" class="form-label mt-3">Localidad:</label>
@@ -132,7 +163,11 @@
           name="locality"
           id="locality"
           value="{{user.locality}}"
+          required
         />
+        <div class="invalid-feedback">
+            Debes ingresar una localidad
+        </div>
       </div>
     </div>
     <hr />
