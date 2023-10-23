@@ -10,14 +10,14 @@ const UserSchema = new mongoose.Schema({
     firstname: { 
         type: String, 
         required: true, 
-        minlength: 5, 
-        maxlength: 40 
+        minlength: 4, 
+        maxlength: 25
     },
     lastname: { 
         type: String, 
         required: true, 
-        minlength: 5, 
-        maxlength: 40 
+        minlength: 4, 
+        maxlength: 25 
     },
     email: { 
         type: String, 
@@ -40,6 +40,15 @@ const UserSchema = new mongoose.Schema({
         default: VALID_ROLES[1],
     },
     image: {
+        type: String
+    },
+    adress:{
+        type: String
+    },
+    phoneNumber:{
+        type: String
+    },
+    cellphone:{
         type: String
     }
 });
