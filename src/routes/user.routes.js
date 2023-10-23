@@ -1,7 +1,7 @@
 import express from 'express';
 import { check } from 'express-validator';
 
-import { deleteUser, getUsers, createUser, updateUser, renderUserProfile } from '../controllers/user.constroller.js';
+import { deleteUser, getUsers, createUser, updateUser, renderUserProfile, updateUserFormRender } from '../controllers/user.constroller.js';
 import { emailExist, isRole, findUserId, fromControl } from '../helpers/db-validators.js';
 import { validateFields, isAdminRole, validateJWT } from '../middleware/index.js';
 import { tokenInHeader } from '../middleware/jwtHeader.js';
@@ -22,14 +22,17 @@ router.post('/create', [
 
 ], createUser);
 
+
+//FORMULARIO UPDATE USER
+router.get('/profile/update/:id', updateUserFormRender)
 router.put('/:id', [
 
-    // validateJWT,
-    // isAdminRole,
-    // check('id', 'No es un id válido!').isMongoId(),
-    // check('id').custom( findUserId ),
-    // check('role').custom( isRole ),
-    // validateFields
+    validateJWT,
+    isAdminRole,
+    check('id', 'No es un id válido!').isMongoId(),
+    check('id').custom( findUserId ),
+    check('role').custom( isRole ),
+    validateFields
 
 ], updateUser);
 

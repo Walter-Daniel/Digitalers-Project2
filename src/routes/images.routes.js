@@ -9,7 +9,14 @@ import { uploadImagesCloudinary } from '../controllers/image.controller.js';
 const router = express.Router();
 
 router.get('/:id')
-router.put('/:id', uploadImagesCloudinary);
+router.put('/:id', [
+    // validateJWT,
+    // check('id', 'No es un id válido!').isMongoId(),
+    // check('id').custom( findUserId ),
+    // check('role').custom( isRole ),
+    // validateFields
+],
+ uploadImagesCloudinary);
 router.delete('/:id')
 
 export default router;

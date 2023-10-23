@@ -1,0 +1,153 @@
+<div class="container">
+<form action="/images/{{user._id}}?_method=PUT" method="POST" class="fade-in mb-5 mt-5" enctype="multipart/form-data">
+  <input type="hidden" name="_method" value="PUT">
+  <fieldset>
+    <legend>Foto de perfil</legend>
+    <div class="row">
+      <div class="mb-3 col-6">
+      <label for="image" class="form-label">Subir imagen</label>
+      <input type="file"
+                    class="form-control"
+                    name="image"
+                    accept="image/*"
+                    required>
+    </div>
+    {{#if user.image}}
+      <img src={{user.image}} alt="avatar" class="rounded-circle img-profile">
+    {{else}}
+      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar" class="rounded-circle img-profile">
+    {{/if}}
+    </div>
+  </fieldset>
+  <div class="row mt-3">
+        <div class="col-4">
+          <button type="reset" class="btn btn-warning mt-3 mb-1 w-100">Resetear Formulario</button>
+        </div>
+        <div class="col-4">
+          <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Subir Imagen</button>
+        </div>
+        <div class="col-4">
+          <a href="#" class="btn btn-danger mt-3 mb-1 w-100">Borrar Imagen</a>
+        </div>
+  </div>
+</form>
+<form action="/user/{{data._id}}?_method=PUT" method="POST" class="fade-in" >
+    <input type="hidden" name="_method" value="PUT">
+  <fieldset>
+    <legend>Editar información personal</legend> 
+    <div class="row">
+        <div class="form-group col-6">
+            <label for="firstname" class="form-label mt-3">Nombre(s):</label>
+            <input
+              type="text"
+              class="form-control"
+              name="firstname"
+              id="firstname"
+              value="{{user.firstname}}"
+            />
+          </div>
+          <div class="form-group col-6">
+            <label for="lastname" class="form-label mt-3">Apellido(s):</label>
+            <input
+              type="text"
+              class="form-control"
+              name="lastname"
+              id="lastname"
+              value="{{user.lastname}}"
+            />
+          </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-6">
+            <label
+              for="email"
+              class="form-label mt-3"
+            >Correo:</label>
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              id="email"
+              value="{{user.email}}"
+            />
+          </div>
+          <div class="form-group col-6">
+            <label
+              for="password"
+              class="form-label mt-3"
+            >Contraseña:</label>
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              id="password"
+              autocomplete="off"
+            />
+          </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-6">
+          <label
+            for="phoneNumber"
+            class="form-label mt-3"
+          >Teléfono:</label>
+          <input
+            type="tel"
+            class="form-control"
+            name="phoneNumber"
+            id="phoneNumber"
+            value="{{user.phoneNumber}}"
+          />
+        </div>
+        <div class="form-group col-6">
+          <label
+            for="cellphone"
+            class="form-label mt-3"
+          >Celular:</label>
+          <input
+            type="tel"
+            class="form-control"
+            name="cellphone"
+            id="cellphone"
+            value="{{user.cellphone}}"
+          />
+        </div>       
+    </div>
+    <div class="row">
+      <div class="form-group col-6">
+        <label for="adress" class="form-label mt-3">Dirección:</label>
+        <input
+          type="text"
+          class="form-control"
+          name="adress"
+          id="adress"
+          value="{{user.adress}}"
+        />
+      </div>
+      <div class="col-6">
+        <label for="locality" class="form-label mt-3">Localidad:</label>
+        <input
+          type="text"
+          class="form-control"
+          name="locality"
+          id="locality"
+          value="{{user.locality}}"
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="row mt-3">
+        <div class="col-4">
+          <button type="reset" class="btn btn-warning mt-3 mb-1 w-100">Resetear Formulario</button>
+        </div>
+        <div class="col-4">
+          <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Editar</button>
+        </div>
+        <div class="col-4">
+          <a href="/doctor" class="btn btn-danger mt-3 mb-1 w-100">Cancelar</a>
+        </div>
+    </div>
+  </fieldset>
+</form>
+
+</div>

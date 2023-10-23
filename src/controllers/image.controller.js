@@ -48,36 +48,26 @@ export const getImages = async( req, res ) => {
 export const uploadImagesCloudinary = async(req=request, res ) => {
 
     try {
-
         const {id} = req.params;
-        const imgPath = req.files.image.tempFilePath;
-
-        // const user = await User.findById(id)
-
-        // console.log(user)
-
-        // if (mimetype !== 'image/jpeg') {
-        //     return res.status(400).send('Only JPG files are allowed.');
-        // }
-
-        const { secure_url } =  await cloudinary.uploader.upload(imgPath);
-
-        // console.log(resp)
-    
-       const user = await User.findById( id );
-       user.image = secure_url;
-       await user.save();
-
-        res.json(user)
+        const { mimetype, tempFilePath } = req.files.image;
+        console.log(tempFilePath)
+        if (mimetype !== 'image/jpeg') {
+            return res.status(400).send('Only JPG files are allowed.');
+        }
+        const { secure_url } =  await cloudinary.uploader.upload(tempFilePath);
+        const user = await User.findById( id );
+        user.image = secure_url;
+        await user.save();
+        if(user.role === 'USER_ROLE'){
+            return res.render(`profile/user/update/${id}`, {
+                pageName: 'Editar peril',
+                user
+            })
+        }
     } catch (error) {
         console.log(error)
         
     }
-
-    // const user = await User.findByIdAndUpdate( id, secure_url, rest);
-
-
-    // cloudinary.uploader.upload()
 };
 
 const deleteImagesCloudinary = async(req, res ) => {

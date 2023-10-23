@@ -20,12 +20,6 @@ export const createUser = async(req, res=response) => {
 
         req.flash('alert-success', 'Su cuenta ha sido creada con éxito');
 
-        // res.status(201).json({
-        //     ok: true,
-        //     msg: 'Usuario creado con éxito',
-        //     user
-        // });
-
         res.render('auth/register', {
             pageName: 'Registro',
             messages: req.flash()
@@ -33,13 +27,11 @@ export const createUser = async(req, res=response) => {
         return;
 
     } catch (error) {
-
-        res.status(500).json({
-            ok: false,
-            msg: 'Error al crear un nuevo usuario',
-            error: error.message
-        });
-
+        req.flash('alert-danger', `${error.message}`);
+        res.render('auth/register', {
+            pageName: 'Registro',
+            messages: req.flash()
+        })
     }
 };
 
@@ -58,45 +50,8 @@ export const renderUserProfile = async(req=request, res=response) => {
             user
         })
     }
-
-    // const token = req.cookies.token;
-
-    // if (!token) {
-    //     return res.status(401).send('Acceso no autorizado');
-    // }
-
-    // // Verifica y decodifica el token
-    // jwt.verify(token, process.env.SECRETSEED, (err, decoded) => {
-    //     if (err) {
-    //     return res.status(401).send('Token no válido');
-    //     }
-
-    //     const userId = decoded.id;
-
-    //     // Busca al usuario en la base de datos
-    //     User.findById(id, (err, user) => {
-    //     if (err || !user) {
-    //         return res.status(401).send('Usuario no encontrado');
-    //     }
-
-    //     res.json({ username: user.firstname });
-    //     });
-    // });
-    // const user = await User.findById(id).lean();
-
-    // if(role === 'ADMIN_ROLE'){
-    //     res.render('profile/admin', {
-    //         pageName: 'Administración',
-    //     })
-    // }else if(role === 'USER_ROLE'){
-    //     res.render('profile/user', {
-    //         pageName: 'Perfil del Usuario',
-    //         user
-    //     })
-    // }
 }
 export const getUsers = async(req, res) => {
-
    try {
         const { limit = 10, from } = req.query;
         const query = { active: true }
@@ -123,7 +78,6 @@ export const getUsers = async(req, res) => {
                 total
 
         })
-
    } catch (error) {
         return res.status(500).send({
             ok: false,
@@ -133,36 +87,42 @@ export const getUsers = async(req, res) => {
    }
 };
 
+
+//UPDATE USER
+export const updateUserFormRender = async(req, res) => {
+    const { id } = req.params;
+    const user = await User.findById(id).lean();
+
+    res.render('profile/form', {
+        pageName: 'Editar Perfil del Usuario',
+        navbar: true,
+        user
+    })
+
+}
 export const updateUser = async(req=request, res) => {
 
-    
-    // const user = await User.findByIdAndUpdate( id, secure_url, rest);
-
 try {
-    // const {_id, password, email, ...rest }= req.body;
-    // const { id } = req.params;
-    // // const imgPath = req.files.image.tempFilePath
+    const {_id, password, email, ...rest }= req.body;
+    const { id } = req.params;
 
-    // if( password ){
-    //     const salt = bcrypt.genSaltSync();
-    //     rest.password = bcrypt.hashSync(password, salt);
-    // }
+    if( password ){
+        const salt = bcrypt.genSaltSync();
+        rest.password = bcrypt.hashSync(password, salt);
+    }
 
-    // if (uploadedFile.mimetype !== 'image/jpeg') {
-    //     return res.status(400).send('Only JPG files are allowed.');
-    // }
-
-    const imgPath = req.files.image.tempFilePath
-    const resp =  await cloudinary.uploader.upload(imgPath);
-    return res.json(resp)
+    if (uploadedFile.mimetype !== 'image/jpeg') {
+        return res.status(400).send('Only JPG files are allowed.');
+    }
 
 
+    const user = await User.findByIdAndUpdate( id, secure_url, rest);
 
-    // return res.status(200).json({
-    //     ok: true,
-    //     message: 'Usuario actualizado con éxito',
-    //     user
-    // });
+    return res.status(200).json({
+        ok: true,
+        message: 'Usuario actualizado con éxito',
+        user
+    });
 } catch (error) {
     return res.status(500).send({
         ok: false,

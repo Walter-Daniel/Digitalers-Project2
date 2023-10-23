@@ -10,14 +10,14 @@ const UserSchema = new mongoose.Schema({
     firstname: { 
         type: String, 
         required: true, 
-        minlength: 5, 
-        maxlength: 40 
+        minlength: 4, 
+        maxlength: 25
     },
     lastname: { 
         type: String, 
         required: true, 
-        minlength: 5, 
-        maxlength: 40 
+        minlength: 4, 
+        maxlength: 25 
     },
     email: { 
         type: String, 
@@ -41,6 +41,26 @@ const UserSchema = new mongoose.Schema({
     },
     image: {
         type: String
+    },
+    adress:{
+        type: String,
+        minlength: 4, 
+        maxlength: 25 
+    },
+    locality:{
+        type: String,
+        minlength: 4, 
+        maxlength: 25 
+    },
+    phoneNumber:{
+        type: String,
+        minlength: 4, 
+        maxlength: 25 
+    },
+    cellphone:{
+        type: String,
+        minlength: 4, 
+        maxlength: 25 
     }
 });
 UserSchema.methods.toJSON = function(){
