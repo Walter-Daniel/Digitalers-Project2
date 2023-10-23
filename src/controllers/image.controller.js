@@ -49,8 +49,12 @@ export const uploadImagesCloudinary = async(req=request, res ) => {
 
     try {
         const {id} = req.params;
+
+        
+        if(!req.files.image){
+
+        }
         const { mimetype, tempFilePath } = req.files.image;
-        console.log(tempFilePath)
         if (mimetype !== 'image/jpeg') {
             return res.status(400).send('Only JPG files are allowed.');
         }

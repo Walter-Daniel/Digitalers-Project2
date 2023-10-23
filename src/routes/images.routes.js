@@ -11,10 +11,11 @@ const router = express.Router();
 router.get('/:id')
 router.put('/:id', [
     // validateJWT,
-    // check('id', 'No es un id válido!').isMongoId(),
-    // check('id').custom( findUserId ),
+    check('id', 'No es un id válido!').isMongoId(),
+    check('id').custom( findUserId ),
+    check('image', 'Debe ingresar una imagen').notEmpty(),
     // check('role').custom( isRole ),
-    // validateFields
+    validateFields
 ],
  uploadImagesCloudinary);
 router.delete('/:id')
