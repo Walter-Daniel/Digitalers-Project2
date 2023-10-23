@@ -76,7 +76,7 @@ app.use(methodOverride('_method'));
 // Image upload
 app.use(fileUpload({
   useTempFiles : true,
-  tempFileDir : '/tmp/',
+  tempFileDir : '/tmp/'
 }));
 
 //Routing
