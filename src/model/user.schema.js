@@ -38,6 +38,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         enum: VALID_ROLES,
         default: VALID_ROLES[1],
+    },
+    image: {
+        type: String
     }
 });
 UserSchema.methods.toJSON = function(){

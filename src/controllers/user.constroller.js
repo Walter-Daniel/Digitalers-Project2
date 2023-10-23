@@ -2,6 +2,8 @@ import bcrypt from 'bcryptjs';
 import {config} from 'dotenv';
 import User from '../model/user.schema.js';
 import { request, response } from 'express';
+import { v2 as cloudinary } from 'cloudinary';
+cloudinary.config( process.env.CLOUDINARY_URL )
 config();
 
 export const createUser = async(req, res=response) => {
@@ -41,24 +43,57 @@ export const createUser = async(req, res=response) => {
     }
 };
 
-export const renderUserProfile = async(req, res=response) => {
+export const renderUserProfile = async(req=request, res=response) => {
 
-    const { role } = req.user;
-    const { id } = req.params;
-
-
+    const { id } = req.user;
     const user = await User.findById(id).lean();
 
-    if(role === 'ADMIN_ROLE'){
+    if(user.role === 'ADMIN_ROLE'){
         res.render('profile/admin', {
             pageName: 'Administración',
         })
-    }else if(role === 'USER_ROLE'){
+    }else if(user.role === 'USER_ROLE'){
         res.render('profile/user', {
             pageName: 'Perfil del Usuario',
             user
         })
     }
+
+    // const token = req.cookies.token;
+
+    // if (!token) {
+    //     return res.status(401).send('Acceso no autorizado');
+    // }
+
+    // // Verifica y decodifica el token
+    // jwt.verify(token, process.env.SECRETSEED, (err, decoded) => {
+    //     if (err) {
+    //     return res.status(401).send('Token no válido');
+    //     }
+
+    //     const userId = decoded.id;
+
+    //     // Busca al usuario en la base de datos
+    //     User.findById(id, (err, user) => {
+    //     if (err || !user) {
+    //         return res.status(401).send('Usuario no encontrado');
+    //     }
+
+    //     res.json({ username: user.firstname });
+    //     });
+    // });
+    // const user = await User.findById(id).lean();
+
+    // if(role === 'ADMIN_ROLE'){
+    //     res.render('profile/admin', {
+    //         pageName: 'Administración',
+    //     })
+    // }else if(role === 'USER_ROLE'){
+    //     res.render('profile/user', {
+    //         pageName: 'Perfil del Usuario',
+    //         user
+    //     })
+    // }
 }
 export const getUsers = async(req, res) => {
 
@@ -100,38 +135,39 @@ export const getUsers = async(req, res) => {
 
 export const updateUser = async(req=request, res) => {
 
-    const imgPath = req.files.image.tempFilePath
-    console.log(imgPath)
-
+    
+    // const user = await User.findByIdAndUpdate( id, secure_url, rest);
 
 try {
     // const {_id, password, email, ...rest }= req.body;
     // const { id } = req.params;
-    const imgPath = req.files.image.tempFilePath
+    // // const imgPath = req.files.image.tempFilePath
 
     // if( password ){
     //     const salt = bcrypt.genSaltSync();
     //     rest.password = bcrypt.hashSync(password, salt);
     // }
 
-    if (uploadedFile.mimetype !== 'image/jpeg') {
-        return res.status(400).send('Only JPG files are allowed.');
-    }
+    // if (uploadedFile.mimetype !== 'image/jpeg') {
+    //     return res.status(400).send('Only JPG files are allowed.');
+    // }
 
-    // const res =  await cloudinary.uploader.upload(imgPath);
+    const imgPath = req.files.image.tempFilePath
+    const resp =  await cloudinary.uploader.upload(imgPath);
+    return res.json(resp)
 
-    // const user = await User.findByIdAndUpdate( id, secure_url, rest);
 
-    return res.status(200).json({
-        ok: true,
-        message: 'Usuario actualizado con éxito',
-        res
-    });
+
+    // return res.status(200).json({
+    //     ok: true,
+    //     message: 'Usuario actualizado con éxito',
+    //     user
+    // });
 } catch (error) {
     return res.status(500).send({
         ok: false,
-        message: 'Error al intentar actualizar el usuario',
-        error: error.message
+        // message: 'Error al intentar actualizar el usuario',
+        error: error
     });
 }
 };
@@ -140,7 +176,7 @@ try {
   //La petición para traer los usuarios, trae a todos menos a los usuarios con 'active': false.
 export const deleteUser = async(req, res) => {
     try {
-        
+
         const userID = req.params.id;
         const user = await User.findByIdAndUpdate( userID, { active: false });
 

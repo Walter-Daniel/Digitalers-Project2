@@ -9,8 +9,7 @@ import { uploadImagesCloudinary } from '../controllers/image.controller.js';
 const router = express.Router();
 
 router.get('/:id')
-router.put('/create', uploadImagesCloudinary);
+router.put('/:id', uploadImagesCloudinary);
 router.delete('/:id')
-
 
 export default router;

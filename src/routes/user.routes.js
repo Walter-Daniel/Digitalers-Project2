@@ -34,7 +34,7 @@ router.put('/:id', [
 ], updateUser);
 
 //Traer usuarios de la base de datos
-router.get('/:id',[tokenInHeader, validateJWT], renderUserProfile)
+router.get('/profile',[tokenInHeader, validateJWT], renderUserProfile)
 router.get('/', [
     validateJWT,
     isAdminRole,
