@@ -27,12 +27,12 @@ router.post('/create', [
 router.get('/profile/update/:id', updateUserFormRender)
 router.put('/:id', [
 
-    // validateJWT,
-    // isAdminRole,
-    // check('id', 'No es un id válido!').isMongoId(),
-    // check('id').custom( findUserId ),
-    // check('role').custom( isRole ),
-    // validateFields
+    validateJWT,
+    isAdminRole,
+    check('id', 'No es un id válido!').isMongoId(),
+    check('id').custom( findUserId ),
+    check('role').custom( isRole ),
+    validateFields
 
 ], updateUser);
 

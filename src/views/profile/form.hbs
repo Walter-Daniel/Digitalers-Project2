@@ -1,11 +1,16 @@
 <div class="container">
-<form action="/user/{{data._id}}?_method=PUT" method="POST" class="fade-in mb-5 mt-5">
+<form action="/images/{{user._id}}?_method=PUT" method="POST" class="fade-in mb-5 mt-5" enctype="multipart/form-data">
+  <input type="hidden" name="_method" value="PUT">
   <fieldset>
     <legend>Foto de perfil</legend>
     <div class="row">
       <div class="mb-3 col-6">
-      <label for="formFile" class="form-label">Subir imagen</label>
-      <input class="form-control" type="file" id="formFile">
+      <label for="image" class="form-label">Subir imagen</label>
+      <input type="file"
+                    class="form-control"
+                    name="image"
+                    accept="image/*"
+                    required>
     </div>
     {{#if user.image}}
       <img src={{user.image}} alt="avatar" class="rounded-circle img-profile">
@@ -22,7 +27,7 @@
           <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Subir Imagen</button>
         </div>
         <div class="col-4">
-          <a href="/doctor" class="btn btn-danger mt-3 mb-1 w-100">Borrar Imagen</a>
+          <a href="#" class="btn btn-danger mt-3 mb-1 w-100">Borrar Imagen</a>
         </div>
   </div>
 </form>

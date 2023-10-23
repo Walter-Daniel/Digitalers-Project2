@@ -43,13 +43,24 @@ const UserSchema = new mongoose.Schema({
         type: String
     },
     adress:{
-        type: String
+        type: String,
+        minlength: 4, 
+        maxlength: 25 
+    },
+    locality:{
+        type: String,
+        minlength: 4, 
+        maxlength: 25 
     },
     phoneNumber:{
-        type: String
+        type: String,
+        minlength: 4, 
+        maxlength: 25 
     },
     cellphone:{
-        type: String
+        type: String,
+        minlength: 4, 
+        maxlength: 25 
     }
 });
 UserSchema.methods.toJSON = function(){

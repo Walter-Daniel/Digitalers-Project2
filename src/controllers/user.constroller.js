@@ -52,7 +52,6 @@ export const renderUserProfile = async(req=request, res=response) => {
     }
 }
 export const getUsers = async(req, res) => {
-
    try {
         const { limit = 10, from } = req.query;
         const query = { active: true }
@@ -79,7 +78,6 @@ export const getUsers = async(req, res) => {
                 total
 
         })
-
    } catch (error) {
         return res.status(500).send({
             ok: false,
