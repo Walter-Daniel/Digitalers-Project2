@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import {config} from 'dotenv';
 import User from '../model/user.schema.js';
 import { request, response } from 'express';
+import jwt from 'jsonwebtoken';
 import { v2 as cloudinary } from 'cloudinary';
 cloudinary.config( process.env.CLOUDINARY_URL )
 config();
@@ -37,19 +38,31 @@ export const createUser = async(req, res=response) => {
 
 export const renderUserProfile = async(req=request, res=response) => {
 
-    const { id } = req.user;
-    const user = await User.findById(id).lean();
+    const token = req.cookies.token;
 
-    if(user.role === 'ADMIN_ROLE'){
-        res.render('profile/admin', {
-            pageName: 'Administración',
-        })
-    }else if(user.role === 'USER_ROLE'){
-        res.render('profile/user', {
-            pageName: 'Perfil del Usuario',
-            user
-        })
+    if (!token) {
+        return res.status(401).send('Acceso no autorizado');
     }
+
+    jwt.verify(token, process.env.SECRETSEED, async(err, decoded) => {
+        if (err) {
+          return res.status(401).send(err);
+        }
+    
+        const id = decoded.id;
+        const user = await User.findById(id).lean();
+       if(user.role === 'ADMIN_ROLE'){
+            res.render('profile/admin', {
+                pageName: 'Administración',
+            })
+        }else if(user.role === 'USER_ROLE'){
+            res.render('profile/user', {
+                pageName: 'Perfil del Usuario',
+                user
+            })
+        }
+    });
+
 }
 export const getUsers = async(req, res) => {
    try {
@@ -92,7 +105,6 @@ export const getUsers = async(req, res) => {
 export const updateUserFormRender = async(req, res) => {
     const { id } = req.params;
     const user = await User.findById(id).lean();
-
     res.render('profile/form', {
         pageName: 'Editar Perfil del Usuario',
         navbar: true,
@@ -115,6 +127,18 @@ try {
         return res.status(400).send('Only JPG files are allowed.');
     }
 
+    // const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+
+    // if (!passwordMatch) {
+    //     return res.status(401).send('Current password is incorrect');
+    // }
+
+    // const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    res.send('Password changed successfully');
 
     const user = await User.findByIdAndUpdate( id, secure_url, rest);
 

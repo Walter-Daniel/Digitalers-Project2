@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.post('/create', [
 
+    tokenInHeader,
     validateJWT,
     isAdminRole,
     check('firstname', 'El nombre es obligatorio').notEmpty(),
@@ -24,11 +25,17 @@ router.post('/create', [
 
 
 //FORMULARIO UPDATE USER
-router.get('/profile/update/:id', updateUserFormRender)
-router.put('/:id', [
-
+router.get('/profile/update/:id', [
+    tokenInHeader,
     validateJWT,
-    isAdminRole,
+    check('id', 'No es un id válido!').isMongoId(),
+    check('id').custom( findUserId ),
+    validateFields
+],updateUserFormRender)
+router.put('/:id', [
+    tokenInHeader,
+    validateJWT,
+    // isAdminRole,
     check('id', 'No es un id válido!').isMongoId(),
     check('id').custom( findUserId ),
     check('role').custom( isRole ),
@@ -37,8 +44,15 @@ router.put('/:id', [
 ], updateUser);
 
 //Traer usuarios de la base de datos
-router.get('/profile',[tokenInHeader, validateJWT], renderUserProfile)
+router.get('/profile',[
+    tokenInHeader,
+    validateJWT,
+    // // check('id', 'No es un id válido!').isMongoId(),
+    // // check('id').custom( findUserId ),
+
+], renderUserProfile)
 router.get('/', [
+    tokenInHeader,
     validateJWT,
     isAdminRole,
     check('from').custom( fromControl ),
@@ -47,7 +61,7 @@ router.get('/', [
 ], getUsers);
 
 router.delete('/:id',[
-
+    tokenInHeader,
     validateJWT,
     isAdminRole,
     // hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),

@@ -1,4 +1,4 @@
-import { request } from 'express';
+import { request, response } from 'express';
 import Image from '../model/image.schema.js'
 import { v2 as cloudinary } from 'cloudinary'
 import User from '../model/user.schema.js';
@@ -45,31 +45,48 @@ export const getImages = async( req, res ) => {
     }
 }
 
-export const uploadImagesCloudinary = async(req=request, res ) => {
+export const uploadImagesCloudinary = async(req=request, res=response ) => {
 
     try {
-        const {id} = req.params;
-
         
-        if(!req.files.image){
+        const {id} = req.params;
+        const { image } = req.files
 
+        const allowedExtensions = ['.jpg', '.jpeg'];
+        const fileExtension = image.name.substring(image.name.lastIndexOf('.')).toLowerCase();
+
+        if (!allowedExtensions.includes(fileExtension)) {
+            req.flash('alert-danger','Extensión no válida, intenta con ".png, .jpg, jpeg"');
+            res.redirect(`/user/profile/update/${id}`)
         }
-        const { mimetype, tempFilePath } = req.files.image;
-        if (mimetype !== 'image/jpeg') {
-            return res.status(400).send('Only JPG files are allowed.');
-        }
-        const { secure_url } =  await cloudinary.uploader.upload(tempFilePath);
-        const user = await User.findById( id );
-        user.image = secure_url;
-        await user.save();
-        if(user.role === 'USER_ROLE'){
-            return res.render(`profile/user/update/${id}`, {
-                pageName: 'Editar peril',
-                user
-            })
-        }
+
+
+        // const { tempFilePath } = image;
+
+        // const user = await User.findById( id );
+
+       
+        // if (mimetype !== 'image/jpeg') {
+        //     req.flash('alert-error', 'Su cuenta ha sido creada con éxito')
+        //     res.redirect(`/user/profile/update/${id}`)
+        // }
+
+        // //Limpiar imagenes previas
+        // if(user.image){
+        //     const nameArr = user.image.split('/');
+        //     const name = nameArr[nameArr.length -1];
+        //     const [public_id] = name.split('.');
+        //     cloudinary.uploader.destroy(public_id);
+        // }
+
+        // const { secure_url } =  await cloudinary.uploader.upload(tempFilePath);
+        // user.image = secure_url;
+        // await user.save();
+        // if(user.role === 'USER_ROLE'){
+        //     return res.redirect(`/user/profile/update/${id}`)
+        // }
     } catch (error) {
-        console.log(error)
+        res.json(error)
         
     }
 };
