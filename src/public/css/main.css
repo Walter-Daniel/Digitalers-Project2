@@ -201,3 +201,23 @@ aside br {
     width: 200px;
     object-fit: cover;
 }
+
+fieldset {
+    position: relative;
+    margin-top: 1rem;
+    background-color: #f6f6f6;
+}
+legend {
+    position: absolute;
+    top:-23px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-weight: bold;
+	padding: 3px 5px 3px 7px;
+	width: auto;
+}
+.image-update {
+    display: flex;
+    justify-content: center;
+}
