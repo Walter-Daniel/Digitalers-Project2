@@ -58,6 +58,7 @@ export const renderUserProfile = async(req=request, res=response) => {
         }else if(user.role === 'USER_ROLE'){
             res.render('profile/user', {
                 pageName: 'Perfil del Usuario',
+                navbar: true,
                 user
             })
         }
