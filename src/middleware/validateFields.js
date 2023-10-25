@@ -9,9 +9,9 @@ export const validateFields = (req=request, res, next) => {
     if(!errors.isEmpty()){
         req.flash('alert-danger', errors.array().map(e => e.msg));
         let urlOriginal = req.originalUrl;
-        
+        console.log(urlOriginal)
         const url = urlOriginal.slice(1)
-        console.log(url)
+        const urlPrev = req.session.prevUrl
         let pageName = '';
         if(url.includes('register')){
             pageName = 'Registro'
@@ -20,8 +20,11 @@ export const validateFields = (req=request, res, next) => {
             pageName = 'Iniciar Sesión'
         }
         if(url.includes('images') ){
-            res.redirect(`/user/profile/update/${id}`)
-         }
+           return res.redirect(urlPrev)
+        }
+        if(url.includes('user') ){
+           return res.redirect(urlPrev)
+        }
         res.render(url, {
             pageName,
             data: req.body

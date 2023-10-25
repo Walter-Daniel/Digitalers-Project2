@@ -105,6 +105,10 @@ export const getUsers = async(req, res) => {
 export const updateUserFormRender = async(req, res) => {
     const { id } = req.params;
     const user = await User.findById(id).lean();
+
+    //Eliminar las paginas previas anteriores y guardar la actual
+    delete req.session.prevUrl;
+    req.session.prevUrl = req.originalUrl;
     res.render('profile/form', {
         pageName: 'Editar Perfil del Usuario',
         navbar: true,
@@ -115,16 +119,12 @@ export const updateUserFormRender = async(req, res) => {
 export const updateUser = async(req=request, res) => {
 
 try {
-    const {_id, password, email, ...rest }= req.body;
+    const {_id, password, email,...rest }= req.body;
     const { id } = req.params;
 
     if( password ){
         const salt = bcrypt.genSaltSync();
         rest.password = bcrypt.hashSync(password, salt);
-    }
-
-    if (uploadedFile.mimetype !== 'image/jpeg') {
-        return res.status(400).send('Only JPG files are allowed.');
     }
 
     // const passwordMatch = await bcrypt.compare(currentPassword, user.password);
@@ -135,13 +135,14 @@ try {
 
     // const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    user.password = hashedPassword;
-    await user.save();
+    // user.password = hashedPassword;
 
-    res.send('Password changed successfully');
+    // user.cellphone = cellphone;
+    // await user.save();
 
-    const user = await User.findByIdAndUpdate( id, secure_url, rest);
-
+    const user = await User.findByIdAndUpdate( id, rest);
+    req.flash('alert-success', 'El usuario se ha editado con éxito!');
+    return res.redirect(`/user/profile/update/${id}`)
     return res.status(200).json({
         ok: true,
         message: 'Usuario actualizado con éxito',
@@ -150,8 +151,8 @@ try {
 } catch (error) {
     return res.status(500).send({
         ok: false,
-        // message: 'Error al intentar actualizar el usuario',
-        error: error
+        message: 'Error al intentar actualizar el usuario',
+        error: error.message
     });
 }
 };

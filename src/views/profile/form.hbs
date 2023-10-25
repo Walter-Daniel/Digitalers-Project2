@@ -55,7 +55,7 @@
     </div>
   </form>
   <form
-    action="/user/{{data._id}}?_method=PUT"
+    action="/user/{{user._id}}?_method=PUT"
     method="POST"
     class="fade-in needs-validation"
     novalidate
@@ -120,11 +120,11 @@
               name="phoneNumber"
               id="phoneNumber"
               value="{{user.phoneNumber}}"
-              required
+              {{!-- required --}}
             />
-            <div class="invalid-feedback">
+            {{!-- <div class="invalid-feedback">
               Debes ingresar un número de teléfono
-            </div>
+            </div> --}}
           </div>
           <div class="form-group col-6">
             <label for="cellphone" class="form-label mt-3">Celular:</label>
@@ -150,11 +150,11 @@
               name="adress"
               id="adress"
               value="{{user.adress}}"
-              required
+              {{!-- required --}}
             />
-            <div class="invalid-feedback">
+            {{!-- <div class="invalid-feedback">
               Debes ingresar tu dirección
-            </div>
+            </div> --}}
           </div>
           <div class="col-6">
             <label for="locality" class="form-label mt-3">Localidad:</label>
@@ -164,11 +164,11 @@
               name="locality"
               id="locality"
               value="{{user.locality}}"
-              required
+              {{!-- required --}}
             />
-            <div class="invalid-feedback">
+            {{!-- <div class="invalid-feedback">
               Debes ingresar una localidad
-            </div>
+            </div> --}}
           </div>
         </div>
       </fieldset>
@@ -185,11 +185,11 @@
               name="password"
               id="password"
               autocomplete="off"
-              required
+              {{!-- required --}}
             />
-            <div class="invalid-feedback">
+            {{!-- <div class="invalid-feedback">
               Debes ingresar la contraseña actual
-            </div>
+            </div> --}}
           </div>
           <div class="form-group col-6">
             <label for="newPassword" class="form-label mt-3">Nueva contraseña:</label>
@@ -199,11 +199,11 @@
               name="newPassword"
               id="newPassword"
               autocomplete="off"
-              required
+              {{!-- required --}}
             />
-            <div class="invalid-feedback">
+            {{!-- <div class="invalid-feedback">
               Ingresa tu nueva contraseña
-            </div>
+            </div> --}}
           </div>
           <div class="form-group col-6">
             <label for="newPassword2" class="form-label mt-3">Confirmar
@@ -214,11 +214,11 @@
               name="newPassword2"
               id="newPassword2"
               autocomplete="off"
-              required
+              {{!-- required --}}
             />
-            <div class="invalid-feedback">
+            {{!-- <div class="invalid-feedback">
               Las contraseñas no coinciden
-            </div>
+            </div> --}}
           </div>
         </div>
       </fieldset>

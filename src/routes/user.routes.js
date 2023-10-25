@@ -24,7 +24,7 @@ router.post('/create', [
 ], createUser);
 
 
-//FORMULARIO UPDATE USER
+// UPDATE USER
 router.get('/profile/update/:id', [
     tokenInHeader,
     validateJWT,
@@ -40,16 +40,12 @@ router.put('/:id', [
     check('id').custom( findUserId ),
     check('role').custom( isRole ),
     validateFields
-
 ], updateUser);
 
 //Traer usuarios de la base de datos
 router.get('/profile',[
     tokenInHeader,
-    validateJWT,
-    // // check('id', 'No es un id válido!').isMongoId(),
-    // // check('id').custom( findUserId ),
-
+    validateJWT
 ], renderUserProfile)
 router.get('/', [
     tokenInHeader,
