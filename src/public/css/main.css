@@ -176,6 +176,14 @@ aside {
     justify-content: space-between;
 } */
 
+.navbar-custom li {
+    min-width: 8rem;
+}
+.navbar-custom li a{
+    text-align: center;
+    width: 100%;
+}
+
 .sidebar li .icon {
     display: flex;
     justify-content: center;

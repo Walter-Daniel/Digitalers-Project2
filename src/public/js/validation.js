@@ -55,3 +55,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+//
+
+Handlebars.registerHelper('isEqual', (a, b, opts) => {
+  return a == b ? opts.fn(this) : opts.inverse(this);
+});
