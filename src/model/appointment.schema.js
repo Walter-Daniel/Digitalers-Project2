@@ -4,22 +4,31 @@ import { Schema } from 'mongoose';
 //el usuario podra pedir la reprogramacion o eliminacion de la cita.
 
 const appointmentSchema = new Schema({
-    //Se tiene que asociar al usario y al doctor
     date: { 
         type: date, 
+        required: true, 
+    },
+    reason: { 
+        type: String, 
         required: true, 
     },
     doctor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Doctor',
+        required: true,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Doctor',
+        ref: 'User',
+        required: true
     },
     active: {
         type: Boolean,
         default: true
+    },
+    createBy: {
+        type: String,
+        required: true
     }
 });
 

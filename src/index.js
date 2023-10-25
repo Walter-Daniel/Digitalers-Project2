@@ -15,6 +15,7 @@ import authRoute from './routes/auth.routes.js';
 import doctorRoute from './routes/doctor.routes.js';
 import indexRoute from './routes/index.routes.js';
 import imagesRoute from './routes/images.routes.js';
+import appointmentRoute from './routes/appointment.routes.js';
 
 import { showAlerts } from './helpers/alerts.js'
 import { dbConnection } from './config/dbConnection.js';
@@ -87,10 +88,11 @@ app.use(fileUpload({
 
 //Routing
 app.use('/', indexRoute);
+app.use('/appointment', appointmentRoute);
 app.use('/auth', authRoute);
-app.use('/user', userRoute);
 app.use('/doctor', doctorRoute);
 app.use('/images', imagesRoute);
+app.use('/user', userRoute);
 
 //Static files
 app.use(express.static(join(__dirname , 'public')));
