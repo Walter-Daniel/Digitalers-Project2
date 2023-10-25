@@ -55,10 +55,14 @@ export const uploadImagesCloudinary = async(req=request, res=response ) => {
         const allowedExtensions = ['.jpg', '.jpeg'];
         const fileExtension = image.name.substring(image.name.lastIndexOf('.')).toLowerCase();
 
-        if (!allowedExtensions.includes(fileExtension)) {
-            req.flash('alert-danger','Extensión no válida, intenta con ".png, .jpg, jpeg"');
-            res.redirect(`/user/profile/update/${id}`)
-        }
+        // if (!allowedExtensions.includes(fileExtension)) {
+        //     req.flash('alert-danger','Extensión no válida, intenta con ".png, .jpg, jpeg"');
+        //     res.redirect(`/user/profile/update/${id}`)
+        // }
+
+        res.json({
+            msg:'No llego la cosita'
+        })
 
 
         // const { tempFilePath } = image;
