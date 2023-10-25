@@ -52,74 +52,26 @@ export const uploadImagesCloudinary = async(req=request, res=response ) => {
         const {id} = req.params;
         const { image } = req.files
 
-        const allowedExtensions = ['.jpg', '.jpeg'];
-        const fileExtension = image.name.substring(image.name.lastIndexOf('.')).toLowerCase();
+        const { tempFilePath } = image;
+        const user = await User.findById( id );
 
-        // if (!allowedExtensions.includes(fileExtension)) {
-        //     req.flash('alert-danger','Extensión no válida, intenta con ".png, .jpg, jpeg"');
-        //     res.redirect(`/user/profile/update/${id}`)
-        // }
+        //Limpiar imagenes previas
+        if(user.image){
+            const nameArr = user.image.split('/');
+            const name = nameArr[nameArr.length -1];
+            const [public_id] = name.split('.');
+            cloudinary.uploader.destroy(public_id);
+        }
 
-        res.json({
-            msg:'No llego la cosita'
-        })
-
-
-        // const { tempFilePath } = image;
-
-        // const user = await User.findById( id );
-
-       
-        // if (mimetype !== 'image/jpeg') {
-        //     req.flash('alert-error', 'Su cuenta ha sido creada con éxito')
-        //     res.redirect(`/user/profile/update/${id}`)
-        // }
-
-        // //Limpiar imagenes previas
-        // if(user.image){
-        //     const nameArr = user.image.split('/');
-        //     const name = nameArr[nameArr.length -1];
-        //     const [public_id] = name.split('.');
-        //     cloudinary.uploader.destroy(public_id);
-        // }
-
-        // const { secure_url } =  await cloudinary.uploader.upload(tempFilePath);
-        // user.image = secure_url;
-        // await user.save();
-        // if(user.role === 'USER_ROLE'){
-        //     return res.redirect(`/user/profile/update/${id}`)
-        // }
+        const { secure_url } =  await cloudinary.uploader.upload(tempFilePath);
+        user.image = secure_url;
+        await user.save();
+        req.flash('alert-success', 'La imagen se subió con éxito')
+        if(user.role === 'USER_ROLE'){
+            return res.redirect(`/user/profile/update/${id}`)
+        }
     } catch (error) {
-        res.json(error)
-        
+        req.flash('alert-warning', 'La imagen se subió con éxito')
+        res.redirect(`/user/profile/update/${id}`)
     }
-};
-
-const deleteImagesCloudinary = async(req, res ) => {
-
-    const imageId = req.params.id;
-    try {
-        const imageToDelete = await Image.findById( imageId );
-        if ( !imageToDelete ) {
-            return res.status(404).json({
-                ok: false,
-                msg: 'No se encontró una imagen con ese id'
-            })
-        };
-
-        await cloudinary.uploader.destroy( imageToDelete.title );
-        await Image.findByIdAndDelete( imageToDelete );
-
-        res.json({
-            ok: true,
-            msg: 'Imagen borrada',
-        });
-
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            ok: false,
-            msg: 'Hable con el administrador'
-        });    
-    }; 
 };

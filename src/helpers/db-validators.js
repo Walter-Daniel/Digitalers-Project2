@@ -4,7 +4,8 @@ import Category from '../model/category.schema.js';
 import Doctor from '../model/doctor.schema.js';
 import { response } from 'express';
 
-export const isRole = async(role = '')  => {
+export const isRole = async(role = '', {req})  => {
+    role = req.user.role
     const existRol = await Role.findOne({ role });
     if(!existRol){
         throw new Error('El rol no está registrado en la base de datos');
