@@ -3,8 +3,6 @@ import Doctor from '../model/doctor.schema.js';
 import User from '../model/user.schema.js';
 import jwt from 'jsonwebtoken';
 
-
-
 export const home = async(req, res=response) => {
 
     let user;
