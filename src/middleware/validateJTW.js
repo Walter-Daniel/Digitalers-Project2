@@ -8,22 +8,8 @@ export const validateJWT = async(req, res, next) => {
 
     if(!token){
         req.flash('alert-danger', 'Token expirado');
-        return res.render('auth/login', {
-            pageName: 'Iniciar Sesión',
-            message: req.flash('')
-        })
+        return res.redirect('/auth/login')
     }
-
-    // if(!token){
-
-    //     return res.redirection('auth/login')
-
-    //     return res.status(401).json({
-    //         ok: false,
-    //         msg: 'No hay token en la petición'
-    //     });
-
-    // }
 
     try {
 
@@ -31,31 +17,21 @@ export const validateJWT = async(req, res, next) => {
         const user = await User.findById( id );
 
         if(!user){
-            return res.status(401).json({
-                ok: false,
-                msg: 'Usuario no existe en base de datos',
-                error
-            })
+            req.flash('alert-danger', 'Usuario no existe en base de datos');
+            return res.redirect('/auth/login');
         }
 
         //Verificar si active:true
         if(!user.active){
-            return res.status(401).json({
-                ok: false,
-                msg: 'Token no válido',
-                error
-            })
+            req.flash('alert-danger', 'Token no válido');
+            return res.redirect('/auth/login');
         }
-
+        
         req.user = user;
         next();
 
     } catch (error) {
-
-        return res.status(401).json({
-            ok: false,
-            msg: 'Token no válido',
-            error
-        })
+        req.flash('alter-danger', `${error.message}`)
+        return res.redirect('/auth/login')
     }
 }

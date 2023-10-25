@@ -1,12 +1,11 @@
 <div class="container">
   <form
-    action="/images/{{user._id}}?_method=PUT"
+    action="/images/{{user._id}}"
     method="POST"
     class="fade-in mb-5 mt-5 needs-validation"
     novalidate
     enctype="multipart/form-data"
   >
-    <input type="hidden" name="_method" value="PUT" />
     <div class="row">
       <div class="col-6">
         <fieldset>
@@ -21,6 +20,9 @@
               id="image"
               required
             />
+            <div id="passwordHelpBlock" class="form-text">
+              Las extensiónes validas son: jpg jpeg y png.
+            </div>
             <div class="invalid-feedback">
               Selecciona una imagen.
             </div>
