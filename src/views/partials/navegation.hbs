@@ -8,20 +8,29 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
-      <ul class="navbar-nav ml-auto">
+      <ul class="navbar-nav navbar-custom"> 
         <li class="nav-item">
           <a class="nav-link active" href="/">Home
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Register</a>
-        </li>
-        <li class="nav-item">
-        </li>
+        {{#isEqual user.role 'USER_ROLE'}}
+          <li class="nav-item">
+            <a class="nav-link" href="/user/profile">Mi perfil</a>
+          </li>
+          <li class="nav-item ">
+              <a class="nav-link " href="#" >Cerrar Sesión</a>
+            </li>
+          {{else}}
+            <li class="nav-item">
+              <a class="nav-link" href="#">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Register</a>
+            </li>
+        {{/isEqual}}
+        
+       
       </ul>
     </div>
   </div>

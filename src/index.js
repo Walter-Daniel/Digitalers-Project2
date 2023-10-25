@@ -53,6 +53,12 @@ const hbs = exphbs.create({
   app.engine('.hbs', hbs.engine);
   app.set('view engine', '.hbs');
 
+
+//Create helper handlebars
+hbs.handlebars.registerHelper('isEqual', (a, b, opts) => {
+    return a == b ? opts.fn(this) : opts.inverse(this);
+});
+  
 // Configura express-session
 app.use(session({
   secret: process.env.SESSION_SECRET,

@@ -41,7 +41,8 @@ export const renderUserProfile = async(req=request, res=response) => {
     const token = req.cookies.token;
 
     if (!token) {
-        return res.status(401).send('Acceso no autorizado');
+        req.flash('alert-warning', 'Acceso no autorizado')
+        return res.redirect('/auth/login')
     }
 
     jwt.verify(token, process.env.SECRETSEED, async(err, decoded) => {
