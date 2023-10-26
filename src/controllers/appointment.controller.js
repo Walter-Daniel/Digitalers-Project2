@@ -23,47 +23,87 @@ export const createAppointment = async(req, res) => {
     } catch (error) {
         console.log(error.message)
     }
-    // async function run() {
-    //     try {
-    //         const database = client.db("db_doctors");
-    //         const appointment = database.collection("appointment");
-            
-    //         const doc = {
-    //            clientID,
-    //            doctorID,
-    //            price,
-    //            date,
-    //            state
-    //         };
-
-    //         const filter = { clientID };
-    //         const resp = await appointment.findOne(filter);
-    //         if( resp.state === 'true' && idDoctor === resp.idDoctor ) {
-    //             return res.status(400).json({
-    //                 ok: false,
-    //                 msg: 'Usted ya tiene registrada una cita. Sí esto es un error, comuniquese con el administrador.'
-    //             });
-    //         }
-    //         const result = await appointment.insertOne(doc);
-    //         res.status(201).json({
-    //             ok: true,
-    //             msg: 'Usuario creado con éxito',
-    //             result
-    //         });
-    //         await client.close();
-
-    //     }catch(err) {
-    //         res.status(500).json({
-    //             ok: false,
-    //             msg: 'Error al crear un nuevo usuario',
-    //             err
-    //         });
-    //     }
-    // }
-    // run();
 };
 
-//SI EL ROL ES ADMIN => REDIRECCIONAR A LA PAG DE ADMINISTARCIÓN
-//SI EL ROL ES DOCTOR => REDIRECCIONAR A LA PAGINA DE CITAS Y CONSULTAS
-//SI EL ROL ES USER => REDIRECCIONAR AL INICIO + BOX DE BIENVENIDA
+export const getAppointment = async(req, res) => {
 
+    const query = { active: true };
+    const query2 = { active: false }
+
+    try {
+        const [ appointments, activos, inactivos ] = await Promise.all([
+            Appointment.find(query).populate('doctor', '_id firstname lastname')
+                            .populate('client', '_id firstname lastname')
+                            .collation({ locale: 'es' })
+                            .sort({ createdAt: -1 }),
+            Appointment.find(query).countDocuments(),
+            Appointment.find(query2).countDocuments(),
+
+        ]);
+
+        if(appointments.length === 0){
+            return res.status(404).send({
+                ok: true,
+                message: 'No se encontró ninguna cita'
+            })
+        }
+
+        return res.status(200).send({
+            ok: true,
+            message: 'Citas obtenidas correctamente',
+            appointments,
+            activos,
+            inactivos
+        })
+
+    } catch (error) {
+        if(error) {
+            return res.status(500).send({
+                ok: false,
+                message: 'Error al obtener usuario',
+                error
+            })
+        }
+    }
+
+};
+
+export const updateAppointment = async(req, res) => {
+
+   try {
+    const infoUpdate = req.body;
+    const { id } = req.params;
+
+    const appointment = await Appointment.findByIdAndUpdate( id, infoUpdate);
+    // req.flash('alert-success', 'El usuario se ha editado con éxito!');
+    // return res.redirect(`/user/profile/update/${id}`)
+    return res.status(200).json({
+        ok: true,
+        message: 'Usuario actualizado con éxito',
+        appointment
+    });
+   } catch (error) {
+        console.log(error.message)
+   }
+};
+
+export const deleteAppointment = async(req, res) => {
+    try {
+
+        const appointmentID = req.params.id;
+        const appointment = await Appointment.findByIdAndUpdate( appointmentID, { active: false });
+
+        return res.status(200).send({
+            ok: true,
+            message: 'Usuario eliminado con éxito',
+            appointment,
+        });
+
+    } catch (error) {
+        return res.status(500).send({
+            ok: false,
+            message: 'Error al intentar eliminar el usuario',
+            error
+        });
+    }
+};

@@ -4,7 +4,7 @@ import { check } from 'express-validator';
 import { emailExist, isRole, findUserId, fromControl } from '../helpers/db-validators.js';
 import { validateFields, isAdminRole, validateJWT } from '../middleware/index.js';
 import { tokenInHeader } from '../middleware/jwtHeader.js';
-import { createAppointment } from '../controllers/appointment.controller.js';
+import { createAppointment, deleteAppointment, getAppointment, updateAppointment } from '../controllers/appointment.controller.js';
 
 const router = express.Router();
 
@@ -32,21 +32,21 @@ router.post('/create', [
 //     check('id').custom( findUserId ),
 //     validateFields
 // ],updateUserFormRender)
-// router.put('/:id', [
-//     tokenInHeader,
-//     validateJWT,
-//     // isAdminRole,
-//     check('id', 'No es un id válido!').isMongoId(),
-//     check('id').custom( findUserId ),
-//     check('role').custom( isRole ),
-//     validateFields
-// ], updateUser);
 
-// //Traer usuarios de la base de datos
-// router.get('/profile',[
-//     tokenInHeader,
-//     validateJWT
-// ], renderUserProfile)
+router.put('/:id', 
+// [
+//     // tokenInHeader,
+//     // validateJWT,
+//     // // isAdminRole,
+//     // check('id', 'No es un id válido!').isMongoId(),
+//     // check('id').custom( findUserId ),
+//     // check('role').custom( isRole ),
+//     // validateFields
+// ]
+ updateAppointment);
+
+//Traer citas de la base de datos
+router.get('/', getAppointment)
 // router.get('/', [
 //     tokenInHeader,
 //     validateJWT,
@@ -56,19 +56,15 @@ router.post('/create', [
     
 // ], getUsers);
 
-// router.delete('/:id',[
-//     tokenInHeader,
-//     validateJWT,
-//     isAdminRole,
-//     // hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
-//     check('id', 'No es un id válido!').isMongoId(),
-//     check('id').custom( findUserId ),
-//     validateFields
+router.delete('/:id',[
+    // tokenInHeader,
+    // validateJWT,
+    // isAdminRole,
+    // // hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
+    // check('id', 'No es un id válido!').isMongoId(),
+    // check('id').custom( findUserId ),
+    // validateFields
 
-// ], deleteUser);
-
-//panel de administracion
-
-
+], deleteAppointment);
 
 export default router;
