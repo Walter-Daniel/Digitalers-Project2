@@ -1,19 +1,6 @@
 
 import mongoose, { Schema, model } from 'mongoose';
 
-let fecha = new Date();
-console.log("Fecha en tu tiempo local: ",fecha.toLocaleString());
-console.log("Milisegundos desde el unix epoch: ", fecha.getTime());
-
-// La guardamos en una "base de datos" (Un objeto en memoria)
-let baseDeDatos = {
-  fechaGuardada: fecha
-};
-
-// Luego la recuperamos para su uso
-let fechaGuardadaMilis = baseDeDatos.fechaGuardada;
-let fechaObjeto = new Date(fechaGuardadaMilis);
-
 //Las primera cita medica la puede crear el usuario, las demas las crea, reprograma y elimina el medico.
 //el usuario podra pedir la reprogramacion o eliminacion de la cita.
 
@@ -52,6 +39,11 @@ const AppointmentSchema = new Schema({
         enum: status,
         default: status[0],
     },
+    active: {
+        type: Boolean,
+        default: true,
+        required: true
+    }
 }, { timestamps: { currentTime: () => new Date().toLocaleString("en-US", { timeZone: "America/Argentina/Buenos_Aires" }) } });
 
 const AppointmentModel = model('Appointment', AppointmentSchema);
