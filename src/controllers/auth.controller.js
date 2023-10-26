@@ -50,11 +50,13 @@ export const login = async(req=request, res) => {
         const token = await createJWT(user._id)
         res.cookie('token', token, { httpOnly: true });
 
-        if(user.role === 'USER_ROLE'){
-            res.redirect(`/user/profile`);
-        }else if(user.role === 'ADMIN_ROLE'){
-            res.redirect(`/admin`);
-        }
+        // if(user.role === 'USER_ROLE'){
+        //     res.redirect(`/user/profile`);
+        // }else if(user.role === 'ADMIN_ROLE'){
+        //     res.redirect(`/admin`);
+        // }
+
+        res.json(token)
         
     } catch (error) {
         console.log('estou en error')

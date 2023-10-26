@@ -1,35 +1,59 @@
-import { Schema } from 'mongoose';
+
+import mongoose, { Schema, model } from 'mongoose';
+
+let fecha = new Date();
+console.log("Fecha en tu tiempo local: ",fecha.toLocaleString());
+console.log("Milisegundos desde el unix epoch: ", fecha.getTime());
+
+// La guardamos en una "base de datos" (Un objeto en memoria)
+let baseDeDatos = {
+  fechaGuardada: fecha
+};
+
+// Luego la recuperamos para su uso
+let fechaGuardadaMilis = baseDeDatos.fechaGuardada;
+let fechaObjeto = new Date(fechaGuardadaMilis);
 
 //Las primera cita medica la puede crear el usuario, las demas las crea, reprograma y elimina el medico.
 //el usuario podra pedir la reprogramacion o eliminacion de la cita.
 
-const appointmentSchema = new Schema({
-    date: { 
-        type: date, 
-        required: true, 
+const status = [
+    'Pending',
+    'Placed',
+    'Cancelled',
+];
+
+
+const AppointmentSchema = new Schema({
+    category: {
+        type: String,
+        required: true
     },
     reason: { 
         type: String, 
-        required: true, 
+        default: "",
     },
     doctor: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Doctor',
         required: true,
     },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
+    client: {
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-    active: {
-        type: Boolean,
-        default: true
-    },
-    createBy: {
-        type: String,
+    price: {
+        type: Number,
         required: true
-    }
-});
+    },
+    status: {
+        type: String,
+        enum: status,
+        default: status[0],
+    },
+}, { timestamps: { currentTime: () => new Date().toLocaleString("en-US", { timeZone: "America/Argentina/Buenos_Aires" }) } });
 
-export const appointmentModel = mongoose.model('Appointment', appointmentSchema);
+const AppointmentModel = model('Appointment', AppointmentSchema);
+
+export default AppointmentModel;

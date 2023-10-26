@@ -23,6 +23,9 @@ import { dbConnection } from './config/dbConnection.js';
 dotenv.config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+process.env.TZ = 'America/Argentina/Buenos_Aires';
+
+
 //Crear servidor
 const app = express();
 const port = process.env.PORT || 8080;

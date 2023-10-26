@@ -28,6 +28,10 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    cellphone: {
+        type: String,
+        required: true
+    },
     consultationPrice: {
         type: Number,
         required: true
@@ -45,8 +49,11 @@ const DoctorSchema = new mongoose.Schema({
         required: true
     },
     image: {
+        type: String
+    },
+    appointment:{
         type: Schema.Types.ObjectId,
-        ref: 'Image'
+        ref: 'Appointment'
     }
 });
 DoctorSchema.methods.toJSON = function(){
