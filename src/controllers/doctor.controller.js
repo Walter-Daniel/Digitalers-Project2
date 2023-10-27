@@ -9,7 +9,8 @@ config();
 export const renderProfile = async(req, res) => {
     res.render('publicProfile',{
         pageName: 'Registrar un nuevo Doctor',
-        navbar: true
+        navbar: true,
+        user:req.user
     })
 }
 

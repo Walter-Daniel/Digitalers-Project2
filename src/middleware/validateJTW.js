@@ -14,7 +14,7 @@ export const validateJWT = async(req, res, next) => {
     try {
 
         const { id } = jwt.verify( token, process.env.SECRETSEED );
-        const user = await User.findById( id );
+        const user = await User.findById( id ).lean();
 
         if(!user){
             req.flash('alert-danger', 'Usuario no existe en base de datos');
