@@ -8,6 +8,8 @@ export const createAppointment = async(req, res) => {
         const appointment = new Appointment({ client, doctor, price, category, reason });
         await appointment.save();
 
+        console.log(client)
+
         // req.flash('alert-success', 'La cita ha sido creada con éxito');
         const { _doc } = appointment;
         const { createdAt, updatedAt, ...rest} = _doc;
@@ -23,6 +25,48 @@ export const createAppointment = async(req, res) => {
     } catch (error) {
         console.log(error.message)
     }
+};
+//Consultas disponibles =>> las que no tengan un usuario designado y esten pendientes
+export const showConsultation = async(req, res) => {
+
+    const query = { client: undefined, status: 'Pending' };
+
+    try {
+        const [ appointments, activos ] = await Promise.all([
+            Appointment.find(query).populate('doctor', '_id firstname lastname')
+                            .populate('client', '_id firstname lastname')
+                            .collation({ locale: 'es' })
+                            .sort({ createdAt: -1 }),
+            Appointment.find(query).countDocuments(),
+            // Appointment.find(query2).countDocuments(),
+
+        ]);
+
+        if(appointments.length === 0){
+            return res.status(404).send({
+                ok: true,
+                message: 'No se encontró ninguna cita'
+            })
+        }
+
+        return res.status(200).send({
+            ok: true,
+            message: 'Citas obtenidas correctamente',
+            appointments,
+            activos,
+            // inactivos
+        })
+
+    } catch (error) {
+        if(error) {
+            return res.status(500).send({
+                ok: false,
+                message: 'Error al obtener usuario',
+                error
+            })
+        }
+    }
+
 };
 
 export const getAppointment = async(req, res) => {
@@ -71,12 +115,16 @@ export const getAppointment = async(req, res) => {
 export const updateAppointment = async(req, res) => {
 
    try {
-    const infoUpdate = req.body;
+    
+    const { client } = req.body;
     const { id } = req.params;
 
-    const appointment = await Appointment.findByIdAndUpdate( id, infoUpdate);
+    const appointment = await Appointment.findById( id );
     // req.flash('alert-success', 'El usuario se ha editado con éxito!');
     // return res.redirect(`/user/profile/update/${id}`)
+
+    appointment.client = client;
+    appointment.save();
     return res.status(200).json({
         ok: true,
         message: 'Usuario actualizado con éxito',
