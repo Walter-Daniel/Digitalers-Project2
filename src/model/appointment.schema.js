@@ -28,7 +28,7 @@ const AppointmentSchema = new Schema({
     client: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        // required: true
     },
     price: {
         type: Number,
