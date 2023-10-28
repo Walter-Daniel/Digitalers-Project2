@@ -2,6 +2,7 @@ import { request, response } from 'express';
 import Image from '../model/image.schema.js'
 import { v2 as cloudinary } from 'cloudinary'
 import User from '../model/user.schema.js';
+import Doctor from '../model/doctor.schema.js';
 
 
 cloudinary.config({ 
@@ -46,6 +47,8 @@ export const getImages = async( req, res ) => {
 }
 
 export const uploadImagesCloudinary = async(req=request, res=response ) => {
+    const { image } = req.files
+    console.log(image)
 
     try {
         
@@ -54,24 +57,40 @@ export const uploadImagesCloudinary = async(req=request, res=response ) => {
 
         const { tempFilePath } = image;
         const user = await User.findById( id );
-
-        //Limpiar imagenes previas
-        if(user.image){
-            const nameArr = user.image.split('/');
-            const name = nameArr[nameArr.length -1];
-            const [public_id] = name.split('.');
-            cloudinary.uploader.destroy(public_id);
-        }
-
-        const { secure_url } =  await cloudinary.uploader.upload(tempFilePath);
-        user.image = secure_url;
-        await user.save();
-        req.flash('alert-success', 'La imagen se subió con éxito')
-        if(user.role === 'USER_ROLE'){
+        const doctor = await Doctor.findById(id);
+        console.log(user, doctor)
+        if(user){
+            if(user.image){
+                const nameArr = user.image.split('/');
+                const name = nameArr[nameArr.length -1];
+                const [public_id] = name.split('.');
+                cloudinary.uploader.destroy(public_id);
+            }
+    
+            const { secure_url } =  await cloudinary.uploader.upload(tempFilePath);
+            user.image = secure_url;
+            await user.save();
+            req.flash('alert-success', 'La imagen se subió con éxito')
             return res.redirect(`/user/profile/update/${id}`)
+        }else if(doctor){
+            if(doctor.image){
+                const nameArr = doctor.image.split('/');
+                const name = nameArr[nameArr.length -1];
+                const [public_id] = name.split('.');
+                cloudinary.uploader.destroy(public_id);
+            }
+    
+            const { secure_url } =  await cloudinary.uploader.upload(tempFilePath);
+            doctor.image = secure_url;
+            await doctor.save();
+            req.flash('alert-success', 'La imagen se subió con éxito')
+            return res.redirect(`/doctor/${id}`)
+        }else{
+            req.flash('alert-warning', `No se encontro usuario con el id: ${id}`)
+            res.redirect(`/profile`)  
         }
     } catch (error) {
-        req.flash('alert-warning', 'La imagen se subió con éxito')
-        res.redirect(`/user/profile/update/${id}`)
+        req.flash('alert-warning', `${error.message}`)
+        res.redirect(`/profile`)
     }
 };

@@ -29,7 +29,6 @@ export const validateJWT = async(req, res, next) => {
                 req.flash('alert-danger', 'Token no válido');
                 return res.redirect('/auth/login');
             }
-            console.log(doctor)
             req.user = doctor;
          }else{
             req.flash('alert-danger', 'Usuario no existe en base de datos');

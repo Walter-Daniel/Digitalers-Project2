@@ -1,4 +1,59 @@
 <div class="container">
+  <form
+    action="/images/{{data._id}}"
+    method="POST"
+    class="fade-in mb-5 mt-5 needs-validation"
+    novalidate
+    enctype="multipart/form-data"
+  >
+    <div class="row">
+      <div class="col-6">
+        <fieldset>
+          <legend>Editar foto de perfil</legend>
+          <div class="mb-3 p-2 mt-3">
+            <label for="image" class="form-label">Subir imagen:</label>
+            <input
+              type="file"
+              class="form-control"
+              name="image"
+              accept="image/*"
+              id="image"
+              required
+            />
+            <div id="passwordHelpBlock" class="form-text">
+              Las extensiónes validas son: jpg jpeg y png.
+            </div>
+            <div class="invalid-feedback">
+              Selecciona una imagen.
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-6 image-update">
+        {{#if data.image}}
+          <img
+            src={{data.image}}
+            alt="avatar"
+            class="rounded-circle img-profile"
+          />
+        {{else}}
+          <img
+            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+            alt="avatar"
+            class="rounded-circle img-profile"
+          />
+        {{/if}}
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-4">
+        <button type="reset" class="btn btn-warning mt-3 mb-1 w-100">Resetear</button>
+      </div>
+      <div class="col-4">
+        <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Actualizar</button>
+      </div>
+    </div>
+  </form>
   {{#if edit}}
       <form action="/doctor/{{data._id}}?_method=PUT" method="POST" class="fade-in" >
           <input type="hidden" name="_method" value="PUT">
@@ -6,14 +61,14 @@
   {{#if create}}
       <form action="/doctor/create" method="POST" class="fade-in" >
   {{/if}}
-  <fieldset>
+  <fieldset class="p-3">
   {{#if edit}}
           <legend>Editar Información</legend>
   {{/if}}
   {{#if create}}
           <legend>Crear un Doctor</legend>
   {{/if}}
-    <div class="row">
+    <div class="row mt-2">
         <div class="form-group col-6">
             <label for="firstname" class="form-label mt-3">Nombre(s):</label>
             <input
@@ -95,7 +150,14 @@
     <div class="row">
         <div class="form-group col-4">
             <label for="category" class="form-label mt-3">Selecciona una categoría</label>
-            <select class="form-select" id="category" name="category">
+            <select 
+                  class="form-select" 
+                  id="category" 
+                  name="category"
+                  {{#isEqual user.role 'DOCTOR_ROLE'}}
+                    disabled
+                  {{/isEqual}}
+                  >
                 {{#each data.categories}}
                     <option value={{category}}>{{category}}</option>
                 {{/each}}
@@ -111,47 +173,77 @@
             <p class="m-3">Estado:</p>
             <div class="d-flex justify-content-center">
                 <div class="form-check me-5">
-                    <input class="form-check-input" type="radio" name="active" id="optionsRadios1" value="true" checked="">
+                    <input 
+                        class="form-check-input" 
+                        type="radio" 
+                        name="active" 
+                        id="optionsRadios1" 
+                        value="true" 
+                        checked=""
+                        {{#isEqual user.role 'DOCTOR_ROLE'}}
+                          disabled
+                        {{/isEqual}}
+                        >
                     <label class="form-check-label" for="optionsRadios1">
                         Activo
                     </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="active" id="optionsRadios2" value="false">
+                <input 
+                      class="form-check-input" 
+                      type="radio" 
+                      name="active" 
+                      id="optionsRadios2" 
+                      value="false"
+                      {{#isEqual user.role 'DOCTOR_ROLE'}}
+                        disabled
+                      {{/isEqual}}>
                 <label class="form-check-label" for="optionsRadios2">
-                Inactivo
+                    Inactivo
                 </label>
             </div>
             </fieldset>
             <div class="form-group col-4">
             <label for="role" class="form-label mt-3">Selecciona un rol</label>
-            <select class="form-select" id="role" name="role">
+            <select 
+                  class="form-select" 
+                  id="role" 
+                  name="role"
+                  {{#isEqual user.role 'DOCTOR_ROLE'}}
+                    disabled
+                  {{/isEqual}}
+                  >
                     <option value="DOCTOR_ROLE">Doctor</option>
             </select>
             </div>
     </div>
+  </fieldset>
     <hr />
     <div class="row mt-3">
+          <div class="col-4">
+            <button type="reset" class="btn btn-warning mt-3 mb-1 w-100">Resetear</button>
          {{#if create}}
-          <div class="col-4">
             <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Crear</button>
-          </div>
-          <div class="col-4">
-            <button type="reset" class="btn btn-warning mt-3 mb-1 w-100">Resetear Formulario</button>
-          </div>
         {{/if}}
+          </div>
         {{#if edit}}
           <div class="col-4">
             <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Editar</button>
           </div>
         {{/if}}
+
+        
         <div class="col-4">
+          {{#isEqual user.role 'DOCTOR_ROLE'}}
+            <a href="/profile" class="btn btn-danger mt-3 mb-1 w-100">Cancelar</a> 
+            {{else}}
           <a href="/doctor" class="btn btn-danger mt-3 mb-1 w-100">Cancelar</a>
 
+          {{/isEqual}}
         </div>
 
     </div>
-  </fieldset>
+  
 </form>
 
 </div>
