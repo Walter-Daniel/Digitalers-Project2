@@ -7,6 +7,7 @@ import handlebars from "express-handlebars";
 export const home = async(req, res=response) => {
 
     const user = req.user;
+    console.log(user.role, 'desde home')
     try {
 
         const query = { role: 'DOCTOR_ROLE' }
@@ -31,6 +32,7 @@ export const home = async(req, res=response) => {
             user
         })
     } catch (error) {
+        console.log(error.message)
         req.flash('alert-warning', `${error.message}`)
         res.redirect('/auth/login')
     }

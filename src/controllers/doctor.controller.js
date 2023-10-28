@@ -132,7 +132,7 @@ export const renderFormUpdate = async(req,res) => {
             data: doctor,
             navbar: true,
             edit: true
-    })
+        })
     } catch (error) {
         req.flash('alert-danger', 'No se encontro un Doctor')
     }

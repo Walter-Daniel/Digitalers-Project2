@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import {config} from 'dotenv';
 import User from '../model/user.schema.js';
+import Doctor from '../model/doctor.schema.js';
 import { request, response } from 'express';
 import jwt from 'jsonwebtoken';
 import { v2 as cloudinary } from 'cloudinary';
@@ -45,26 +46,27 @@ export const renderUserProfile = async(req=request, res=response) => {
         return res.redirect('/auth/login')
     }
 
-    jwt.verify(token, process.env.SECRETSEED, async(err, decoded) => {
-        if (err) {
-          return res.status(401).send(err);
-        }
-    
-        const id = decoded.id;
-        const user = await User.findById(id).lean();
-       if(user.role === 'ADMIN_ROLE'){
-            res.render('profile/admin', {
-                pageName: 'Administración',
-            })
-        }else if(user.role === 'USER_ROLE'){
-            res.render('profile/user', {
-                pageName: 'Perfil del Usuario',
-                navbar: true,
-                user
-            })
-        }
-    });
+    const { id } = jwt.verify( token, process.env.SECRETSEED );
 
+    let user;
+    const isUser = await User.findById(id).lean();
+    const isDoctor = await Doctor.findById(id).lean();
+    if(isUser){
+        user = isUser;
+    }else if(isDoctor){
+        user = isDoctor;
+    }
+
+    if(user.role === 'USER_ROLE' || user.role === 'DOCTOR_ROLE'){
+         res.render('profile/user', {
+             pageName: 'Perfil del Usuario',
+             navbar: true,
+             user
+         })
+     }else{
+        req.flash('alert-warning', 'Error al encontrar usuario')
+        return res.redirect('/auth/login')
+     }
 }
 export const getUsers = async(req, res) => {
    try {
