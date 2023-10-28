@@ -2,7 +2,7 @@ import express from 'express';
 import { check } from 'express-validator';
 
 import { validateFields } from '../middleware/validateFields.js';
-import { login, renderLoginForm, renderRegisterForm } from '../controllers/auth.controller.js';
+import { login, logout, renderLoginForm, renderRegisterForm } from '../controllers/auth.controller.js';
 import { createUser } from '../controllers/user.constroller.js';
 import { emailExist } from '../helpers/db-validators.js';
 
@@ -30,5 +30,7 @@ router.post('/register',
 
 ],
  createUser);
+
+ router.get('/logout', logout)
 
 export default router;

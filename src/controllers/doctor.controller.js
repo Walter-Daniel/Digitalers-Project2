@@ -5,12 +5,23 @@ import Category from '../model/category.schema.js';
 import Role from '../model/role.schema.js'
 config();
 
-//Render profile
+//Render public profile
 export const renderProfile = async(req, res) => {
+
+    const {id} = req.params;
+    const doctor = await Doctor.findById(id).lean();
+
+    if(!doctor){
+        req.flash('alter-warning', 'No se pudo encontrar al doctor')
+        res.render('/')
+        return
+    };
+
     res.render('publicProfile',{
-        pageName: 'Registrar un nuevo Doctor',
+        pageName: 'Perfil del Doctor',
         navbar: true,
-        user:req.user
+        user: req.user,
+        doctor
     })
 }
 

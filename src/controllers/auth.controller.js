@@ -57,6 +57,12 @@ export const login = async(req=request, res) => {
     }
 };
 
+export const logout = async(req=request, res=response) => {
+    res.cookie('token', '', { expires: new Date(0) });
+    req.flash('alert-success', 'Has salido de la aplicación')
+    res.redirect('/auth/login');
+}
+
 export const renderRegisterForm = (req, res=response)=> {
 
     res.render('auth/register', {
