@@ -40,13 +40,8 @@ router.get('/public/:id', [
     validateFields
 
 ], renderProfile);
-router.get('/:id', [
 
-    tokenInHeader,
-    validateJWT,
-    validateFields
-
-], renderFormUpdate);
+//Update Doctor
 router.get('/:id', [
 
     tokenInHeader,

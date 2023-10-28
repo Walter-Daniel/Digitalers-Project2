@@ -7,6 +7,7 @@ import { isAdminRole } from '../middleware/validateRoles.js';
 import { check } from 'express-validator';
 import { isRole } from '../helpers/db-validators.js';
 import { validateFields } from '../middleware/validateFields.js';
+import { renderUserProfile } from '../controllers/user.constroller.js';
 
 const router = express.Router();
 
@@ -17,6 +18,15 @@ router.get('/', [
     validateFields
 ],
  home)
+
+
+router.get('/profile', [
+    tokenInHeader,
+    validateJWT,
+    check('role').custom( isRole ),
+    validateFields
+],
+ renderUserProfile)
 
 router.get('/admin', [
     tokenInHeader, 
