@@ -123,6 +123,7 @@ export const getDoctors = async(req, res) => {
 export const renderFormUpdate = async(req,res) => {
 
     try {
+        const user = req.user;
         const { id } = req.params;
 
         const doctor = await Doctor.findById(id).lean();
@@ -130,6 +131,7 @@ export const renderFormUpdate = async(req,res) => {
         res.render('doctor/create', {
             pageName: 'Editar Doctor',
             data: doctor,
+            user,
             navbar: true,
             edit: true
         })

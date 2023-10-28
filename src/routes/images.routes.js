@@ -12,9 +12,9 @@ router.get('/:id')
 router.post('/:id', [
     tokenInHeader,
     validateJWT,
-    check('id', 'No es un id válido!').isMongoId(),
-    check('id').custom( findUserId ),
-    check('image').custom(imgExtention),
+    // check('id', 'No es un id válido!').isMongoId(),
+    // check('id').custom( findUserId ),
+    // check('image').custom(imgExtention),
     validateFields
 ],
  uploadImagesCloudinary);

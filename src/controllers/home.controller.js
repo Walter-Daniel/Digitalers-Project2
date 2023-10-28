@@ -7,7 +7,6 @@ import handlebars from "express-handlebars";
 export const home = async(req, res=response) => {
 
     const user = req.user;
-    console.log(user.role, 'desde home')
     try {
 
         const query = { role: 'DOCTOR_ROLE' }
