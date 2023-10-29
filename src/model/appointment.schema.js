@@ -12,14 +12,14 @@ const status = [
 
 
 const AppointmentSchema = new Schema({
-    category: {
-        type: String,
+    date: { 
+        type: Date,
         required: true
     },
-    reason: { 
-        type: String, 
-        default: "",
-    },
+    appointmentTime: {
+        type: String,
+        required:true
+    }, 
     doctor: {
         type: Schema.Types.ObjectId,
         ref: 'Doctor',

@@ -1,0 +1,47 @@
+<form action="/appointment/create" method="POST" class="fade-in">
+  <fieldset>
+    <legend>Crear cita médica</legend>
+    <div class="row p-2">
+      <div class="form-group col-12">
+        <label for="doctor" class="form-label mt-3">ID Doctor:</label>
+        <input
+          type="text"
+          class="form-control"
+          name="doctor"
+          id="doctor"
+          value="{{user._id}}"
+          readonly
+          required
+        />
+        <div class="invalid-feedback">
+          Ingresar ID del doctor
+        </div>
+        {{!-- PRECIO --}}
+        <label for="price" class="form-label mt-3">Precio:</label>
+        <input
+          type="text"
+          class="form-control"
+          name="price"
+          id="price"
+          required
+        />
+        <div class="invalid-feedback">
+          Debes ingresar el precio
+        </div>
+        {{!-- FECHA --}}
+        <div class="mb-3">
+            <label for="date" class="form-label">Fecha</label>
+            <input type="date" class="form-control" id="date" name="date">
+        </div>    
+        <div class="mb-3">
+            <label for="appointmentTime" class="form-label">Hora</label>
+            <input type="time" class="form-control" name="appointmentTime" id="appointmentTime">
+        </div>
+        <div class="row mt-3">
+            <button type="reset" class="btn btn-warning mt-1 mb-1 w-100">Resetear</button>
+            <button type="submit" class="btn btn-primary mt-1 mb-1 w-100">Crear</button>
+      </div>
+    </div>
+
+  </fieldset>
+</form>

@@ -2,15 +2,15 @@ import Appointment from '../model/appointment.schema.js';
 
 export const createAppointment = async(req, res) => {
     //si el paciente tiene una cita activa con el doctor, no se podra crear una nueva
-    const { client, doctor, price, category, reason } = req.body;
+    const { doctor, price, date, appointmentTime }= req.body;
 
+    console.log({doctor, price, date, appointmentTime })
+  
     try {
-        const appointment = new Appointment({ client, doctor, price, category, reason });
+        const appointment = new Appointment({ doctor, price, date, appointmentTime });
         await appointment.save();
 
-        console.log(client)
-
-        // req.flash('alert-success', 'La cita ha sido creada con éxito');
+        req.flash('alert-success', 'La cita ha sido creada con éxito');
         const { _doc } = appointment;
         const { createdAt, updatedAt, ...rest} = _doc;
         const actualDate = createdAt.toLocaleString();
@@ -21,7 +21,7 @@ export const createAppointment = async(req, res) => {
             updatedAt: actualUpdate,
             ...rest
         }
-        res.json(newAppointment)
+        res.json(appointment)
     } catch (error) {
         console.log(error.message)
     }
