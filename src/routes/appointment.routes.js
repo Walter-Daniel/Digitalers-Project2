@@ -10,14 +10,14 @@ const router = express.Router();
 
 router.post('/create', [
 
-    tokenInHeader,
-    validateJWT,
+    // tokenInHeader,
+    // validateJWT,
     // hasARole('ADMIN_ROLE', 'SECRETARY_ROLE'),
     // check('client', 'El id del Cliente es obligatorio').notEmpty().isString(),
     // check('doctor', 'El id del Doctor es obligatorio').notEmpty().isString(),
     // check('price', 'Debe ingresar el precio de la consulta').notEmpty().isNumeric(),
     // check('role').custom( isRole ),
-    validateFields
+    // validateFields
 
 ], createAppointment);
 
@@ -34,13 +34,13 @@ router.put('/:id', [
 ], updateAppointment);
 
 //Traer citas de la base de datos
-router.get('/public', showConsultation)
+router.get('/public/:id', showConsultation)
 router.get('/', [
 
-    tokenInHeader,
-    validateJWT,
-    hasARole('ADMIN_ROLE', 'SECRETARY_ROLE'),
-    validateFields
+    // tokenInHeader,
+    // validateJWT,
+    // hasARole('ADMIN_ROLE', 'SECRETARY_ROLE'),
+    // validateFields
     
 ], getAppointment);
 

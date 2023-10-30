@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import {config} from 'dotenv';
 import Doctor from '../model/doctor.schema.js';
+import Appointment from '../model/appointment.schema.js';
 import Category from '../model/category.schema.js';
 import Role from '../model/role.schema.js'
 config();
@@ -9,20 +10,57 @@ config();
 export const renderProfile = async(req, res) => {
 
     const {id} = req.params;
-    const doctor = await Doctor.findById(id).lean();
+    try {
 
-    if(!doctor){
-        req.flash('alter-warning', 'No se pudo encontrar al doctor')
-        res.render('/')
-        return
-    };
+        const doctor = await Doctor.findById(id).lean()
 
-    res.render('publicProfile',{
-        pageName: 'Perfil del Doctor',
-        navbar: true,
-        user: req.user,
-        doctor
-    })
+        if(!doctor){
+            req.flash('alter-warning', 'No se pudo encontrar al doctor')
+            res.redirect('/')
+            return
+        };
+
+        const query = { client: undefined, status: 'Pending', doctor: id };
+        const [ appointments, active ] = await Promise.all([
+            Appointment.find(query).populate('doctor', '_id firstname lastname')
+                            .populate('client', '_id firstname lastname')
+                            .collation({ locale: 'es' })
+                            .sort({ createdAt: -1 })
+                            .lean()
+                            .exec(),
+            Appointment.find(query).countDocuments().lean()
+        ]);
+
+        if(appointments.length === 0){
+            return res.status(404).send({
+                ok: true,
+                message: 'No se encontró ninguna cita'
+            })
+        }
+
+        // const actualDate = createdAt.toLocaleString();
+        // const actualUpdate = updatedAt.toLocaleString();
+
+
+        appointments.forEach(function(item){
+            console.log(item.appointmentTime)
+            
+            return item.date = item.date.toISOString().split("T")[0]
+        })
+
+
+        res.render('publicProfile',{
+            pageName: 'Perfil del Doctor',
+            navbar: true,
+            user: req.user,
+            doctor,
+            appointments,
+            active
+        })
+    } catch (error) {
+        req.flash('alert-info', `${error.message}`)
+        res.redirect(`/doctor/public/${id}`)
+    }   
 }
 
 // Renderizado del formulario y registro de un DOCTOR
@@ -95,6 +133,8 @@ export const getDoctors = async(req, res) => {
                 message: 'No se encontró ningun doctor'
             })
         }
+
+        return res.json(doctors)
 
         return res.render('doctor/listDoctors',{
             pageName: 'Lista de usuarios',
