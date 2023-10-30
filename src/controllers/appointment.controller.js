@@ -1,4 +1,5 @@
 import Appointment from '../model/appointment.schema.js';
+import Doctor from '../model/doctor.schema.js';
 
 export const createAppointment = async(req, res) => {
     //si el paciente tiene una cita activa con el doctor, no se podra crear una nueva
@@ -26,20 +27,21 @@ export const createAppointment = async(req, res) => {
         console.log(error.message)
     }
 };
+
+
 //Consultas disponibles =>> las que no tengan un usuario designado y esten pendientes
+//Citas que podran ver los pacientes y seleccionarlas
 export const showConsultation = async(req, res) => {
 
-    const query = { client: undefined, status: 'Pending' };
-
+    const {id} = req.params;
+    const query = { client: undefined, status: 'Pending', doctor: id };
     try {
         const [ appointments, activos ] = await Promise.all([
             Appointment.find(query).populate('doctor', '_id firstname lastname')
                             .populate('client', '_id firstname lastname')
                             .collation({ locale: 'es' })
                             .sort({ createdAt: -1 }),
-            Appointment.find(query).countDocuments(),
-            // Appointment.find(query2).countDocuments(),
-
+            Appointment.find(query).countDocuments().lean()
         ]);
 
         if(appointments.length === 0){
@@ -49,19 +51,20 @@ export const showConsultation = async(req, res) => {
             })
         }
 
-        return res.status(200).send({
+        
+
+        return res.render('partials/showAppointment',{
             ok: true,
             message: 'Citas obtenidas correctamente',
             appointments,
-            activos,
-            // inactivos
+            activos
         })
 
     } catch (error) {
         if(error) {
             return res.status(500).send({
                 ok: false,
-                message: 'Error al obtener usuario',
+                message: 'Error al obtener cita',
                 error
             })
         }
