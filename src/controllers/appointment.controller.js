@@ -4,9 +4,6 @@ import Doctor from '../model/doctor.schema.js';
 export const createAppointment = async(req, res) => {
     //si el paciente tiene una cita activa con el doctor, no se podra crear una nueva
     const { doctor, price, date, appointmentTime }= req.body;
-
-    console.log({doctor, price, date, appointmentTime })
-  
     try {
         const appointment = new Appointment({ doctor, price, date, appointmentTime });
         await appointment.save();
@@ -32,15 +29,19 @@ export const createAppointment = async(req, res) => {
 //Consultas disponibles =>> las que no tengan un usuario designado y esten pendientes
 //Citas que podran ver los pacientes y seleccionarlas
 export const showConsultation = async(req, res) => {
-
-    const {id} = req.params;
-    const query = { client: undefined, status: 'Pending', doctor: id };
+    
     try {
-        const [ appointments, activos ] = await Promise.all([
+
+        const {id} = req.params;
+        const query = { client: undefined, status: 'Pending', doctor: id };
+
+        const [ appointments, active ] = await Promise.all([
             Appointment.find(query).populate('doctor', '_id firstname lastname')
                             .populate('client', '_id firstname lastname')
                             .collation({ locale: 'es' })
-                            .sort({ createdAt: -1 }),
+                            .sort({ createdAt: -1 })
+                            .lean()
+                            .exec(),
             Appointment.find(query).countDocuments().lean()
         ]);
 
@@ -51,16 +52,19 @@ export const showConsultation = async(req, res) => {
             })
         }
 
-        
+        appointments.forEach(function(item){
+            return item.date = item.date.toISOString().split("T")[0]
+        })
 
-        return res.render('partials/showAppointment',{
+        return res.render('doctor/appointment',{
             ok: true,
             message: 'Citas obtenidas correctamente',
             appointments,
-            activos
+            active
         })
 
     } catch (error) {
+        console.log(error, 'error desde appointment')
         if(error) {
             return res.status(500).send({
                 ok: false,
@@ -116,23 +120,34 @@ export const getAppointment = async(req, res) => {
 };
 
 export const updateAppointment = async(req, res) => {
-
    try {
     
-    const { client } = req.body;
+    const { client, doctor } = req.body;
     const { id } = req.params;
 
-    const appointment = await Appointment.findById( id );
+    // const appointment = await Appointment.findById( id );
+    // if(!appointment){
+    //     return res.json('No hay cita')
+    // }
+
+    const query = { client, doctor, status: 'Pending' };
+    const active = await Appointment.find(query).countDocuments();
+
+    if(active >= 1){
+        return res.json('Ya posee una cita agendada con el Doctor');
+    }
+
+    console.log(appointments, active)
     // req.flash('alert-success', 'El usuario se ha editado con éxito!');
     // return res.redirect(`/user/profile/update/${id}`)
 
-    appointment.client = client;
-    appointment.save();
-    return res.status(200).json({
-        ok: true,
-        message: 'Usuario actualizado con éxito',
-        appointment
-    });
+    // appointment.client = client;
+    // appointment.save();
+    // return res.status(200).json({
+    //     ok: true,
+    //     message: 'Usuario actualizado con éxito',
+    //     appointment
+    // });
    } catch (error) {
         console.log(error.message)
    }

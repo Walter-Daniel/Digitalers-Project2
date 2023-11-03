@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import {config} from 'dotenv';
 import User from '../model/user.schema.js';
 import Doctor from '../model/doctor.schema.js';
+import Appointment from '../model/appointment.schema.js';
 import { request, response } from 'express';
 import jwt from 'jsonwebtoken';
 import { v2 as cloudinary } from 'cloudinary';
@@ -53,6 +54,11 @@ export const renderUserProfile = async(req=request, res=response) => {
     const isDoctor = await Doctor.findById(id).lean();
     if(isUser){
         user = isUser;
+
+        const getAppointment = await Appointment.find(query).populate('doctor', '_id firstname lastname')
+                        .populate('client', '_id firstname lastname')
+                        .collation({ locale: 'es' })
+                        .sort({ createdAt: -1 })
     }else if(isDoctor){
         user = isDoctor;
     }

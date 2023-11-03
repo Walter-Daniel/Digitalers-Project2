@@ -62,7 +62,16 @@ const hbs = exphbs.create({
 hbs.handlebars.registerHelper('isEqual', (a, b, opts) => {
     return a == b ? opts.fn(this) : opts.inverse(this);
 });
-  
+
+hbs.handlebars.registerHelper('customEach', function (array, variable, options) {
+  let result = '';
+  for (let i = 0; i < array.length; i++) {
+    const data = Object.assign({}, array[i], { variable });
+    result += options.fn(data);
+  }
+  return result;
+});
+
 // Configura express-session
 app.use(session({
   secret: process.env.SESSION_SECRET,
