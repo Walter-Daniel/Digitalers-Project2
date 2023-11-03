@@ -41,38 +41,32 @@ export const createUser = async(req, res=response) => {
 export const renderUserProfile = async(req=request, res=response) => {
 
     const token = req.cookies.token;
-
     if (!token) {
         req.flash('alert-warning', 'Acceso no autorizado')
         return res.redirect('/auth/login')
     }
 
     const { id } = jwt.verify( token, process.env.SECRETSEED );
+    const user = await User.findById(id).lean();
 
-    let user;
-    const isUser = await User.findById(id).lean();
-    const isDoctor = await Doctor.findById(id).lean();
-    if(isUser){
-        user = isUser;
-
-        const getAppointment = await Appointment.find(query).populate('doctor', '_id firstname lastname')
-                        .populate('client', '_id firstname lastname')
-                        .collation({ locale: 'es' })
-                        .sort({ createdAt: -1 })
-    }else if(isDoctor){
-        user = isDoctor;
-    }
-
-    if(user.role === 'USER_ROLE' || user.role === 'DOCTOR_ROLE'){
-         res.render('profile/user', {
-             pageName: 'Perfil del Usuario',
-             navbar: true,
-             user
-         })
-     }else{
+    if(!user){
         req.flash('alert-warning', 'Error al encontrar usuario')
         return res.redirect('/auth/login')
-     }
+    }
+    const query = { client: user._id };
+    const appointment  = await Appointment.find(query).populate('doctor', 'firstname lastname category')
+                                                      .collation({ locale: 'es' })
+                                                      .lean();
+    appointment.forEach(function(item){
+        return item.date = item.date.toISOString().split("T")[0]
+    })                                                  
+    return res.render('profile/user', {
+             pageName: 'Perfil del Usuario',
+             navbar: true,
+             user,
+             appointment,
+             appointmentTotal: appointment.length
+         });
 }
 export const getUsers = async(req, res) => {
    try {
