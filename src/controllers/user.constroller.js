@@ -49,6 +49,8 @@ export const renderUserProfile = async(req=request, res=response) => {
     const { id } = jwt.verify( token, process.env.SECRETSEED );
     const user = await User.findById(id).lean();
 
+    console.log(user, 'desde usuario')
+
     if(!user){
         req.flash('alert-warning', 'Error al encontrar usuario')
         return res.redirect('/auth/login')

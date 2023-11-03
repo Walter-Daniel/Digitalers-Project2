@@ -3,7 +3,10 @@ import {config} from 'dotenv';
 import Doctor from '../model/doctor.schema.js';
 import Appointment from '../model/appointment.schema.js';
 import Category from '../model/category.schema.js';
-import Role from '../model/role.schema.js'
+import Role from '../model/role.schema.js';
+
+import jwt from 'jsonwebtoken';
+
 config();
 
 //Render public profile
@@ -56,6 +59,45 @@ export const renderProfile = async(req, res) => {
     }   
 }
 
+//Render private profile
+export const renderPrivateProfile = async(req, res) => {
+    try {
+        const token = req.cookies.token;
+        if (!token) {
+            req.flash('alert-warning', 'Acceso no autorizado')
+            return res.redirect('/auth/login')
+        }
+        const { id } = jwt.verify( token, process.env.SECRETSEED );
+        const user = await Doctor.findById(id).lean();
+       
+        console.log(user, 'desde doctor')
+        if(!user){
+            req.flash('alter-warning', 'Error al encontrar doctor');
+            res.redirect('/auth/login');
+            return
+        };
+
+        //Find doctor's appointment in DB
+
+        const query = { doctor: user._id };
+        const appointment  = await Appointment.find(query).populate('doctor', 'firstname lastname category')
+                                                          .collation({ locale: 'es' })
+                                                          .lean();
+        appointment.forEach(function(item){
+            return item.date = item.date.toISOString().split("T")[0]
+        })  
+
+        res.render('profile/doctor',{
+            pageName: 'Perfil del Doctor',
+            navbar: true,
+            appointmentTotal: appointment.length,
+            appointment,
+            user
+        })
+    } catch (error) {
+        res.json(error.message);
+    }
+}
 // Renderizado del formulario y registro de un DOCTOR
 export const renderFormCreate = async(req,res) => {
 
