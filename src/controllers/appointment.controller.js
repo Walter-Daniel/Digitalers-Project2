@@ -124,11 +124,12 @@ export const updateAppointment = async(req, res) => {
     
     const { client, doctor } = req.body;
     const { id } = req.params;
+    const user = req.user;
 
-    // const appointment = await Appointment.findById( id );
-    // if(!appointment){
-    //     return res.json('No hay cita')
-    // }
+    const appointment = await Appointment.findById( id );
+    if(!appointment){
+        return res.json('No hay cita')
+    }
 
     const query = { client, doctor, status: 'Pending' };
     const active = await Appointment.find(query).countDocuments();
@@ -137,17 +138,27 @@ export const updateAppointment = async(req, res) => {
         return res.json('Ya posee una cita agendada con el Doctor');
     }
 
-    console.log(appointments, active)
-    // req.flash('alert-success', 'El usuario se ha editado con éxito!');
-    // return res.redirect(`/user/profile/update/${id}`)
-
-    // appointment.client = client;
-    // appointment.save();
-    // return res.status(200).json({
-    //     ok: true,
-    //     message: 'Usuario actualizado con éxito',
-    //     appointment
-    // });
+    if(!appointment.client){
+        appointment.client = client;
+        appointment.save();
+        req.flash('alert-success', 'La cita ha sido creada con éxito');
+        if(user.role === 'USER_ROLE'){
+            return res.redirect(`/doctor/public/${doctor}`);
+        }
+    }else if(appointment.client.toString() === client){
+        appointment.client = undefined;
+        appointment.save();
+        req.flash('alert-success', 'La cita ha sido eliminada con éxito!');
+        res.redirect('/user/profile');
+    }else if( appointment.client.toHexString() !== client && user.role === 'SECRETARY_ROLE' || user.role === 'ADMIN_ROLE' ){
+        appointment.client = client;
+        appointment.save();
+        if(user.role=== 'ADMIN_ROLE'){
+            res.json('redireccionar a administrador')
+        }else{
+            res.json('sos secretaria')
+        }
+    };
    } catch (error) {
         console.log(error.message)
    }
