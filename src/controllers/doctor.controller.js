@@ -38,18 +38,11 @@ export const renderProfile = async(req, res) => {
             })
         }
 
-        // const actualDate = createdAt.toLocaleString();
-        // const actualUpdate = updatedAt.toLocaleString();
-
-
         appointments.forEach(function(item){
-            console.log(item.appointmentTime)
-            
             return item.date = item.date.toISOString().split("T")[0]
         })
 
-
-        res.render('publicProfile',{
+        res.render('doctor/public',{
             pageName: 'Perfil del Doctor',
             navbar: true,
             user: req.user,

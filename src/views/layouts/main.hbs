@@ -31,7 +31,8 @@
         {{/if}}
     </header>
     <main>
-        {{#if messages }}
+       <div class="container">
+         {{#if messages }}
             <div class="alerts">
                 {{#showAlerts messages}}
                 {{/showAlerts}}
@@ -39,6 +40,7 @@
         {{/if}}
 
         {{{body}}}
+       </div>
     </main>
 
 

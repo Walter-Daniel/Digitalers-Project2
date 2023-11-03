@@ -26,7 +26,7 @@ router.put('/:id', [
 
     tokenInHeader,
     validateJWT,
-    hasARole('ADMIN_ROLE', 'SECRETARY_ROLE'),
+    hasARole('ADMIN_ROLE', 'SECRETARY_ROLE', 'USER_ROLE'),
     // check('id', 'No es un id válido!').isMongoId(),
     // check('id').custom( findUserId ),
     validateFields

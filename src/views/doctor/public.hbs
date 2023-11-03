@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-6">
+            <div class="row">
+            <h2>{{doctor.firstname}} {{doctor.lastname}}</h2>
+            <hr>
+                <div class="col-6">
+                    {{doctor.category}}
+                    HOLAAAAAAAAAAAAAAAAAAAAAAAA
+                    {{user.email}}
+                    {{user._id}}
+                </div>
+                <div class="col-6">
+                    <figure>
+                        <img src="{{doctor.image}}" alt="Imagen del Doctor {{doctor.lastname}}" class="rounded-circle img-profile">
+                    </figure>
+                </div>
+            </div>
+    </div>
+    <div class="col-6">
+
+        {{#customEach appointments user}}
+        <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Cita médica</h5>
+                        <div class="row p-2">
+                        <div class="form-group col-12">
+                            {{!-- FECHA --}}
+                            <div class="mb-1">
+                                <p>Fecha: {{this.date}}, {{this.appointmentTime}}</p>
+                            </div> 
+                            {{!-- PRECIO --}}
+                            <div class="mb-1">
+                            <p>Precio: ${{this.price}}</p>
+                            </div>
+                            <form 
+                                action="/appointment/{{this._id}}?_method=PUT" 
+                                method="POST"
+                                class="fade-in">
+                                <input type="hidden" name="_method" value="PUT">
+                                        <input type="hidden" value="{{this.doctor._id}}" name="doctor">
+                                        <input type="hidden" value="{{variable._id}}" name="client">
+                                        <button type="submit" class="btn btn-primary mt-1">Seleccionar</button>
+                            </form>
+                        </div>
+        </div>
+        </div>
+            {{/customEach}}
+    </div>
+</div>
