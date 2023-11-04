@@ -136,7 +136,10 @@ export const updateAppointment = async(req, res) => {
     const active = await Appointment.find(query).countDocuments();
 
     if(active >= 1){
-        return res.json('Ya posee una cita agendada con el Doctor');
+        if(user.role === 'USER_ROLE'){
+            req.flash('alert-warning', 'Ya posee una cita agendada con el Doctor');
+            return res.redirect(`/doctor/public/${doctor}`);   
+        }
     }
 
     if(!appointment.client){
