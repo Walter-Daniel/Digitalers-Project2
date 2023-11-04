@@ -34,13 +34,6 @@ export const renderProfile = async(req, res) => {
             Appointment.find(query).countDocuments().lean()
         ]);
 
-        if(appointments.length === 0){
-            return res.status(404).send({
-                ok: true,
-                message: 'No se encontró ninguna cita'
-            })
-        }
-
         appointments.forEach(function(item){
             return item.date = item.date.toISOString().split("T")[0]
         })
@@ -51,6 +44,7 @@ export const renderProfile = async(req, res) => {
             user: req.user,
             doctor,
             appointments,
+            appointmentsTotal: appointments.length, 
             active
         })
     } catch (error) {

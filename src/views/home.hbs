@@ -1,8 +1,12 @@
 <div class="container">
     <div class="row">
         {{#each doctors}}
-        <div class="card" style="width: 18rem;">
-            <img src={{image}} class="card-img-top" alt="...">
+        <div class="card m-3" style="width: 18rem;">
+            {{#if image}}
+              <img src={{image}} class="card-img-top" alt="Imagen de perfil de {{lastname}}" style="height: 10rem;">
+            {{else}}
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" class="card-img-top" alt="Imagen de perfil de {{lastname}}" style="height: 10rem; object-fit: cover;">
+            {{/if}}
             <div class="card-body">
                 <h5 class="card-title">{{firstname}}</h5>
                 <p class="card-text">{{category}}</p>

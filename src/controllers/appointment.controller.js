@@ -93,17 +93,11 @@ export const getAppointment = async(req, res) => {
 
         ]);
 
-        if(appointments.length === 0){
-            return res.status(404).send({
-                ok: true,
-                message: 'No se encontró ninguna cita'
-            })
-        }
-
         return res.status(200).send({
             ok: true,
             message: 'Citas obtenidas correctamente',
             appointments,
+            appointmentsTotal: appointments.length,
             activos,
             inactivos
         })
