@@ -1,23 +1,24 @@
 import Appointment from '../model/appointment.schema.js';
 import Doctor from '../model/doctor.schema.js';
+import jwt from 'jsonwebtoken';
 
 export const createAppointment = async(req, res) => {
     //si el paciente tiene una cita activa con el doctor, no se podra crear una nueva
     const { doctor, price, date, appointmentTime }= req.body;
+    
+    
     try {
+        
+        const token = req.cookies.token;
+        const { id } = jwt.verify( token, process.env.SECRETSEED );
+
+        const isdoctor = await Doctor.findById( id ); 
         const appointment = new Appointment({ doctor, price, date, appointmentTime });
         await appointment.save();
 
         req.flash('alert-success', 'La cita ha sido creada con éxito');
-        const { _doc } = appointment;
-        const { createdAt, updatedAt, ...rest} = _doc;
-        const actualDate = createdAt.toLocaleString();
-        const actualUpdate = updatedAt.toLocaleString();
-
-        const newAppointment = {
-            createdAt: actualDate,
-            updatedAt: actualUpdate,
-            ...rest
+        if(isdoctor){
+            res.redirect('/doctor/profile')
         }
         res.json(appointment)
     } catch (error) {
@@ -122,7 +123,7 @@ export const getAppointment = async(req, res) => {
 export const updateAppointment = async(req, res) => {
    try {
     
-    const { client, doctor } = req.body;
+    const { client, doctor, status } = req.body;
     const { id } = req.params;
     const user = req.user;
 
@@ -131,7 +132,7 @@ export const updateAppointment = async(req, res) => {
         return res.json('No hay cita')
     }
 
-    const query = { client, doctor, status: 'Pending' };
+    const query = { client, doctor, status: 'Confirmed' };
     const active = await Appointment.find(query).countDocuments();
 
     if(active >= 1){
@@ -140,6 +141,7 @@ export const updateAppointment = async(req, res) => {
 
     if(!appointment.client){
         appointment.client = client;
+        appointment.status = status;
         appointment.save();
         req.flash('alert-success', 'La cita ha sido creada con éxito');
         if(user.role === 'USER_ROLE'){
@@ -147,6 +149,7 @@ export const updateAppointment = async(req, res) => {
         }
     }else if(appointment.client.toString() === client){
         appointment.client = undefined;
+        appointment.status = status;
         appointment.save();
         req.flash('alert-success', 'La cita ha sido eliminada con éxito!');
         res.redirect('/user/profile');

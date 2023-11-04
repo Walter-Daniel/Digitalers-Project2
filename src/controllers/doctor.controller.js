@@ -3,7 +3,10 @@ import {config} from 'dotenv';
 import Doctor from '../model/doctor.schema.js';
 import Appointment from '../model/appointment.schema.js';
 import Category from '../model/category.schema.js';
-import Role from '../model/role.schema.js'
+import Role from '../model/role.schema.js';
+
+import jwt from 'jsonwebtoken';
+
 config();
 
 //Render public profile
@@ -25,7 +28,7 @@ export const renderProfile = async(req, res) => {
             Appointment.find(query).populate('doctor', '_id firstname lastname')
                             .populate('client', '_id firstname lastname')
                             .collation({ locale: 'es' })
-                            .sort({ createdAt: -1 })
+                            .sort({ date: -1 })
                             .lean()
                             .exec(),
             Appointment.find(query).countDocuments().lean()
@@ -56,6 +59,61 @@ export const renderProfile = async(req, res) => {
     }   
 }
 
+//Render private profile
+export const renderPrivateProfile = async(req, res) => {
+    try {
+        const token = req.cookies.token;
+        if (!token) {
+            req.flash('alert-warning', 'Acceso no autorizado')
+            return res.redirect('/auth/login')
+        }
+        const { id } = jwt.verify( token, process.env.SECRETSEED );
+        const user = await Doctor.findById(id).lean();
+
+        if(!user){
+            req.flash('alter-warning', 'Error al encontrar doctor');
+            res.redirect('/auth/login');
+            return
+        };
+
+        //Find doctor's appointment in DB
+        const query = { client: undefined, status: 'Pending', doctor: id };
+        const query2 = { status: 'Confirmed', doctor: id };
+
+        const [ appointment, confirmed ] = await Promise.all([
+            Appointment.find(query).populate('client', '_id firstname lastname')
+                            .collation({ locale: 'es' })
+                            .sort({ date: -1 })
+                            .lean()
+                            .exec(),
+            Appointment.find(query2).populate('client', '_id firstname lastname')
+                            .collation({ locale: 'es' })
+                            .sort({ date: -1})
+                            .lean()
+                            .exec(),
+        ]);
+        appointment.forEach(function(item){
+            return item.date = item.date.toISOString().split("T")[0]
+        })
+        confirmed.forEach(function(item){
+            return item.date = item.date.toISOString().split("T")[0]
+        })
+          
+
+        res.render('profile/doctor',{
+            pageName: 'Perfil del Doctor',
+            navbar: true,
+            appointmentTotal: appointment.length,
+            appointment,
+            appointmentTota: appointment.length,
+            confirmed,
+            confirmedTotal: confirmed.length,
+            user
+        })
+    } catch (error) {
+        res.json(error.message);
+    }
+}
 // Renderizado del formulario y registro de un DOCTOR
 export const renderFormCreate = async(req,res) => {
 

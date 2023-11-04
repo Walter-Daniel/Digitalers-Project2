@@ -1,7 +1,7 @@
 import express from 'express';
 import { check } from 'express-validator';
 
-import { createDoctor, updateDoctor, getDoctors, deleteDoctor, renderFormCreate, renderFormUpdate, renderProfile } from '../controllers/doctor.controller.js';
+import { createDoctor, updateDoctor, getDoctors, deleteDoctor, renderFormCreate, renderFormUpdate, renderProfile, renderPrivateProfile } from '../controllers/doctor.controller.js';
 import { emailExist, isRole, findUserId, fromControl, setCategory, findID } from '../helpers/db-validators.js';
 import { validateFields, isAdminRole, validateJWT, hasARole } from '../middleware/index.js';
 import { tokenInHeader } from '../middleware/jwtHeader.js';
@@ -29,9 +29,10 @@ router.post('/create', [
     check('consultationPrice', 'Ingrese el precio de la consulta').notEmpty().isNumeric(),
     check('category').custom( setCategory ),
     validateFields
-
+    
 ], createDoctor);
 //Renderizar el perfil del doctor
+router.get('/profile', renderPrivateProfile);
 
 router.get('/public/:id', [
 
@@ -51,16 +52,17 @@ router.get('/:id', [
 ], renderFormUpdate);
 router.put('/:id', [
 
-    // tokenInHeader,
-    // validateJWT,
-    // hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
-    // check('id', 'No es un id válido!').isMongoId(),
-    // // check('id').custom( findUserId ),
+    tokenInHeader,
+    validateJWT,
+    hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
+    check('id', 'No es un id válido!').isMongoId(),
+    check('id').custom( findUserId ),
     // findID('Doctor'),
-    // validateFields
+    validateFields
 
 ], updateDoctor);
 
+//Profile Render
 router.get('/', getDoctors);
 
 router.delete('/:id',[
