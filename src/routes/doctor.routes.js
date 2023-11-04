@@ -26,7 +26,7 @@ router.post('/create', [
     check('password', 'El password debe tener entre 4 y 9 carácteres').notEmpty().isLength({ min: 4, max: 9 }),
     check('role').custom( isRole ),
     check('phoneNumber', 'Ingrese un número de teléfono').notEmpty().isNumeric(),
-    check('consultationPrice', 'Ingrese el precio de la consulta').notEmpty().isNumeric(),
+    check('cellphone', 'Ingrese un número de celular').notEmpty().isNumeric(),
     check('category').custom( setCategory ),
     validateFields
     
@@ -55,15 +55,24 @@ router.put('/:id', [
     tokenInHeader,
     validateJWT,
     hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
-    check('id', 'No es un id válido!').isMongoId(),
-    check('id').custom( findUserId ),
+    // check('id', 'No es un id válido!').isMongoId(),
+    // check('id').custom( findUserId ),
     // findID('Doctor'),
     validateFields
 
 ], updateDoctor);
 
 //Profile Render
-router.get('/', getDoctors);
+router.get('/',[   
+    tokenInHeader,
+    validateJWT,
+    hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
+    // check('id', 'No es un id válido!').isMongoId(),
+    // check('id').custom( findUserId ),
+    // findID('Doctor'),
+    validateFields
+
+], getDoctors);
 
 router.delete('/:id',[
 

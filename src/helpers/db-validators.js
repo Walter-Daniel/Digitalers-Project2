@@ -22,7 +22,7 @@ export const emailExist = async(email = '') => {
 export const findUserId = async( id ) => {
     const existUser= await User.findById( id );
     const existDoctor = await Doctor.findById( id );
-    if( !existUser && existDoctor ){
+    if( !existUser && !existDoctor ){
         throw new Error(`El id: ${id} no existe.`);
     }
 };

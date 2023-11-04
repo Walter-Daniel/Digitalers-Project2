@@ -117,10 +117,11 @@ export const renderFormCreate = async(req,res) => {
         pageName: 'Registrar un nuevo Doctor',
         data: {
             categories,
-            roles,
-            create: 'create'
-
-        }
+            roles   
+        },
+        create: true,
+        navbar: true,
+        user: req.user
     })
 }
 
@@ -140,7 +141,9 @@ export const createDoctor = async(req, res) => {
 
         res.render('doctor/create', {
             pageName: 'Registrar un nuevo Doctor',
-            messages: req.flash()
+            messages: req.flash(),
+            user: req.user,
+            create: true
         })
 
         // res.status(201).json({
@@ -167,24 +170,20 @@ export const getDoctors = async(req, res) => {
         // const { limit = 10, from } = req.query;
         const query = { role: 'DOCTOR_ROLE' }
         const [doctors, total] = await Promise.all([
-            Doctor.find(query).lean(),
-               
+            Doctor.find(query).lean(),           
             Doctor.count(query)
         ]);
 
-        if(doctors.length === 0){
-            return res.status(404).send({
-                ok: true,
-                message: 'No se encontró ningun doctor'
-            })
-        }
+        console.log(req.user)
 
-        return res.json(doctors)
+        // return res.json(doctors)
 
         return res.render('doctor/listDoctors',{
-            pageName: 'Lista de usuarios',
+            pageName: 'Lista de médicos',
             doctors,
-            navbar: true
+            doctorsTotal: doctors.length,
+            navbar: true,
+            user: req.user
         })
         return res.status(200).send({
                 ok: true,
@@ -221,7 +220,8 @@ export const renderFormUpdate = async(req,res) => {
             edit: true
         })
     } catch (error) {
-        req.flash('alert-danger', 'No se encontro un Doctor')
+        req.flash('alert-danger', `${error.message}`);
+        return res.redirect(`/doctor/${id}`);
     }
 }
 
@@ -240,7 +240,7 @@ export const updateDoctor = async(req, res) => {
         req.flash('alert-success', 'Información editada con éxito');
 
         return res.render('doctor/create', {
-            pageName: 'Editar Doctorr',
+            pageName: 'Editar Doctor',
             messages: req.flash(),
             edit: true,
             navbar: true,
