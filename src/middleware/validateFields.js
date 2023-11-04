@@ -4,12 +4,13 @@ import { validationResult } from 'express-validator';
 
 export const validateFields = (req=request, res, next) => {
     const errors = validationResult(req);
+    console.log(req.user)
     const {id} = req.params
     // console.log(req.body)
     if(!errors.isEmpty()){
         req.flash('alert-danger', errors.array().map(e => e.msg));
         let urlOriginal = req.originalUrl;
-        console.log(urlOriginal)
+        console.log(urlOriginal, 'estamos aquí')
         const url = urlOriginal.slice(1)
         const urlPrev = req.session.prevUrl
         let pageName = '';
@@ -27,7 +28,9 @@ export const validateFields = (req=request, res, next) => {
         }
         res.render(url, {
             pageName,
-            data: req.body
+            data: req.body,
+            messages: req.flash(),
+            user: req.user
         })
         return;
     }

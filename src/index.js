@@ -72,6 +72,19 @@ hbs.handlebars.registerHelper('customEach', function (array, variable, options) 
   return result;
 });
 
+hbs.handlebars.registerHelper('ifOr', function () {
+  const args = Array.from(arguments);
+  const options = args.pop();
+
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] || args[i] === true) {
+      return options.fn(this);
+    }
+  }
+
+  return options.inverse(this);
+});
+
 // Configura express-session
 app.use(session({
   secret: process.env.SESSION_SECRET,

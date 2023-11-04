@@ -1,73 +1,77 @@
 <div class="container">
-  <form
-    action="/images/{{data._id}}"
-    method="POST"
-    class="fade-in mb-5 mt-5 needs-validation"
-    novalidate
-    enctype="multipart/form-data"
-  >
-    <div class="row">
-      <div class="col-md-6">
-        <fieldset>
-          <legend>Editar foto de perfil</legend>
-          <div class="mb-3 p-2 mt-3">
-            <label for="image" class="form-label">Subir imagen:</label>
-            <input
-              type="file"
-              class="form-control"
-              name="image"
-              accept="image/*"
-              id="image"
-              required
+{{!-- Formulario subir imagen --}}
+  {{#ifOr edit data.edit}}
+    <form
+      action="/images/{{data._id}}"
+      method="POST"
+      class="fade-in mb-5 mt-5 needs-validation"
+      novalidate
+      enctype="multipart/form-data"
+    >
+      <div class="row">
+        <div class="col-md-6">
+          <fieldset>
+            <legend>Editar foto de perfil</legend>
+            <div class="mb-3 p-2 mt-3">
+              <label for="image" class="form-label">Subir imagen:</label>
+              <input
+                type="file"
+                class="form-control"
+                name="image"
+                accept="image/*"
+                id="image"
+                required
+              />
+              <div id="passwordHelpBlock" class="form-text">
+                Las extensiónes validas son: jpg jpeg y png.
+              </div>
+              <div class="invalid-feedback">
+                Selecciona una imagen.
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-md-6 image-update">
+          {{#if data.image}}
+            <img
+              src={{data.image}}
+              alt="avatar"
+              class="rounded-circle img-profile mt-2"
             />
-            <div id="passwordHelpBlock" class="form-text">
-              Las extensiónes validas son: jpg jpeg y png.
-            </div>
-            <div class="invalid-feedback">
-              Selecciona una imagen.
-            </div>
-          </div>
-        </fieldset>
+          {{else}}
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+              alt="avatar"
+              class="rounded-circle img-profile"
+            />
+          {{/if}}
+        </div>
       </div>
-      <div class="col-md-6 image-update">
-        {{#if data.image}}
-          <img
-            src={{data.image}}
-            alt="avatar"
-            class="rounded-circle img-profile mt-2"
-          />
-        {{else}}
-          <img
-            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
-            alt="avatar"
-            class="rounded-circle img-profile"
-          />
-        {{/if}}
+      <div class="row mt-3">
+        <div class="col-md-4">
+          <button type="reset" class="btn btn-warning  mb-1 w-100">Resetear</button>
+        </div>
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-primary mb-1 w-100">Actualizar</button>
+        </div>
       </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-md-4">
-        <button type="reset" class="btn btn-warning  mb-1 w-100">Resetear</button>
-      </div>
-      <div class="col-md-4">
-        <button type="submit" class="btn btn-primary mb-1 w-100">Actualizar</button>
-      </div>
-    </div>
-  </form>
-  {{#if edit}}
+    </form>
+  {{/ifOr}}
+{{!-- Formulario crear/editar doctor --}}
+  {{#ifOr edit data.edit}}
       <form action="/doctor/{{data._id}}?_method=PUT" method="POST" class="fade-in mb-2 pb-3" >
           <input type="hidden" name="_method" value="PUT">
-  {{/if}}
-  {{#if create}}
-      <form action="/doctor/create" method="POST" class="fade-in mb-2" >
-  {{/if}}
+  {{/ifOr}}
+  {{#ifOr create data.create}}
+      <form action="/doctor/create" method="POST" class="fade-in mb-2 mt-5" >
+  {{/ifOr}}
   <fieldset class="p-3">
-  {{#if edit}}
+  {{#ifOr edit data.edit}}
           <legend>Editar Información</legend>
-  {{/if}}
-  {{#if create}}
+  {{/ifOr}}
+  {{#ifOr create data.create}}
           <legend>Crear un Doctor</legend>
-  {{/if}}
+  {{/ifOr}}
     <div class="row mt-2">
         <div class="form-group col-md-6">
             <label for="firstname" class="form-label mt-3">Nombre(s):</label>
@@ -132,19 +136,18 @@
               value="{{data.phoneNumber}}"
             />
           </div>
-          <div class="form-group col-md-6">
+        <div class="form-group col-md-6">
             <label
-              for="consultationPrice"
+              for="cellphone"
               class="form-label mt-3"
-            >Precio Consulta:</label>
+            >Celular:</label>
             <input
-              type="number"
+              type="tel"
               class="form-control"
-              name="consultationPrice"
-              id="consultationPrice"
-              value="{{data.consultationPrice}}"
+              name="cellphone"
+              id="cellphone"
+              value="{{data.cellphone}}"
             />
-            <small id="consultationPriceHelp" class="form-text text-muted">Ingresa el precio sin comas ni puntos.</small>
           </div>
     </div>
     <div class="row">
@@ -217,32 +220,41 @@
             </select>
             </div>
     </div>
+    {{#ifOr edit data.edit}}
+      <input type="hidden" name="edit" value="edit">
+    {{/ifOr}}
+    {{#ifOr create data.create}}
+      <input type="hidden" name="create" value="create">
+    {{/ifOr}}
   </fieldset>
     <hr />
     <div class="row mt-1">
           <div class="col-md-4">
             <button type="reset" class="btn btn-warning  mb-1 w-100">Resetear</button>
-         {{#if create}}
-            <button type="submit" class="btn btn-primary  mb-1 w-100">Crear</button>
-        {{/if}}
           </div>
-        {{#if edit}}
+        {{#ifOr create data.create}}
+          <div class="col-md-4">
+            <button type="submit" class="btn btn-primary  mb-1 w-100">Crear</button>
+          </div>
+          <div class="col-md-4">
+            <a href="/doctor" class="btn btn-danger mb-1 w-100">Cancelar</a>
+          </div>
+        {{/ifOr}}
+        {{#ifOr edit data.edit }}
           <div class="col-md-4">
             <button type="submit" class="btn btn-primary mb-1 w-100">Editar</button>
           </div>
-        {{/if}}
-
-        
-        <div class="col-md-4">
-          {{#isEqual user.role 'DOCTOR_ROLE'}}
-            <a href="/profile" class="btn btn-danger mb-1 w-100">Cancelar</a> 
+          <div class="col-md-4">
+            {{#isEqual user.role 'ADMIN_ROLE'}}
+              <a href="/doctor" class="btn btn-danger mb-1 w-100">Cancelar</a> 
             {{else}}
-          <a href="/doctor" class="btn btn-danger mb-1 w-100">Cancelar</a>
-
-          {{/isEqual}}
-        </div>
-
+              <a href="/profile" class="btn btn-danger mb-1 w-100">Cancelar</a> 
+            {{/isEqual}}
+          </div>
+        {{/ifOr}}
     </div>
+
+
   
 </form>
 

@@ -32,27 +32,23 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // consultingRoom: {
-    //     type: String,
-    // },
-    consultationPrice: {
-        type: Number,
-        required: true
-    },
     category: {
         type: String,
         required: true
-    },
-    active: {
-        type: Boolean,
-        default: true,
     },
     role: {
         type: String,
         required: true
     },
+    consultingRoom: {
+        type: String,
+    },
     image: {
         type: String
+    },
+    active: {
+        type: Boolean,
+        default: true,
     },
     appointment:{
         type: Schema.Types.ObjectId,
