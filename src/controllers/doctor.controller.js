@@ -28,7 +28,7 @@ export const renderProfile = async(req, res) => {
             Appointment.find(query).populate('doctor', '_id firstname lastname')
                             .populate('client', '_id firstname lastname')
                             .collation({ locale: 'es' })
-                            .sort({ createdAt: -1 })
+                            .sort({ date: -1 })
                             .lean()
                             .exec(),
             Appointment.find(query).countDocuments().lean()
@@ -69,8 +69,7 @@ export const renderPrivateProfile = async(req, res) => {
         }
         const { id } = jwt.verify( token, process.env.SECRETSEED );
         const user = await Doctor.findById(id).lean();
-       
-        console.log(user, 'desde doctor')
+
         if(!user){
             req.flash('alter-warning', 'Error al encontrar doctor');
             res.redirect('/auth/login');
@@ -78,20 +77,37 @@ export const renderPrivateProfile = async(req, res) => {
         };
 
         //Find doctor's appointment in DB
+        const query = { client: undefined, status: 'Pending', doctor: id };
+        const query2 = { status: 'Confirmed', doctor: id };
 
-        const query = { doctor: user._id };
-        const appointment  = await Appointment.find(query).populate('doctor', 'firstname lastname category')
-                                                          .collation({ locale: 'es' })
-                                                          .lean();
+        const [ appointment, confirmed ] = await Promise.all([
+            Appointment.find(query).populate('client', '_id firstname lastname')
+                            .collation({ locale: 'es' })
+                            .sort({ date: -1 })
+                            .lean()
+                            .exec(),
+            Appointment.find(query2).populate('client', '_id firstname lastname')
+                            .collation({ locale: 'es' })
+                            .sort({ date: -1})
+                            .lean()
+                            .exec(),
+        ]);
         appointment.forEach(function(item){
             return item.date = item.date.toISOString().split("T")[0]
-        })  
+        })
+        confirmed.forEach(function(item){
+            return item.date = item.date.toISOString().split("T")[0]
+        })
+          
 
         res.render('profile/doctor',{
             pageName: 'Perfil del Doctor',
             navbar: true,
             appointmentTotal: appointment.length,
             appointment,
+            appointmentTota: appointment.length,
+            confirmed,
+            confirmedTotal: confirmed.length,
             user
         })
     } catch (error) {

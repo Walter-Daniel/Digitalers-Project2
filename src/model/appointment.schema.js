@@ -4,12 +4,6 @@ import mongoose, { Schema, model } from 'mongoose';
 //Las primera cita medica la puede crear el usuario, las demas las crea, reprograma y elimina el medico.
 //el usuario podra pedir la reprogramacion o eliminacion de la cita.
 
-const status = [
-    'Pending',
-    'Placed',
-    'Cancelled',
-];
-
 
 const AppointmentSchema = new Schema({
     date: { 
@@ -36,8 +30,8 @@ const AppointmentSchema = new Schema({
     },
     status: {
         type: String,
-        enum: status,
-        default: status[0],
+        enum: ['Pending', 'Confirmed', 'Completed', 'Cancelled'],
+        default: 'Pending',
     },
     active: {
         type: Boolean,
