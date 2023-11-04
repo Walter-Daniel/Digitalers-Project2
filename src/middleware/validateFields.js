@@ -30,7 +30,8 @@ export const validateFields = (req=request, res, next) => {
             pageName,
             data: req.body,
             messages: req.flash(),
-            user: req.user
+            user: req.user,
+            navbar: true
         })
         return;
     }

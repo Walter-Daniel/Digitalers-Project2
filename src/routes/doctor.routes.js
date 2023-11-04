@@ -47,6 +47,7 @@ router.get('/:id', [
 
     tokenInHeader,
     validateJWT,
+    hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
     validateFields
 
 ], renderFormUpdate);

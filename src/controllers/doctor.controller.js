@@ -113,7 +113,7 @@ export const renderFormCreate = async(req,res) => {
 
     const categories = await Category.find({}).lean();
     const roles = await Role.find({}).lean();
-    res.render('doctor/create',{
+    res.render('doctor/createDoctor',{
         pageName: 'Registrar un nuevo Doctor',
         data: {
             categories,
@@ -139,7 +139,7 @@ export const createDoctor = async(req, res) => {
 
         req.flash('alert-success', 'se ha creado un nuevo doctor');
 
-        res.render('doctor/create', {
+        res.render('doctor/createDoctor', {
             pageName: 'Registrar un nuevo Doctor',
             messages: req.flash(),
             user: req.user,
@@ -173,8 +173,6 @@ export const getDoctors = async(req, res) => {
             Doctor.find(query).lean(),           
             Doctor.count(query)
         ]);
-
-        console.log(req.user)
 
         // return res.json(doctors)
 
@@ -210,9 +208,11 @@ export const renderFormUpdate = async(req,res) => {
         const user = req.user;
         const { id } = req.params;
 
+        console.log(user)
+
         const doctor = await Doctor.findById(id).lean();
 
-        res.render('doctor/create', {
+        res.render('doctor/updateDoctor', {
             pageName: 'Editar Doctor',
             data: doctor,
             user,
@@ -231,20 +231,23 @@ export const updateDoctor = async(req, res) => {
         const {_id, password, email, ...rest }= req.body;
         const { id } = req.params;
 
+        console.log(req.user, 'desde doctooor')
+
         if( password ){
             const salt = bcrypt.genSaltSync();
             rest.password = bcrypt.hashSync(password, salt);
         }
 
         const doctor = await Doctor.findByIdAndUpdate( id, rest );
-        req.flash('alert-success', 'Información editada con éxito');
+        req.flash('alert-success', 'Información modificada con éxito');
 
-        return res.render('doctor/create', {
+        return res.render('doctor/updateDoctor', {
             pageName: 'Editar Doctor',
             messages: req.flash(),
             edit: true,
             navbar: true,
-            data: req.body
+            data: req.body,
+            user: req.user,
         })
 
         return res.status(200).json({
