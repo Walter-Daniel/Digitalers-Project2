@@ -15,10 +15,11 @@
                     </figure>
                 </div>
                 <div class="col-md-6">
-                    {{doctor.category}}
-                    HOLAAAAAAAAAAAAAAAAAAAAAAAA
-                    {{user.email}}
-                    {{user._id}}
+                    <div class="list-group">
+                        <li class="list-group-item">{{doctor.lastname}}, {{doctor.firstname}}</li>
+                        <li class="list-group-item">{{doctor.category}}</li>
+                        <li class="list-group-item">{{doctor.email}}</li>
+                    </div>
                 </div>
         </div>
         <div class="row">

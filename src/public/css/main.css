@@ -122,15 +122,47 @@ aside {
     }
 }
 
-
-
-.text {
+/*****************************************************
+                    HERO
+******************************************************/
+.hero-image {
+    /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/img/header.jpg");
+  
+    /* Set a specific height */
+    height: 100vh;
+  
+    /* Position and center the image to scale nicely on all screens */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+  
+  /* Place text in the middle of the image */
+  .hero-text {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+  }
+.hero-text h1 {
+    font-size: 5rem;
+    border: 1px solid white;
+    padding: 1rem;
+}
+.hero-text p{
+    font-size: 1.3rem;
+}
+/* .text {
     font-size: 18px;
     font-weight: 500;
     color: white;
     width: 100%;
     height: 100%;
-}
+} */
 .sidebar li {
     list-style: none;
     margin-top: 10px;

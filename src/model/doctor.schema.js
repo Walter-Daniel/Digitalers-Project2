@@ -32,6 +32,9 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    // consultingRoom: {
+    //     type: String,
+    // },
     consultationPrice: {
         type: Number,
         required: true

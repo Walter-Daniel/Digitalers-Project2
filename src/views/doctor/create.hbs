@@ -7,7 +7,7 @@
     enctype="multipart/form-data"
   >
     <div class="row">
-      <div class="col-6">
+      <div class="col-md-6">
         <fieldset>
           <legend>Editar foto de perfil</legend>
           <div class="mb-3 p-2 mt-3">
@@ -29,12 +29,12 @@
           </div>
         </fieldset>
       </div>
-      <div class="col-6 image-update">
+      <div class="col-md-6 image-update">
         {{#if data.image}}
           <img
             src={{data.image}}
             alt="avatar"
-            class="rounded-circle img-profile"
+            class="rounded-circle img-profile mt-2"
           />
         {{else}}
           <img
@@ -46,20 +46,20 @@
       </div>
     </div>
     <div class="row mt-3">
-      <div class="col-4">
-        <button type="reset" class="btn btn-warning mt-3 mb-1 w-100">Resetear</button>
+      <div class="col-md-4">
+        <button type="reset" class="btn btn-warning  mb-1 w-100">Resetear</button>
       </div>
-      <div class="col-4">
-        <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Actualizar</button>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary mb-1 w-100">Actualizar</button>
       </div>
     </div>
   </form>
   {{#if edit}}
-      <form action="/doctor/{{data._id}}?_method=PUT" method="POST" class="fade-in" >
+      <form action="/doctor/{{data._id}}?_method=PUT" method="POST" class="fade-in mb-2 pb-3" >
           <input type="hidden" name="_method" value="PUT">
   {{/if}}
   {{#if create}}
-      <form action="/doctor/create" method="POST" class="fade-in" >
+      <form action="/doctor/create" method="POST" class="fade-in mb-2" >
   {{/if}}
   <fieldset class="p-3">
   {{#if edit}}
@@ -69,7 +69,7 @@
           <legend>Crear un Doctor</legend>
   {{/if}}
     <div class="row mt-2">
-        <div class="form-group col-6">
+        <div class="form-group col-md-6">
             <label for="firstname" class="form-label mt-3">Nombre(s):</label>
             <input
               type="text"
@@ -79,7 +79,7 @@
               value="{{data.firstname}}"
             />
           </div>
-          <div class="form-group col-6">
+          <div class="form-group col-md-6">
             <label for="lastname" class="form-label mt-3">Apellido(s):</label>
             <input
               type="text"
@@ -91,7 +91,7 @@
           </div>
     </div>
     <div class="row">
-        <div class="form-group col-6">
+        <div class="form-group col-md-6">
             <label
               for="email"
               class="form-label mt-3"
@@ -104,7 +104,7 @@
               value="{{data.email}}"
             />
           </div>
-          <div class="form-group col-6">
+          <div class="form-group col-md-6">
             <label
               for="password"
               class="form-label mt-3"
@@ -119,7 +119,7 @@
           </div>
     </div>
     <div class="row">
-        <div class="form-group col-6">
+        <div class="form-group col-md-6">
             <label
               for="phoneNumber"
               class="form-label mt-3"
@@ -132,7 +132,7 @@
               value="{{data.phoneNumber}}"
             />
           </div>
-          <div class="form-group col-6">
+          <div class="form-group col-md-6">
             <label
               for="consultationPrice"
               class="form-label mt-3"
@@ -148,7 +148,7 @@
           </div>
     </div>
     <div class="row">
-        <div class="form-group col-4">
+        <div class="form-group col-md-4">
             <label for="category" class="form-label mt-3">Selecciona una categoría</label>
             <select 
                   class="form-select" 
@@ -169,7 +169,7 @@
 
             </select>
         </div>
-        <fieldset class="form-group col-4 text-center">
+        <fieldset class="form-group col-md-4 text-center">
             <p class="m-3">Estado:</p>
             <div class="d-flex justify-content-center">
                 <div class="form-check me-5">
@@ -203,7 +203,7 @@
                 </label>
             </div>
             </fieldset>
-            <div class="form-group col-4">
+            <div class="form-group col-md-4">
             <label for="role" class="form-label mt-3">Selecciona un rol</label>
             <select 
                   class="form-select" 
@@ -219,25 +219,25 @@
     </div>
   </fieldset>
     <hr />
-    <div class="row mt-3">
-          <div class="col-4">
-            <button type="reset" class="btn btn-warning mt-3 mb-1 w-100">Resetear</button>
+    <div class="row mt-1">
+          <div class="col-md-4">
+            <button type="reset" class="btn btn-warning  mb-1 w-100">Resetear</button>
          {{#if create}}
-            <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Crear</button>
+            <button type="submit" class="btn btn-primary  mb-1 w-100">Crear</button>
         {{/if}}
           </div>
         {{#if edit}}
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Editar</button>
+          <div class="col-md-4">
+            <button type="submit" class="btn btn-primary mb-1 w-100">Editar</button>
           </div>
         {{/if}}
 
         
-        <div class="col-4">
+        <div class="col-md-4">
           {{#isEqual user.role 'DOCTOR_ROLE'}}
-            <a href="/profile" class="btn btn-danger mt-3 mb-1 w-100">Cancelar</a> 
+            <a href="/profile" class="btn btn-danger mb-1 w-100">Cancelar</a> 
             {{else}}
-          <a href="/doctor" class="btn btn-danger mt-3 mb-1 w-100">Cancelar</a>
+          <a href="/doctor" class="btn btn-danger mb-1 w-100">Cancelar</a>
 
           {{/isEqual}}
         </div>
