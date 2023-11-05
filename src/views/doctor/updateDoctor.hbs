@@ -1,0 +1,29 @@
+<div class="container">
+{{!-- Formulario subir imagen --}}
+    {{>imageForm}}
+{{!-- Formulario crear/editar doctor --}}
+    <form action="/doctor/{{data._id}}?_method=PUT" method="POST" class="fade-in mb-2 pb-3" >
+        <input type="hidden" name="_method" value="PUT">
+        <fieldset class="p-3">
+            <legend>Editar Información</legend>
+            {{>createDoctorForm}}
+            <input type="hidden" name="edit" value="edit"> 
+        </fieldset>
+    <hr />
+        <div class="row mt-1">
+          <div class="col-md-4">
+            <button type="reset" class="btn btn-warning  mb-1 w-100">Resetear</button>
+          </div>
+          <div class="col-md-4">
+            <button type="submit" class="btn btn-primary mb-1 w-100">Editar</button>
+          </div>
+          <div class="col-md-4">
+              
+            {{#isEqual user.role 'DOCTOR_ROLE'}}
+              <a href="/doctor/profile" class="btn btn-danger mb-1 w-100">Cancelar</a> 
+              {{else}}
+              <a href="/doctor" class="btn btn-danger mb-1 w-100">Cancelar</a> 
+            {{/isEqual}}
+        </div> 
+    </form>
+</div>

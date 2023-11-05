@@ -18,7 +18,6 @@
           <li class="nav-item">
             <a class="nav-link" href="/doctor/profile">Mi perfil</a>
           </li>
-          
         {{/isEqual}}
         
         {{#isEqual user.role 'USER_ROLE'}}
@@ -26,32 +25,17 @@
             <a class="nav-link" href="/doctor/profile">Mi perfil</a>
           </li>
         {{/isEqual}}
+
         {{#isEqual user.role 'ADMIN_ROLE'}}
           <li class="nav-item">
             <a class="nav-link" href="/admin">Administración</a>
           </li>
         {{/isEqual}}
+
           <li class="nav-item ">
             <a class="nav-link " href="/auth/logout" >Cerrar Sesión</a>
           </li>
-            
-        {{!-- {{#isEqual user.role 'USER_ROLE'}}
-          <li class="nav-item">
-            <a class="nav-link" href="/user/profile">Mi perfil</a>
-          </li>
-          <li class="nav-item ">
-              <a class="nav-link " href="/auth/logout" >Cerrar Sesión</a>
-            </li>
-          {{else}}
-            <li class="nav-item">
-              <a class="nav-link" href="/auth/login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/auth/register">Register</a>
-            </li>
-        {{/isEqual}} --}}
-        
-       
+          
       </ul>
     </div>
   </div>

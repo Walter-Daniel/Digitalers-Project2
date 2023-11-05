@@ -47,6 +47,7 @@ router.get('/:id', [
 
     tokenInHeader,
     validateJWT,
+    hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
     validateFields
 
 ], renderFormUpdate);
@@ -79,8 +80,8 @@ router.delete('/:id',[
     tokenInHeader,
     validateJWT,
     isAdminRole,
-    check('id', 'No es un id válido!').isMongoId(),
-    check('id').custom( findUserId ),
+    // check('id', 'No es un id válido!').isMongoId(),
+    // check('id').custom( findUserId ),
     validateFields
 
 ], deleteDoctor);

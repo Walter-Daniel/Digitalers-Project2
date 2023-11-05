@@ -113,7 +113,7 @@ export const renderFormCreate = async(req,res) => {
 
     const categories = await Category.find({}).lean();
     const roles = await Role.find({}).lean();
-    res.render('doctor/create',{
+    res.render('doctor/createDoctor',{
         pageName: 'Registrar un nuevo Doctor',
         data: {
             categories,
@@ -139,18 +139,13 @@ export const createDoctor = async(req, res) => {
 
         req.flash('alert-success', 'se ha creado un nuevo doctor');
 
-        res.render('doctor/create', {
+        res.render('doctor/createDoctor', {
             pageName: 'Registrar un nuevo Doctor',
             messages: req.flash(),
             user: req.user,
-            create: true
+            create: true,
+            navbar: true
         })
-
-        // res.status(201).json({
-        //     ok: true,
-        //     msg: 'Doctor creado con éxito',
-        //     doctor
-        // });
 
     } catch (error) {
 
@@ -168,13 +163,14 @@ export const getDoctors = async(req, res) => {
 
    try {
         // const { limit = 10, from } = req.query;
-        const query = { role: 'DOCTOR_ROLE' }
-        const [doctors, total] = await Promise.all([
-            Doctor.find(query).lean(),           
-            Doctor.count(query)
+        const query = { role: 'DOCTOR_ROLE' };
+        const query2 = { role: 'DOCTOR_ROLE', active: true };
+        const query3 = { role: 'DOCTOR_ROLE', active: false };
+        const [doctors, doctorActive, doctorInactive] = await Promise.all([
+            Doctor.find(query).lean().sort({ active: -1 }),           
+            Doctor.count(query2),
+            Doctor.count(query3),
         ]);
-
-        console.log(req.user)
 
         // return res.json(doctors)
 
@@ -182,16 +178,10 @@ export const getDoctors = async(req, res) => {
             pageName: 'Lista de médicos',
             doctors,
             doctorsTotal: doctors.length,
+            doctorActive,
+            doctorInactive,
             navbar: true,
             user: req.user
-        })
-        return res.status(200).send({
-                ok: true,
-                message: 'Doctores obtenidos correctamente',
-                doctors,
-                totalPetition: doctors.length,
-                total
-
         })
 
    } catch (error) {
@@ -212,7 +202,7 @@ export const renderFormUpdate = async(req,res) => {
 
         const doctor = await Doctor.findById(id).lean();
 
-        res.render('doctor/create', {
+        res.render('doctor/updateDoctor', {
             pageName: 'Editar Doctor',
             data: doctor,
             user,
@@ -237,14 +227,15 @@ export const updateDoctor = async(req, res) => {
         }
 
         const doctor = await Doctor.findByIdAndUpdate( id, rest );
-        req.flash('alert-success', 'Información editada con éxito');
+        req.flash('alert-success', 'Información modificada con éxito');
 
-        return res.render('doctor/create', {
+        return res.render('doctor/updateDoctor', {
             pageName: 'Editar Doctor',
             messages: req.flash(),
             edit: true,
             navbar: true,
-            data: req.body
+            data: req.body,
+            user: req.user,
         })
 
         return res.status(200).json({
@@ -267,10 +258,10 @@ export const deleteDoctor = async(req, res) => {
         const userID = req.params.id;
         const doctor = await Doctor.findByIdAndUpdate( userID, { active: false });
 
-        return res.status(200).send({
+        return res.status(200).json({
             ok: true,
-            message: 'Doctor eliminado con éxito',
-            doctor,
+            message: 'Se ha dado de baja al Doctor',
+            doctor
         });
 
     } catch (error) {
