@@ -10,7 +10,9 @@ export const validateFields = (req=request, res, next) => {
         req.flash('alert-danger', errors.array().map(e => e.msg));
         let urlOriginal = req.originalUrl;
         console.log(urlOriginal, 'estamos aquí')
-        const url = urlOriginal.slice(1)
+        const url = urlOriginal.slice(1);
+
+        console.log(url)
         const urlPrev = req.session.prevUrl
         let pageName = '';
         if(url.includes('register')){
@@ -22,9 +24,10 @@ export const validateFields = (req=request, res, next) => {
         if(url.includes('images') ){
            return res.redirect(urlPrev)
         }
-        if(url.includes('user') ){
-           return res.redirect(urlPrev)
-        }
+        // if(url.includes('user') ){
+        //     console.log('hermos caído aquí')
+        //    return res.redirect(urlPrev)
+        // }
         res.render(url, {
             pageName,
             data: req.body,

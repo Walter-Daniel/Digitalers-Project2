@@ -9,24 +9,38 @@ import { v2 as cloudinary } from 'cloudinary';
 cloudinary.config( process.env.CLOUDINARY_URL )
 config();
 
+export const renderCreateUser = async(req, res) => {
+    res.render('user/create', {
+        pageName: 'Crear Usuario',
+        user: req.user,
+        navbar: true
+    })
+}
 export const createUser = async(req, res=response) => {
 
-    const { firstname, lastname, email, password, role } = req.body;
-
+    const { firstname, lastname, email, password, role, adress, locality, phoneNumber, cellphone } = req.body;
+    
     try {
+        const isRole = req.user.role;
+        let user = '';
 
-        const user = new User({firstname, lastname, email, password, role });
+        if(isRole === 'ADMIN_ROLE'){
+            user = new User({firstname, lastname, email, password, role, adress, locality, phoneNumber, cellphone });
+        }else{
+            user = new User({firstname, lastname, email, password, role });
+        }
+
         const salt = bcrypt.genSaltSync();
         user.password = bcrypt.hashSync(password, salt);
-
         await user.save();
 
-        req.flash('alert-success', 'Su cuenta ha sido creada con éxito');
-
-        res.render('auth/register', {
-            pageName: 'Registro',
-            messages: req.flash()
-        })
+        if(isRole === 'ADMIN_ROLE'){
+            req.flash('alert-success', 'El paciente ha sido registrado con éxito');
+            res.redirect('/user') 
+        }else{
+            req.flash('alert-success', 'Su cuenta ha sido creada con éxito');
+            res.redirect('/auth/register')
+        }
         return;
 
     } catch (error) {
@@ -130,42 +144,50 @@ export const updateUserFormRender = async(req, res) => {
     res.render('profile/form', {
         pageName: 'Editar Perfil del Usuario',
         navbar: true,
-        user
+        data: user,
+        user: req.user
     })
 
 }
 export const updateUser = async(req=request, res) => {
 
 try {
-    const {_id, password, email,...rest }= req.body;
+    const {password, email, newPassword, confirmPassword, ...rest }= req.body;
     const { id } = req.params;
 
-    if( password ){
-        const salt = bcrypt.genSaltSync();
-        rest.password = bcrypt.hashSync(password, salt);
+    const currentUser = await User.findById(id);
+
+    if(!password){
+        await User.findByIdAndUpdate( id, rest);
+        req.flash('alert-success', 'El usuario se ha editado con éxito!');
+        return res.redirect(`/user/profile/update/${id}`)
+    };
+
+    const userPassword = currentUser.password;
+
+    console.log(newPassword, confirmPassword)
+    const passwordMatch = await bcrypt.compare(password, userPassword);
+    if(!passwordMatch){
+        req.flash('alert-danger', 'Tu contraseña es inválida, intentalo de nuevo.');
+        return res.redirect(`/user/profile/update/${id}`);
+    };
+
+    if(newPassword !== confirmPassword){
+        req.flash('alert-danger', 'Contraseñas no coinciden');
+        return res.redirect(`/user/profile/update/${id}`);
+    };
+
+    const hashedPassword = await bcrypt.hash(confirmPassword, 10);
+ 
+    const dataUpdate = {
+        hashedPassword,
+        ...rest
     }
-
-    // const passwordMatch = await bcrypt.compare(currentPassword, user.password);
-
-    // if (!passwordMatch) {
-    //     return res.status(401).send('Current password is incorrect');
-    // }
-
-    // const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    // user.password = hashedPassword;
-
-    // user.cellphone = cellphone;
-    // await user.save();
-
-    const user = await User.findByIdAndUpdate( id, rest);
-    req.flash('alert-success', 'El usuario se ha editado con éxito!');
-    return res.redirect(`/user/profile/update/${id}`)
-    return res.status(200).json({
-        ok: true,
-        message: 'Usuario actualizado con éxito',
-        user
-    });
+   
+    await User.findByIdAndUpdate( id, dataUpdate);
+    req.flash('alert-danger', 'Tu contraseña es inválida, intentalo de nuevo.');
+    return res.redirect(`/user/profile/update/${id}`);
+    
 } catch (error) {
     return res.status(500).send({
         ok: false,

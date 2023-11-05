@@ -1,6 +1,6 @@
 <div class="container">
   <form
-    action="/images/{{user._id}}"
+    action="/images/{{data._id}}"
     method="POST"
     class="fade-in mb-5 mt-5 needs-validation"
     novalidate
@@ -30,9 +30,9 @@
         </fieldset>
       </div>
       <div class="col-6 image-update">
-        {{#if user.image}}
+        {{#if data.image}}
           <img
-            src={{user.image}}
+            src={{data.image}}
             alt="avatar"
             class="rounded-circle img-profile"
           />
@@ -55,7 +55,7 @@
     </div>
   </form>
   <form
-    action="/user/{{user._id}}?_method=PUT"
+    action="/user/{{data._id}}?_method=PUT"
     method="POST"
     class="fade-in needs-validation"
     id="updateForm"
@@ -73,7 +73,7 @@
               class="form-control"
               name="firstname"
               id="firstname"
-              value="{{user.firstname}}"
+              value="{{data.firstname}}"
               required
             />
             <div class="invalid-feedback">
@@ -87,7 +87,7 @@
               class="form-control"
               name="lastname"
               id="lastname"
-              value="{{user.lastname}}"
+              value="{{data.lastname}}"
               required
             />
             <div class="invalid-feedback">
@@ -103,7 +103,7 @@
               class="form-control"
               name="email"
               id="email"
-              value="{{user.email}}"
+              value="{{data.email}}"
               required
             />
             <div class="invalid-feedback">
@@ -120,7 +120,7 @@
               class="form-control"
               name="phoneNumber"
               id="phoneNumber"
-              value="{{user.phoneNumber}}"
+              value="{{data.phoneNumber}}"
               {{!-- required --}}
             />
             {{!-- <div class="invalid-feedback">
@@ -134,7 +134,7 @@
               class="form-control"
               name="cellphone"
               id="cellphone"
-              value="{{user.cellphone}}"
+              value="{{data.cellphone}}"
               required
             />
             <div class="invalid-feedback">
@@ -150,7 +150,7 @@
               class="form-control"
               name="adress"
               id="adress"
-              value="{{user.adress}}"
+              value="{{data.adress}}"
               {{!-- required --}}
             />
             {{!-- <div class="invalid-feedback">
@@ -164,13 +164,15 @@
               class="form-control"
               name="locality"
               id="locality"
-              value="{{user.locality}}"
+              value="{{data.locality}}"
               {{!-- required --}}
             />
             {{!-- <div class="invalid-feedback">
               Debes ingresar una localidad
             </div> --}}
           </div>
+          <input type="hidden" name="idClient" value="{{data._id}}">
+          {{data._id}}
         </div>
       </fieldset>
     </div>
@@ -237,9 +239,12 @@
         >Editar</button>
       </div>
       <div class="col-4">
-        <a href="/user/profile" class="btn btn-danger mt-3 mb-1 w-100">Cancelar</a>
+        {{#isEqual user.role 'ADMIN_ROLE'}}
+          <a href="/user" class="btn btn-danger mt-3 mb-1 w-100">Cancelar</a>
+        {{else}}
+          <a href="/user/profile" class="btn btn-danger mt-3 mb-1 w-100">Cancelar</a>
+        {{/isEqual}}
       </div>
     </div>
   </form>
-
 </div>
