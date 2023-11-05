@@ -70,15 +70,18 @@ export const renderUserProfile = async(req=request, res=response) => {
              appointmentTotal: appointment.length
          });
 }
+
+//Render user list
 export const getUsers = async(req, res) => {
    try {
         const { limit = 10, from } = req.query;
-        const query = { active: true }
+        const query = { active: false }
 
-        const [users, total] = await Promise.all([
-            User.find(query)
+        const [users, inactive] = await Promise.all([
+            User.find({})
                 .skip(Number(from))
-                .limit(Number(limit)),
+                .limit(Number(limit))
+                .lean(),
             User.count(query)
         ]);
 
@@ -87,8 +90,17 @@ export const getUsers = async(req, res) => {
                 ok: true,
                 message: 'No se encontró ningun usuario'
             })
-        }
+        };
 
+        return res.render('admin/user', {
+            pageName: 'Lista de pacientes',
+            navbar: true,
+            user: req.user,
+            users,
+            total: users.length,
+            active: (users.length - inactive),
+            inactive
+        });
         return res.status(200).send({
                 ok: true,
                 message: 'Usuarios obtenidos correctamente',
