@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="d-flex justify-content-between p-3">
+    <h1>Lista de médicos</h1>
+    <a href="doctor/create" class="btn btn-primary d-flex justify-content-center align-items-center h-100" role="button">
+      <span><i class="fa-solid fa-user-plus pe-2"></i></span>
+      Crear
+    </a>
+  </div>
+
+  <div class="row text-center p-3">
+    <div class="col border p-1">
+      <h5>Activos: {{doctorActive}}</h5>   
+    </div>
+    <div class="col border p-1">
+      <h5>Inactivos: {{doctorInactive}}</h5>
+    </div>
+    <div class="col border p-1">
+      <h5>Total: {{doctorsTotal}}</h5>
+    </div>
+  </div>
+    
+  <table class="table border" id="action">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre(s)</th>
+        <th>Apellido(s)</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Celular</th>
+        <th>Categoría</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each doctors}}
+        <tr 
+          {{#isEqual active false}}
+             class="table-secondary"
+          {{/isEqual}}     
+        > 
+          <td>{{_id}}</td>
+          <td>{{firstname}}</td>
+          <td>{{lastname}}</td>
+          <td>{{email}}</td>
+          <td>{{phoneNumber}}</td>
+          <td>{{cellphone}}</td>
+          <td>{{category}}</td>
+          <td>{{active}}</td>
+          <td>
+            <a href="/doctor/{{_id}}"  data-edit="edit"  class="btn btn-success read-button" >Editar</a>
+            <button data-id="{{_id}}" class="btn btn-danger delete-btn" id="delete">Eliminar</button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

@@ -2,7 +2,9 @@ import { response } from "express";
 
 export const renderAdminPage = (req, res =response) => {
 
-    res.render('profile/admin', {
-        pageName: 'Administración',
+    res.render('admin/dashboard', {
+        pageName: 'Dashboard',
+        user: req.user,
+        navbar: true
     })
 }

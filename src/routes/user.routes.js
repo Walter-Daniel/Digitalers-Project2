@@ -44,18 +44,19 @@ router.put('/:id', [
     validateFields
 ], updateUser);
 
-//Traer usuarios de la base de datos
+//Traer usuario de la base de datos
 router.get('/profile',[
     tokenInHeader,
     validateJWT
 ], renderUserProfile)
+
+//Render user list - ADMIN
 router.get('/', [
     tokenInHeader,
     validateJWT,
     isAdminRole,
-    check('from').custom( fromControl ),
-    validateFields
-    
+    // check('from').custom( fromControl ),
+    validateFields 
 ], getUsers);
 
 router.delete('/:id',[
