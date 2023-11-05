@@ -1,0 +1,125 @@
+<div class="row mb-3">
+    <fieldset class="form-group border p-3 mt-3">
+    <legend>Crear usuario</legend>
+    <div class="row">
+        <div class="form-group col-6">
+        <label for="firstname" class="form-label mt-3">Nombre(s):</label>
+        <input
+            type="text"
+            class="form-control"
+            name="firstname"
+            id="firstname"
+            value="{{data.firstname}}"
+            required
+        />
+        <div class="invalid-feedback">
+            Debes ingresar un nombre
+        </div>
+        </div>
+        <div class="form-group col-6">
+        <label for="lastname" class="form-label mt-3">Apellido(s):</label>
+        <input
+            type="text"
+            class="form-control"
+            name="lastname"
+            id="lastname"
+            value="{{data.lastname}}"
+            required
+        />
+        <div class="invalid-feedback">
+            Debes ingresar un apellido
+        </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-6">
+        <label for="email" class="form-label mt-3">Correo:</label>
+        <input
+            type="email"
+            class="form-control"
+            name="email"
+            id="email"
+            value="{{data.email}}"
+            required
+        />
+        <div class="invalid-feedback">
+            Debes ingresar un email
+        </div>
+        </div>
+        <div class="form-group col-6">
+            <label for="password" class="form-label mt-3">Contraseña:</label>
+            <input
+                type="password"
+                class="form-control"
+                name="password"
+                id="password"
+                autocomplete="off"
+            />
+            <div class="invalid-feedback">
+                Debes ingresar tu contraseña actual
+            </div>
+            </div>
+        </div>
+    <div class="row">
+        <div class="form-group col-6">
+        <label for="phoneNumber" class="form-label mt-3">Teléfono:</label>
+        <input
+            type="tel"
+            class="form-control"
+            name="phoneNumber"
+            id="phoneNumber"
+            value="{{data.phoneNumber}}"
+            {{!-- required --}}
+        />
+        {{!-- <div class="invalid-feedback">
+            Debes ingresar un número de teléfono
+        </div> --}}
+        </div>
+        <div class="form-group col-6">
+        <label for="cellphone" class="form-label mt-3">Celular:</label>
+        <input
+            type="tel"
+            class="form-control"
+            name="cellphone"
+            id="cellphone"
+            value="{{data.cellphone}}"
+            required
+        />
+        <div class="invalid-feedback">
+            Debes ingresar un número de celular
+        </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-6">
+        <label for="adress" class="form-label mt-3">Dirección:</label>
+        <input
+            type="text"
+            class="form-control"
+            name="adress"
+            id="adress"
+            value="{{data.adress}}"
+            {{!-- required --}}
+        />
+        {{!-- <div class="invalid-feedback">
+            Debes ingresar tu dirección
+        </div> --}}
+        </div>
+        <div class="col-6">
+        <label for="locality" class="form-label mt-3">Localidad:</label>
+        <input
+            type="text"
+            class="form-control"
+            name="locality"
+            id="locality"
+            value="{{data.locality}}"
+            {{!-- required --}}
+        />
+        {{!-- <div class="invalid-feedback">
+            Debes ingresar una localidad
+        </div> --}}
+        </div>
+    </div>
+    </fieldset>
+</div>
+<hr />

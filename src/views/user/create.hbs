@@ -1,0 +1,22 @@
+<div class="container mt-5">
+  <form
+    action="/user/create"
+    method="POST"
+    class="fade-in needs-validation"
+    id="updateForm"
+    novalidate
+  >
+    {{>createUserForm}}
+    <div class="row mt-3">
+      <div class="col-md-4">
+        <button type="reset" class="btn btn-warning mt-3 mb-1 w-100">Resetear Formulario</button>
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Crear Usuario</button>
+      </div>
+      <div class="col-md-4">
+          <a href="/user" class="btn btn-danger mt-3 mb-1 w-100">Cancelar</a>
+      </div>
+    </div>
+  </form>
+</div>
