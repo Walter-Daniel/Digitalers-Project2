@@ -4,7 +4,6 @@ import { validationResult } from 'express-validator';
 
 export const validateFields = (req=request, res, next) => {
     const errors = validationResult(req);
-    console.log(req.user)
     const {id} = req.params
     // console.log(req.body)
     if(!errors.isEmpty()){
