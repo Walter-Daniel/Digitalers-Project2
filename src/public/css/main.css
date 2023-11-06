@@ -180,12 +180,33 @@
     justify-content: center;
     border-radius: 50%;
 }
-
+/*****************************************************
+                    BUTTON
+******************************************************/
+.btn-custom{
+    background-color: #6351ce;
+    color: #fff;
+    transition: all 0.4s;
+}
+.btn-custom:focus,
+.btn-custom:hover{
+    background-color: #403487;
+    color: white;
+    transform: scale(1.01);
+}
 /* .nav-l a {
     display: flex;
     align-items: center;
     justify-content: space-between;
 } */
+
+/*****************************************************
+                    SERVICE
+******************************************************/
+
+li {
+    list-style: none;
+}
 
 .navbar-custom li {
     min-width: 8rem;
@@ -195,6 +216,13 @@
     width: 100%;
 }
 
+.navbar-custom li a:focus,
+.navbar-custom li a:hover{
+    color: #ff990b;
+}
+.navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
+    color: #ff990b;
+}
 .sidebar li .icon {
     display: flex;
     justify-content: center;

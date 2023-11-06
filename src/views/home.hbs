@@ -1,7 +1,118 @@
-<div class="container">
-    <h2 class="mt-4">Listado de doctores</h2>
-    <hr>
+<div class="home">
+    {{!-- ABOUT --}}
+    <div class="row mt-4" id="about">
+        <div class="col">
+            <h2>Bienvenidos a Clínica del Sol</h2>
+            <hr />
+            <p>
+                En Clínica del Sol, nuestra principal prioridad es su salud y bienestar. Nos enorgullece ofrecer una atención médica de alta calidad, respaldada por un equipo de profesionales médicos altamente capacitados y apasionados por el cuidado de nuestros pacientes.
+            </p>
+        </div>
+    </div>
+
+
+    <div class="row mt-4" id="about">
+        <div class="col-md-6 p-4">
+            <div class="row">
+                <h2>Nuestra Misión</h2>
+                <hr />
+                <p>   
+                    Nuestra misión es proporcionar atención médica comprensiva y personalizada para toda su familia. Estamos comprometidos a mantenerlo saludable y proporcionarle las herramientas y el conocimiento necesarios para llevar una vida plena y saludable.
+                </p>
+            </div>
+            <div class="row">
+                <img src="/img/mision.jpg" alt="">
+            </div>
+        </div>
+        <div class="col-md-6 p-4 ">
+            <div class="row">
+                <h2>Nuestro Equipo</h2>
+                <hr>
+                <p>
+                    Contamos con un equipo de médicos, enfermeros y personal de apoyo altamente calificado y compasivo que se dedica a brindar la mejor atención posible a nuestros pacientes. Nuestro compromiso es escuchar sus necesidades y preocupaciones y trabajar juntos para desarrollar un plan de atención que sea adecuado para usted.
+                </p>
+                
+                </p>
+            </div>
+            <div class="row">
+                <img src="/img/equipo.jpg" alt="">
+            </div>
+        </div>
+    </div>
+    <div style="background-color: #1c2331; color: white;" id="service">
+        <div class="row mt-4">
+            <div class="col-md-6" style="padding: 1.5rem 0 0 2rem;">
+                <h2>Nuestros servicios</h2>
+                <hr />
+                <p>
+                    En Clínica del Sol, ofrecemos una amplia gama de servicios médicos, que incluyen:
+                </p>
+                <ul class="service-list">
+                    <li>
+                        <i class="fa-regular fa-circle-right px-2" style="color: #ff990b"></i>
+                        Consultas médicas generales
+                    </li>
+                    <li>
+                        <i class="fa-regular fa-circle-right px-2" style="color: #ff990b"></i>
+                        Especialidades médicas
+                    </li>
+                    <li>
+                        <i class="fa-regular fa-circle-right px-2" style="color: #ff990b"></i>
+                        Exámenes de diagnóstico    
+                    </li>
+                    <li>
+                        <i class="fa-regular fa-circle-right px-2" style="color: #ff990b"></i>
+                        Atención pediátrica
+                    </li>
+                    <li>
+                        <i class="fa-regular fa-circle-right px-2" style="color: #ff990b"></i>
+                        Atención ginecológica
+                    </li>
+                    <li>
+                        <i class="fa-regular fa-circle-right px-2" style="color: #ff990b"></i>
+                        Atención geriátrica
+                    </li>
+                    <li>
+                        <i class="fa-regular fa-circle-right px-2" style="color: #ff990b"></i>
+                        Cuidado de la salud mental
+                    </li>
+                    <li>
+                        <i class="fa-regular fa-circle-right px-2" style="color: #ff990b"></i>
+                        Servicios de prevención y bienestar
+                    </li>
+                </ul>            
+            </div>
+            <div class="col-md-6">
+                <img src="/img/servicios.avif" alt="" style="width: 100%;">
+            </div>
+            
+        </div>
+    </div>
+    
+
     <div class="row">
+        <div class="col-md-6 p-4">
+            <h2>Nuestra Filosofía</h2>
+            <hr />
+            <p>
+                En Clínica del Sol, creemos en una atención centrada en el paciente. Cada paciente es único, y abordamos su atención de manera personalizada, teniendo en cuenta sus necesidades individuales y su historial médico.
+            </p>
+        </div>
+        <div class="col-md-6 p-4">
+            <h2>Programa una cita</h2>
+            <hr />
+        <p>
+            Estamos listos para atenderlo y proporcionarle la atención médica que se merece. Si necesita programar una cita o tiene alguna pregunta, no dude en ponerse en contacto con nosotros. Esperamos ser su recurso confiable para la atención médica de calidad
+        </p>
+        </div>
+    </div>
+
+
+
+    {{!-- LISTA DE DOCTORES --}}
+    <div class="row mt-4">
+    <h2 >Listado de doctores</h2>
+    <hr>
         {{#each doctors}}
         <div class="card m-3" style="width: 18rem; padding: 0;">
             {{#if image}}
@@ -22,4 +133,5 @@
         No se encontro ningún doctor.
     </div>
     {{/isEqual}}
+
 </div>
