@@ -4,6 +4,7 @@ import { validationResult } from 'express-validator';
 
 export const validateFields = (req=request, res, next) => {
     const errors = validationResult(req);
+    const user = req.user;
     const {id} = req.params
     // console.log(req.body)
     if(!errors.isEmpty()){
@@ -28,6 +29,14 @@ export const validateFields = (req=request, res, next) => {
         //     console.log('hermos caído aquí')
         //    return res.redirect(urlPrev)
         // }
+        
+        if(url.includes('appointment/create') ){
+            if(user.role === 'DOCTOR_ROLE'){
+                return res.redirect('/doctor/profile')
+            }else{
+                return res.redirect('/appointment')
+            }
+         }
         res.render(url, {
             pageName,
             data: req.body,

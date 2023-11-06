@@ -19,7 +19,7 @@
     </div>
   </div>
     
-  <table class="table border" id="action">
+  <table class="table border" id="userEdit">
     <thead>
       <tr>
         <th>ID</th>
@@ -50,7 +50,7 @@
           <td>{{active}}</td>
           <td>
             <a href="/user/profile/update/{{_id}}"  data-edit="edit"  class="btn btn-success read-button" >Editar</a>
-            <button data-id="{{_id}}" class="btn btn-danger delete-btn" id="delete">Eliminar</button>
+            <button data-id="{{_id}}" data-delete="{{role}}" class="btn btn-danger delete-btn" id="delete">Eliminar</button>
           </td>
         </tr>
       {{/each}}

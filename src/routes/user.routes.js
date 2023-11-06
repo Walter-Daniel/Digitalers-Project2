@@ -70,9 +70,6 @@ router.delete('/:id',[
     tokenInHeader,
     validateJWT,
     isAdminRole,
-    // hasARole('ADMIN_ROLE', 'DOCTOR_ROLE'),
-    check('id', 'No es un id válido!').isMongoId(),
-    check('id').custom( findUserId ),
     validateFields
 
 ], deleteUser);

@@ -10,14 +10,15 @@ const router = express.Router();
 
 router.post('/create', [
 
-    // tokenInHeader,
-    // validateJWT,
-    // hasARole('ADMIN_ROLE', 'SECRETARY_ROLE'),
+    tokenInHeader,
+    validateJWT,
+    hasARole('ADMIN_ROLE', 'SECRETARY_ROLE', 'DOCTOR_ROLE'),
     // check('client', 'El id del Cliente es obligatorio').notEmpty().isString(),
-    // check('doctor', 'El id del Doctor es obligatorio').notEmpty().isString(),
-    // check('price', 'Debe ingresar el precio de la consulta').notEmpty().isNumeric(),
-    // check('role').custom( isRole ),
-    // validateFields
+    check('doctor', 'El id del Doctor es obligatorio').notEmpty().isString(),
+    check('price', 'Debe ingresar el precio de la consulta').notEmpty().isNumeric(),
+    check('date', 'Debes ingresar una fecha').notEmpty(),
+    check('appointmentTime', 'Debes ingresar una hora').notEmpty(),
+    validateFields
 
 ], createAppointment);
 
@@ -27,8 +28,6 @@ router.put('/:id', [
     tokenInHeader,
     validateJWT,
     hasARole('ADMIN_ROLE', 'SECRETARY_ROLE', 'USER_ROLE'),
-    // check('id', 'No es un id válido!').isMongoId(),
-    // check('id').custom( findUserId ),
     validateFields
 
 ], updateAppointment);
@@ -37,10 +36,10 @@ router.put('/:id', [
 router.get('/public/:id', showConsultation)
 router.get('/', [
 
-    // tokenInHeader,
-    // validateJWT,
-    // hasARole('ADMIN_ROLE', 'SECRETARY_ROLE'),
-    // validateFields
+    tokenInHeader,
+    validateJWT,
+    hasARole('ADMIN_ROLE', 'SECRETARY_ROLE'),
+    validateFields
     
 ], getAppointment);
 
