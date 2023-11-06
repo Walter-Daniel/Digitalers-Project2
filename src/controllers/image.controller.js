@@ -47,15 +47,29 @@ export const getImages = async( req, res ) => {
 }
 
 export const uploadImagesCloudinary = async(req=request, res=response ) => {
-    const { image } = req.files
-    console.log(image)
-
+    
     try {
         
         const {id} = req.params;
+        
+        if(!req.files){
+            req.flash('alert-warning', 'No se encontro ninguna imagen')
+            return res.redirect(`/doctor/${id}`)
+        }
+        
         const { image } = req.files
-
         const { tempFilePath } = image;
+        if (!image.mimetype.startsWith('image/')) {
+            console.error('Please upload a valid image file.');
+        }
+        const allowedExtensions = ['.jpg', '.jpeg', '.avif', '.png'];
+        const fileExtension = image.name.substring(image.name.lastIndexOf('.')).toLowerCase();
+    
+        if (!allowedExtensions.includes(fileExtension)) {
+            req.flash('alert-danger','Extensión no válida, intenta con ".png, .jpg, jpeg o avif"');
+            return res.redirect(`/doctor/${id}`)
+        };
+
         const user = await User.findById( id );
         const doctor = await Doctor.findById(id);
         console.log(user, doctor)

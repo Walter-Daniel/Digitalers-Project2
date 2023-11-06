@@ -17,32 +17,24 @@ export const renderCreateUser = async(req, res) => {
     })
 }
 export const createUser = async(req, res=response) => {
-
-    const { firstname, lastname, email, password, role, adress, locality, phoneNumber, cellphone } = req.body;
-    
     try {
-        const isRole = req.user.role;
-        let user = '';
-
-        if(isRole === 'ADMIN_ROLE'){
-            user = new User({firstname, lastname, email, password, role, adress, locality, phoneNumber, cellphone });
-        }else{
-            user = new User({firstname, lastname, email, password, role });
-        }
-
-        const salt = bcrypt.genSaltSync();
-        user.password = bcrypt.hashSync(password, salt);
-        await user.save();
-
-        if(isRole === 'ADMIN_ROLE'){
-            req.flash('alert-success', 'El paciente ha sido registrado con éxito');
-            res.redirect('/user') 
-        }else{
+        const { firstname, lastname, email, password, role, adress, locality, phoneNumber, cellphone } = req.body;
+        
+        if(!req.user){
+            const user = new User({firstname, lastname, email, password });
+            const salt = bcrypt.genSaltSync();
+            user.password = bcrypt.hashSync(password, salt);
+            await user.save();
             req.flash('alert-success', 'Su cuenta ha sido creada con éxito');
-            res.redirect('/auth/register')
+            return res.redirect('/auth/register')
+        }else if(req.user.role === 'ADMIN_ROLE'){
+            const user = new User({firstname, lastname, email, password, role, adress, locality, phoneNumber, cellphone });
+            const salt = bcrypt.genSaltSync();
+            user.password = bcrypt.hashSync(password, salt);
+            await user.save();
+            req.flash('alert-success', 'El paciente ha sido registrado con éxito');
+            return res.redirect('/user') 
         }
-        return;
-
     } catch (error) {
         req.flash('alert-danger', `${error.message}`);
         res.render('auth/register', {
@@ -62,8 +54,6 @@ export const renderUserProfile = async(req=request, res=response) => {
 
     const { id } = jwt.verify( token, process.env.SECRETSEED );
     const user = await User.findById(id).lean();
-
-    console.log(user, 'desde usuario')
 
     if(!user){
         req.flash('alert-warning', 'Error al encontrar usuario')
@@ -151,50 +141,46 @@ export const updateUserFormRender = async(req, res) => {
 }
 export const updateUser = async(req=request, res) => {
 
-try {
-    const {password, email, newPassword, confirmPassword, ...rest }= req.body;
-    const { id } = req.params;
+    try {
+        const {password, email, newPassword, confirmPassword, ...rest }= req.body;
+        const { id } = req.params;
 
-    const currentUser = await User.findById(id);
+        const currentUser = await User.findById(id);
 
-    if(!password){
-        await User.findByIdAndUpdate( id, rest);
-        req.flash('alert-success', 'El usuario se ha editado con éxito!');
-        return res.redirect(`/user/profile/update/${id}`)
-    };
+        if(!password){
+            await User.findByIdAndUpdate( id, rest);
+            req.flash('alert-success', 'El usuario se ha editado con éxito!');
+            return res.redirect(`/user/profile/update/${id}`)
+        };
 
-    const userPassword = currentUser.password;
+        const userPassword = currentUser.password;
+        const passwordMatch = await bcrypt.compare(password, userPassword);
+        if(!passwordMatch){
+            req.flash('alert-danger', 'Tu contraseña es inválida, intentalo de nuevo.');
+            return res.redirect(`/user/profile/update/${id}`);
+        };
 
-    console.log(newPassword, confirmPassword)
-    const passwordMatch = await bcrypt.compare(password, userPassword);
-    if(!passwordMatch){
+        if(newPassword !== confirmPassword){
+            req.flash('alert-danger', 'Contraseñas no coinciden');
+            return res.redirect(`/user/profile/update/${id}`);
+        };
+
+        const hashedPassword = await bcrypt.hash(confirmPassword, 10);
+    
+        const dataUpdate = {
+            hashedPassword,
+            ...rest
+        }
+    
+        await User.findByIdAndUpdate( id, dataUpdate);
         req.flash('alert-danger', 'Tu contraseña es inválida, intentalo de nuevo.');
         return res.redirect(`/user/profile/update/${id}`);
-    };
+        
+    } catch (error) {
 
-    if(newPassword !== confirmPassword){
-        req.flash('alert-danger', 'Contraseñas no coinciden');
+        req.flash('alert-danger', `${error.message}`);
         return res.redirect(`/user/profile/update/${id}`);
-    };
-
-    const hashedPassword = await bcrypt.hash(confirmPassword, 10);
- 
-    const dataUpdate = {
-        hashedPassword,
-        ...rest
     }
-   
-    await User.findByIdAndUpdate( id, dataUpdate);
-    req.flash('alert-danger', 'Tu contraseña es inválida, intentalo de nuevo.');
-    return res.redirect(`/user/profile/update/${id}`);
-    
-} catch (error) {
-    return res.status(500).send({
-        ok: false,
-        message: 'Error al intentar actualizar el usuario',
-        error: error.message
-    });
-}
 };
 
   //El usuario no se elimina de la DB para mantener la integridad referencial, se modifica su 'active': false

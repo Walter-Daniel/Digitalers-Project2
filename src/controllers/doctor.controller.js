@@ -44,7 +44,7 @@ export const renderProfile = async(req, res) => {
             user: req.user,
             doctor,
             appointments,
-            appointmentsTotal: appointments.length, 
+            total: appointments.length, 
             active
         })
     } catch (error) {
