@@ -20,6 +20,7 @@ export const home = async(req, res=response) => {
             pageName: 'Clínica del Sol',
             navbar: true,
             renderHero: true,
+            footer: true,
             doctors,
             total,
             user
