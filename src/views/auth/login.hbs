@@ -1,41 +1,43 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 offset-md-3 center-form">
-      <form action="/auth/login" method="POST" class="fade-in">
-        <fieldset>
-          <legend class="title-form">Iniciar Sesión</legend>
-          <div class="form-group">
-            <label
-              for="email"
-              class="form-label mt-3"
-            >Correo:</label>
-            <input
-              type="email"
-              class="form-control"
-              name="email"
-              id="email"
-              value="{{data.email}}"
-            />
-          </div>
-          <div class="form-group">
-            <label
-              for="password"
-              class="form-label mt-3"
-            >Contraseña:</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              autocomplete="off"
-              name="password"
-            />
-          </div>
-          <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Ingresar</button>
-            <small id="emailHelp" class="form-text text-muted mt-3">No tienes una cuenta? <a href="/auth/register">Registrate</a></small>
-            <br />
-            <small id="emailHelp" class="form-text text-muted mt-3">Regresar al <a href="/">inicio</a></small>
-        </fieldset>
+<!-- CUERPO DEL LOGIN COMPLETO -->
+<div class="container-login rounded shadow fade-in">
+  <div class="row align-items-stretch">
+    <div class="col container-form p-5 rounded">
+      <h2 class="title-section has-border my-5">Bienvenido</h2>
+      <form action="/auth/login" method="POST">
+        <div class="mb-4">
+          <label for="email" class="form-label"><i class="far fa-envelope ikono"></i> Correo Electrónico</label>
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            id="email"
+            value="{{data.email}}"
+        />
+        </div>
+        <div class="mb-4">
+          <label for="password" class="form-label"><i class="fas fa-key ikono"></i>Contraseña</label>
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            id="password"
+          />
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn bg-warning bg-gradient btn-round" style="padding: 10px; font-weight: bold;">
+            Iniciar Sesión
+          </button>
+        </div>
+        <div class="mt-3 mb-5" style="color: white;">
+          <span>No tienes cuenta? <a href="/auth/register">Regístrate</a> </span> <br />
+          <span><a href="/pages/error404/error404.html" data-bs-toggle="modal"
+            data-bs-target="#passwordModal">Recuperar Contraseña</a></span>
+        </div>
       </form>
+      <!-- Login con redes sociales -->
     </div>
+    <div
+      class="col bg-login d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded"
+    ></div>
   </div>
-</div>
+</div>     

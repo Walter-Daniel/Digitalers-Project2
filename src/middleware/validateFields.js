@@ -1,8 +1,8 @@
-import { request } from 'express';
+import { request, response } from 'express';
 import { validationResult } from 'express-validator';
 
 
-export const validateFields = (req=request, res, next) => {
+export const validateFields = (req=request, res= response, next) => {
     const errors = validationResult(req);
     const user = req.user;
     const {id} = req.params
@@ -17,10 +17,15 @@ export const validateFields = (req=request, res, next) => {
         const urlPrev = req.session.prevUrl
         let pageName = '';
         if(url.includes('register')){
-            pageName = 'Registro'
+           return res.render(url, {
+                pageName: 'Registro',
+                data: req.body,
+                messages: req.flash(),
+                user: req.user,
+            })
         }
         if(url.includes('login')){
-            pageName = 'Iniciar Sesión'
+            return res.redirect('/auth/login')
         }
         if(url.includes('images') ){
            return res.redirect(urlPrev)
