@@ -69,49 +69,74 @@ document.addEventListener("DOMContentLoaded", function () {
   const actions = document.getElementById('action');
   if(actions){
     actions.addEventListener('click', actionList);
+  };
+
+  const userEdit = document.getElementById('userEdit');
+  if(userEdit){
+    userEdit.addEventListener('click', deleteUser);
   }
+  
 });
 
 //Eliminar doctores
 const actionList = e => {
   e.preventDefault();
   if(e.target.dataset.id){
-    Swal.fire({
-      title: 'Deseas eliminar al Doctor?',
-      text: "Una vez eliminado, no se puede recuperar.",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminar!',
-      cancelButtonText: 'No, cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        
-        const url = `${location.origin}/doctor/${e.target.dataset.id}`
-
-        fetch(url, {
-          method: 'DELETE'
-        })
-        .then(response => response.json())
-        .then(data => {
-            Swal.fire({
-              title: 'Eliminado',
-              text: `${data.message}`,
-              icon: 'success',
-              timer: 3000,
-              timerProgressBar: true,
-              onBeforeOpen: () => {
-                Swal.showLoading();
-              }
-            }).then(() => {
-              window.location.href = window.location.href;
-            });
-        })
-      }
-      // 
-    })
+    const title = "Deseas eliminar al Doctor?";
+    const text = "Una vez eliminado, no se puede recuperar.";
+    const id = e.target.dataset.id;
+    const route = "doctor"
+    alert(title,text, route, id);
   }else if(e.target.dataset.edit){
     window.location.href = e.target.href;
   }
+}
+
+//Eliminar Usuarios
+const deleteUser = e => {
+  e.preventDefault();
+  if(e.target.dataset.delete){
+    const title = "Deseas eliminar al Paciente?";
+    const text = "Una vez eliminado, no se puede recuperar.";
+    const id = e.target.dataset.id;
+    const route = "user"
+    alert(title,text, route, id);
+  }else if(e.target.dataset.edit){
+    window.location.href = e.target.href;
+  }
+}
+
+function alert(title, text, route, id ){
+  Swal.fire({
+    title: title,
+    text: text,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, eliminar!',
+    cancelButtonText: 'No, cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const url = `${location.origin}/${route}/${id}`;
+      fetch(url, {
+        method: 'DELETE'
+      })
+      .then(response => response.json())
+      .then(data => {
+          Swal.fire({
+            title: 'Eliminado',
+            text: `${data.message}`,
+            icon: 'success',
+            timer: 3000,
+            timerProgressBar: true,
+            onBeforeOpen: () => {
+              Swal.showLoading();
+            }
+          }).then(() => {
+            window.location.href = window.location.href;
+          });
+      })
+    }
+  })
 }

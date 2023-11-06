@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="d-flex justify-content-between p-3">
+    <h1>Lista de citas</h1>
+    <a href="user/create" class="btn btn-primary d-flex justify-content-center align-items-center h-100" role="button">
+      <span><i class="fa-solid fa-user-plus pe-2"></i></span>
+      Crear
+    </a>
+  </div>
+
+  <div class="row text-center p-3">
+    <div class="col border p-1">
+      <h5>Activos: {{active}}</h5>   
+    </div>
+    <div class="col border p-1">
+      <h5>Inactivos: {{inactive}}</h5>
+    </div>
+    <div class="col border p-1">
+      <h5>Total: {{total}}</h5>
+    </div>
+  </div>
+    
+  <table class="table border" id="userEdit">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Doctor</th>
+        <th>Paciente</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Estado</th>
+        <th>Activa</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each appointments}}
+        <tr 
+          {{#isEqual active false}}
+             class="table-secondary"
+          {{/isEqual}}     
+        > 
+          <td>{{_id}}</td>
+          <td>{{doctor._id}}</td>
+          <td>{{client._id}}</td>
+          <td>{{date}}</td>
+          <td>{{appointmentTime}}</td>
+          <td>{{status}}</td>
+          <td>{{active}}</td>
+          <td>
+            <a href="/user/profile/update/{{_id}}"  data-edit="edit"  class="btn btn-success read-button" >Editar</a>
+            <button data-id="{{_id}}" data-delete="{{role}}" class="btn btn-danger delete-btn" id="delete">Eliminar</button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

@@ -46,13 +46,6 @@ export const showConsultation = async(req, res) => {
             Appointment.find(query).countDocuments().lean()
         ]);
 
-        if(appointments.length === 0){
-            return res.status(404).send({
-                ok: true,
-                message: 'No se encontró ninguna cita'
-            })
-        }
-
         appointments.forEach(function(item){
             return item.date = item.date.toISOString().split("T")[0]
         })
@@ -83,30 +76,35 @@ export const getAppointment = async(req, res) => {
     const query2 = { active: false }
 
     try {
-        const [ appointments, activos, inactivos ] = await Promise.all([
+        const [ appointments, active, inactive ] = await Promise.all([
             Appointment.find(query).populate('doctor', '_id firstname lastname')
                             .populate('client', '_id firstname lastname')
                             .collation({ locale: 'es' })
-                            .sort({ createdAt: -1 }),
+                            .sort({ createdAt: -1 })
+                            .lean(),
             Appointment.find(query).countDocuments(),
             Appointment.find(query2).countDocuments(),
 
         ]);
 
-        return res.status(200).send({
-            ok: true,
-            message: 'Citas obtenidas correctamente',
+        appointments.forEach(function(item){
+            return item.date = item.date.toISOString().split("T")[0]
+        })
+        return res.render('admin/appointment', {
+            pageName: 'Lista de citas',
             appointments,
-            appointmentsTotal: appointments.length,
-            activos,
-            inactivos
+            total: appointments.length,
+            active,
+            inactive,
+            user: req.user,
+            navbar: true
         })
 
     } catch (error) {
         if(error) {
             return res.status(500).send({
                 ok: false,
-                message: 'Error al obtener usuario',
+                message: error.message,
                 error
             })
         }
@@ -161,6 +159,8 @@ export const updateAppointment = async(req, res) => {
     };
    } catch (error) {
         console.log(error.message)
+        req.flash('alert-danger', `error.message`);
+        res.redirect('/');
    }
 };
 
