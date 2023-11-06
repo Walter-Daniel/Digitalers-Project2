@@ -1,4 +1,4 @@
-<div class="container">
+{{!-- <div class="container">
   <div class="row">
     <div class="col-md-6 offset-md-3 center-form">
       <form action="/auth/register" method="POST" class="fade-in">
@@ -59,4 +59,73 @@
       </form>
     </div>
   </div>
-</div>
+</div> --}}
+
+<!-- CUERPO DEL LOGIN COMPLETO -->
+<div class="container-login rounded shadow fade-in" style="margin: 2rem 1rem 0 1rem;">
+  <div class="row align-items-stretch">
+    <div class="col container-form p-5 rounded">
+      <h2 class="title-section has-border my-3">Registro</h2>
+      <form action="/auth/register" method="POST">
+        <div class="mb-4">
+          <label for="firstname" class="form-label mt-3">Nombre(s):</label>
+          <input
+            type="text"
+            class="form-control"
+            name="firstname"
+            id="firstname"
+            value="{{data.firstname}}"
+          />
+        </div>
+        <div class="mb-4">
+            <label for="lastname" class="form-label">Apellido(s):</label>
+            <input
+              type="text"
+              class="form-control"
+              name="lastname"
+              id="lastname"
+              value="{{data.lastname}}"
+            />
+        </div>
+        <div class="mb-4">
+           <label
+              for="exampleInputEmail1"
+              class="form-label"
+            >Correo:</label>
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              id="email"
+              value="{{data.email}}"
+            />
+        </div>
+        <div class="mb-4">
+          <label
+              for="password"
+              class="form-label"
+            >Contraseña:</label>
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              id="password"
+              autocomplete="off"
+            />
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn bg-warning bg-gradient btn-round" style="padding: 10px; font-weight: bold;">
+            Registrate
+          </button>
+        </div>
+        <div class="mt-3 mb-1" style="color: white;">
+          <span>Ya tienes una cuenta? <a href="/auth/login">Inicia Sesión</a> </span> 
+        </div>
+      </form>
+      <!-- Login con redes sociales -->
+    </div>
+    <div
+      class="col bg-register d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded"
+    ></div>
+  </div>
+</div>     

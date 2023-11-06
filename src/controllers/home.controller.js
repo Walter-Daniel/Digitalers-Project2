@@ -17,7 +17,7 @@ export const home = async(req, res=response) => {
         ]);
         
         res.render('home', {
-            pageName: 'Medical Digitalers',
+            pageName: 'Clínica del Sol',
             navbar: true,
             renderHero: true,
             doctors,
