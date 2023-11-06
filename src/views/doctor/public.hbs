@@ -56,5 +56,12 @@
             </div>
             {{/customEach}}
         </div>
+        <div class="row d-flex justify-content-center align-items-center"style="height: 50vh;">
+            {{#isEqual total 0}}
+            <div class="alert alert-info text-center w-75"  role="alert">
+                No se encontro ninguna cita.
+            </div>
+            {{/isEqual}}
+        </div>
     </div>
 </div>

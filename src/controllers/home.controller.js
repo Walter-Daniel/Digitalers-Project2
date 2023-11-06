@@ -9,25 +9,19 @@ export const home = async(req, res=response) => {
     const user = req.user;
     try {
 
-        const query = { role: 'DOCTOR_ROLE' }
+        const query = { active: true }
         const [doctors, total] = await Promise.all([
             Doctor.find(query).lean(),
                
             Doctor.count(query)
         ]);
-
-        if(doctors.length === 0){
-            return res.status(404).send({
-                ok: true,
-                message: 'No se encontró ningun doctor'
-            })
-        }
         
         res.render('home', {
             pageName: 'Medical Digitalers',
             navbar: true,
             renderHero: true,
             doctors,
+            total,
             user
         })
     } catch (error) {
