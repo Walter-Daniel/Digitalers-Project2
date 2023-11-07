@@ -10,10 +10,7 @@ export const validateFields = (req=request, res= response, next) => {
     if(!errors.isEmpty()){
         req.flash('alert-danger', errors.array().map(e => e.msg));
         let urlOriginal = req.originalUrl;
-        console.log(urlOriginal, 'estamos aquí')
         const url = urlOriginal.slice(1);
-
-        console.log(url)
         const urlPrev = req.session.prevUrl
         let pageName = '';
         if(url.includes('register')){
