@@ -1,28 +1,71 @@
 import Appointment from '../model/appointment.schema.js';
 import Doctor from '../model/doctor.schema.js';
+import User from '../model/user.schema.js';
 import jwt from 'jsonwebtoken';
 
+
+export const renderCreate = async(req,res) => {
+    res.render('appointment/create', {
+        pageName: 'Crear cita',
+        user: req.user,
+        navbar: true,
+        footer: true
+    })
+}
 export const createAppointment = async(req, res) => {
     //si el paciente tiene una cita activa con el doctor, no se podra crear una nueva
-    const { doctor, price, date, appointmentTime }= req.body;
-    
     
     try {
+        const { doctor, price, date, appointmentTime, client }= req.body;
+
+        const user = req.user;
+        const id = user._id;
+
+        console.log(id)
         
-        const token = req.cookies.token;
-        const { id } = jwt.verify( token, process.env.SECRETSEED );
+        const isdoctor = await Doctor.findById( doctor );
+        const isAdmin = await User.find({ '_id': id, role:'ADMIN_ROLE' });
+        const isClient = await User.findById(client);
 
-        const isdoctor = await Doctor.findById( id ); 
-        const appointment = new Appointment({ doctor, price, date, appointmentTime });
-        await appointment.save();
-
-        req.flash('alert-success', 'La cita ha sido creada con éxito');
-        if(isdoctor){
-            res.redirect('/doctor/profile')
+        if(!isdoctor){
+            if(user.role === 'DOCTOR_ROLE'){
+                req.flash('alert-danger', 'No tienes permiso para crear una cita de otro doctor');
+                return res.redirect('/doctor/profile');
+            }else if(user.role === 'ADMIN_ROLE' ){
+                req.flash('alert-danger', 'No se encontro doctor con ese ID');
+                return res.redirect('/appointment/create');
+            }
         }
-        res.json(appointment)
+
+        if(user.role === 'DOCTOR_ROLE' && user.role !== isdoctor.role){
+            req.flash('alert-danger', 'No tienes permiso para crear una cita de otro doctor');
+            return res.redirect('/doctor/profile')
+        }
+
+        if(!isClient){
+            req.flash('alert-danger', 'No se encontro paciente con ese ID');
+            return res.redirect('/appointment/create');
+        }
+        
+        if(user.role == 'DOCTOR_USER'){
+            const appointment = new Appointment({ doctor, price, date, appointmentTime });
+            await appointment.save();
+            req.flash('alert-success', 'La cita ha sido creada con éxito');
+            res.redirect('/doctor/profile')
+        }else if(user.role === 'ADMIN_ROLE'){
+            const appointment = new Appointment({ doctor, price, date, appointmentTime, client });
+            await appointment.save();
+            req.flash('alert-success', 'La cita ha sido creada con éxito');
+            res.redirect('/appointment/create');
+        }else {
+            req.flash('alert-danger', 'No tienes permiso para crear una cita de otro doctor');
+            res.redirect('/')
+        }
     } catch (error) {
-        console.log(error.message)
+        
+        req.flash('alert-danger', `${error.message},  holaaaaaaaaa`);
+        res.redirect('/');
+        
     }
 };
 
@@ -153,7 +196,7 @@ export const updateAppointment = async(req, res) => {
         appointment.client = client;
         appointment.save();
         if(user.role=== 'ADMIN_ROLE'){
-            res.json('redireccionar a administrador')
+           res.redirect('/appointment/creat')
         }else{
             res.json('sos secretaria')
         }

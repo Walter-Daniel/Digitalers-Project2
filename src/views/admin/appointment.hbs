@@ -1,7 +1,7 @@
 <div class="container">
   <div class="d-flex justify-content-between p-3">
     <h1>Lista de citas</h1>
-    <a href="user/create" class="btn btn-primary d-flex justify-content-center align-items-center h-100" role="button">
+    <a href="/appointment/create" class="btn btn-primary d-flex justify-content-center align-items-center h-100" role="button">
       <span><i class="fa-solid fa-user-plus pe-2"></i></span>
       Crear
     </a>
@@ -47,8 +47,9 @@
           <td>{{status}}</td>
           <td>{{active}}</td>
           <td>
-            <a href="/user/profile/update/{{_id}}"  data-edit="edit"  class="btn btn-success read-button" >Editar</a>
-            <button data-id="{{_id}}" data-delete="{{role}}" class="btn btn-danger delete-btn" id="delete">Eliminar</button>
+            {{!-- EDITAR --}}
+            {{!-- <a href="/user/profile/update/{{_id}}"  data-edit="edit"  class="btn btn-success read-button" >Editar</a> --}}
+            <button data-id="{{_id}}" data-delete="{{role}}" class="btn btn-danger delete-btn" id="delete" disabled>Eliminar</button>
           </td>
         </tr>
       {{/each}}

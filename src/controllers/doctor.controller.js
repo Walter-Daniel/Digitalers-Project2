@@ -66,7 +66,7 @@ export const renderPrivateProfile = async(req, res) => {
         const user = await Doctor.findById(id).lean();
 
         if(!user){
-            req.flash('alter-warning', 'Error al encontrar doctor');
+            req.flash('alert-warning', 'Error al encontrar doctor');
             res.redirect('/auth/login');
             return
         };
