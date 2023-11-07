@@ -41,6 +41,7 @@ export const renderProfile = async(req, res) => {
         res.render('doctor/public',{
             pageName: 'Perfil del Doctor',
             navbar: true,
+            footer: true,
             user: req.user,
             doctor,
             appointments,
@@ -97,6 +98,7 @@ export const renderPrivateProfile = async(req, res) => {
         res.render('profile/doctor',{
             pageName: 'Perfil del Doctor',
             navbar: true,
+            footer: true,
             appointmentTotal: appointment.length,
             appointment,
             appointmentTota: appointment.length,
@@ -121,6 +123,7 @@ export const renderFormCreate = async(req,res) => {
         },
         create: true,
         navbar: true,
+        footer: true,
         user: req.user
     })
 }
@@ -144,7 +147,8 @@ export const createDoctor = async(req, res) => {
             messages: req.flash(),
             user: req.user,
             create: true,
-            navbar: true
+            navbar: true,
+            footer: true
         })
 
     } catch (error) {
@@ -181,7 +185,8 @@ export const getDoctors = async(req, res) => {
             doctorActive,
             doctorInactive,
             navbar: true,
-            user: req.user
+            user: req.user,
+            footer: true
         })
 
    } catch (error) {
@@ -207,7 +212,8 @@ export const renderFormUpdate = async(req,res) => {
             data: doctor,
             user,
             navbar: true,
-            edit: true
+            edit: true,
+            footer: true
         })
     } catch (error) {
         req.flash('alert-danger', `${error.message}`);
@@ -234,6 +240,7 @@ export const updateDoctor = async(req, res) => {
             messages: req.flash(),
             edit: true,
             navbar: true,
+            footer: true,
             data: req.body,
             user: req.user,
         })

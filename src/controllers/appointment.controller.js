@@ -97,7 +97,8 @@ export const getAppointment = async(req, res) => {
             active,
             inactive,
             user: req.user,
-            navbar: true
+            navbar: true,
+            footer: true
         })
 
     } catch (error) {
