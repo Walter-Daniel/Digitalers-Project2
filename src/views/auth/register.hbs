@@ -1,70 +1,10 @@
-{{!-- <div class="container">
-  <div class="row">
-    <div class="col-md-6 offset-md-3 center-form">
-      <form action="/auth/register" method="POST" class="fade-in">
-        <fieldset>
-          <legend class="title-form">Crear Cuenta</legend>
-          <div class="form-group">
-            <label for="firstname" class="form-label mt-3">Nombre(s):</label>
-            <input
-              type="text"
-              class="form-control"
-              name="firstname"
-              id="firstname"
-              value="{{data.firstname}}"
-            />
-          </div>
-          <div class="form-group">
-            <label for="lastname" class="form-label mt-3">Apellido(s):</label>
-            <input
-              type="text"
-              class="form-control"
-              name="lastname"
-              id="lastname"
-              value="{{data.lastname}}"
-            />
-          </div>
-          <div class="form-group">
-            <label
-              for="exampleInputEmail1"
-              class="form-label mt-3"
-            >Correo:</label>
-            <input
-              type="email"
-              class="form-control"
-              name="email"
-              id="email"
-              value="{{data.email}}"
-            />
-            <small id="emailHelp" class="form-text text-muted">No compartiremos con nadie tu correo</small>
-          </div>
-          <div class="form-group">
-            <label
-              for="password"
-              class="form-label mt-3"
-            >Contraseña:</label>
-            <input
-              type="password"
-              class="form-control"
-              name="password"
-              id="password"
-              autocomplete="off"
-            />
-          </div>
-          <button type="submit" class="btn btn-primary mt-3 mb-1 w-100">Registrarse</button>
-            <small id="emailHelp" class="form-text text-muted mt-3">Ya tienes una cuenta? <a href="/auth/login">Inicia Sesión</a></small>
-            <br />
-            <small id="emailHelp" class="form-text text-muted mt-3">Regresar al <a href="/">inicio</a></small>
-        </fieldset>
-      </form>
-    </div>
-  </div>
-</div> --}}
-
-<!-- CUERPO DEL LOGIN COMPLETO -->
-<div class="container-login rounded shadow fade-in" style="margin: 2rem 1rem 0 1rem;">
+<!-- CUERPO DEL REGISTER COMPLETO -->
+<div class="container-login rounded shadow fade-in" style="margin: 0.5rem 1rem 0 1rem;">
   <div class="row align-items-stretch">
     <div class="col container-form p-5 rounded">
+      <div class="row justify-content-md-end">
+        <img src="/img/logo.png" alt="Logo clínica del sol"  style="width: 15rem;">
+      </div>
       <h2 class="title-section has-border my-3">Registro</h2>
       <form action="/auth/register" method="POST">
         <div class="mb-4">
