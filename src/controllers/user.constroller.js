@@ -13,7 +13,8 @@ export const renderCreateUser = async(req, res) => {
     res.render('user/create', {
         pageName: 'Crear Usuario',
         user: req.user,
-        navbar: true
+        navbar: true,
+        footer: true
     })
 }
 export const createUser = async(req, res=response) => {
@@ -69,6 +70,7 @@ export const renderUserProfile = async(req=request, res=response) => {
     return res.render('profile/user', {
              pageName: 'Perfil del Usuario',
              navbar: true,
+             footer: true,
              user,
              appointment,
              appointmentTotal: appointment.length
@@ -99,6 +101,7 @@ export const getUsers = async(req, res) => {
         return res.render('admin/user', {
             pageName: 'Lista de pacientes',
             navbar: true,
+            footer: true,
             user: req.user,
             users,
             total: users.length,
@@ -134,6 +137,7 @@ export const updateUserFormRender = async(req, res) => {
     res.render('profile/form', {
         pageName: 'Editar Perfil del Usuario',
         navbar: true,
+        footer: true,
         data: user,
         user: req.user
     })
