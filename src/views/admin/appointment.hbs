@@ -6,7 +6,6 @@
       Crear
     </a>
   </div>
-
   <div class="row text-center p-3">
     <div class="col border p-1">
       <h5>Activos: {{active}}</h5>   
@@ -19,7 +18,7 @@
     </div>
   </div>
     
-  <table class="table border" id="userEdit">
+  <table class="table border" id="appointment">
     <thead>
       <tr>
         <th>ID</th>
@@ -48,8 +47,8 @@
           <td>{{active}}</td>
           <td>
             {{!-- EDITAR --}}
-            {{!-- <a href="/user/profile/update/{{_id}}"  data-edit="edit"  class="btn btn-success read-button" >Editar</a> --}}
-            <button data-id="{{_id}}" data-delete="{{role}}" class="btn btn-danger delete-btn" id="delete" disabled>Eliminar</button>
+            <a href="/appointment/{{_id}}"  data-edit="edit"  class="btn btn-success read-button" >Editar</a>
+            <button data-id="{{_id}}" data-delete="{{role}}" class="btn btn-danger delete-btn" id="delete">Eliminar</button>
           </td>
         </tr>
       {{/each}}
