@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import Appointment from '../model/appointment.schema.js';
 import Doctor from '../model/doctor.schema.js';
 import User from '../model/user.schema.js';
@@ -9,7 +10,8 @@ export const renderCreate = async(req,res) => {
         pageName: 'Crear cita',
         user: req.user,
         navbar: true,
-        footer: true
+        footer: true,
+        edit: false,
     })
 }
 export const createAppointment = async(req, res) => {
@@ -19,44 +21,17 @@ export const createAppointment = async(req, res) => {
         const { doctor, price, date, appointmentTime, client }= req.body;
 
         const user = req.user;
-        const id = user._id;
-
-        console.log(id)
         
-        const isdoctor = await Doctor.findById( doctor );
-        const isAdmin = await User.find({ '_id': id, role:'ADMIN_ROLE' });
-        const isClient = await User.findById(client);
-
-        if(!isdoctor){
-            if(user.role === 'DOCTOR_ROLE'){
-                req.flash('alert-danger', 'No tienes permiso para crear una cita de otro doctor');
-                return res.redirect('/doctor/profile');
-            }else if(user.role === 'ADMIN_ROLE' ){
-                req.flash('alert-danger', 'No se encontro doctor con ese ID');
-                return res.redirect('/appointment/create');
-            }
-        }
-
-        if(user.role === 'DOCTOR_ROLE' && user.role !== isdoctor.role){
-            req.flash('alert-danger', 'No tienes permiso para crear una cita de otro doctor');
-            return res.redirect('/doctor/profile')
-        }
-
-        if(!isClient){
-            req.flash('alert-danger', 'No se encontro paciente con ese ID');
-            return res.redirect('/appointment/create');
-        }
-        
-        if(user.role == 'DOCTOR_USER'){
+        if(user.role == 'DOCTOR_ROLE'){
             const appointment = new Appointment({ doctor, price, date, appointmentTime });
             await appointment.save();
             req.flash('alert-success', 'La cita ha sido creada con éxito');
-            res.redirect('/doctor/profile')
+            return res.redirect('/doctor/profile')
         }else if(user.role === 'ADMIN_ROLE'){
             const appointment = new Appointment({ doctor, price, date, appointmentTime, client });
             await appointment.save();
             req.flash('alert-success', 'La cita ha sido creada con éxito');
-            res.redirect('/appointment/create');
+            return res.redirect('/appointment');
         }else {
             req.flash('alert-danger', 'No tienes permiso para crear una cita de otro doctor');
             res.redirect('/')
@@ -101,7 +76,6 @@ export const showConsultation = async(req, res) => {
         })
 
     } catch (error) {
-        console.log(error, 'error desde appointment')
         if(error) {
             return res.status(500).send({
                 ok: false,
@@ -120,10 +94,10 @@ export const getAppointment = async(req, res) => {
 
     try {
         const [ appointments, active, inactive ] = await Promise.all([
-            Appointment.find(query).populate('doctor', '_id firstname lastname')
-                            .populate('client', '_id firstname lastname')
+            Appointment.find().populate('doctor', '_id ')
+                            .populate('client', '_id')
                             .collation({ locale: 'es' })
-                            .sort({ createdAt: -1 })
+                            .sort({ date: -1 })
                             .lean(),
             Appointment.find(query).countDocuments(),
             Appointment.find(query2).countDocuments(),
@@ -156,53 +130,81 @@ export const getAppointment = async(req, res) => {
 
 };
 
+
+export const renderUpdate = async(req,res) => {
+
+    const { id } = req.params;
+    try {
+
+        const appointment = await Appointment.findById(id)
+                                .populate('client', '_id')
+                                .lean();
+
+       const date = appointment.date.toISOString().split("T")[0]
+        return res.render('appointment/update', {
+            pageName: 'Editar cita',
+            data: appointment,
+            user: req.user,
+            navbar: true,
+            date,
+            footer: true,
+            edit: true
+        })
+    } catch (error) {
+        req.flash('alert-danger', `${error.message}`)
+        res.redirect(`/appointment/${id}`)
+    }
+    
+}
+
 export const updateAppointment = async(req, res) => {
    try {
     
-    const { client, doctor, status } = req.body;
+    const { client, doctor, status, appointmentTime, date, price, active } = req.body;
     const { id } = req.params;
     const user = req.user;
+    const query = { client, doctor, status: 'Confirmed' }
 
     const appointment = await Appointment.findById( id );
-    if(!appointment){
-        return res.json('No hay cita')
+    const activeAppointment = await Appointment.find(query).countDocuments();
+
+    if(activeAppointment >= 1){
+        req.flah('alert-warning', 'Ya posee una cita agendada con el Doctor');
+        return res.redirect(`/doctor/public/${id}`)
     }
 
-    const query = { client, doctor, status: 'Confirmed' };
-    const active = await Appointment.find(query).countDocuments();
-
-    if(active >= 1){
-        if(user.role === 'USER_ROLE'){
-            req.flash('alert-warning', 'Ya posee una cita agendada con el Doctor');
-            return res.redirect(`/doctor/public/${doctor}`);   
-        }
-    }
-
-    if(!appointment.client){
+    if(user.role === 'USER_ROLE' && !appointment.client){
         appointment.client = client;
         appointment.status = status;
         appointment.save();
-        req.flash('alert-success', 'La cita ha sido creada con éxito');
-        if(user.role === 'USER_ROLE'){
-            return res.redirect(`/doctor/public/${doctor}`);
-        }
-    }else if(appointment.client.toString() === client){
+
+        req.flash('alert-success', 'Se agendó la cita');
+        return res.redirect(`/doctor/public/${id}`);
+    }else if(user.role === 'USER_ROLE' && appointment.client){
         appointment.client = undefined;
-        appointment.status = status;
+        appointment.status = 'Pending';
         appointment.save();
-        req.flash('alert-success', 'La cita ha sido eliminada con éxito!');
-        res.redirect('/user/profile');
-    }else if( appointment.client.toHexString() !== client && user.role === 'SECRETARY_ROLE' || user.role === 'ADMIN_ROLE' ){
-        appointment.client = client;
-        appointment.save();
-        if(user.role=== 'ADMIN_ROLE'){
-           res.redirect('/appointment/creat')
-        }else{
-            res.json('sos secretaria')
+
+        req.flash('alert-success', 'Se eliminó la cita de su agenda');
+        return res.redirect(`/profile`);
+    }else if(user.role == 'ADMIN_ROLE'){
+
+        console.log(id, 'HOLAAAAAAAAAAAAA')
+        const dataUpdate = {
+            client, 
+            doctor, 
+            status,
+            appointmentTime,
+            date, 
+            price, 
+            active
         }
-    };
+        await Appointment.findByIdAndUpdate( id, dataUpdate)
+        req.flash('alert-success', 'Se ha creado la cita');
+        return res.redirect('/appointment');
+    }
    } catch (error) {
-        console.log(error.message)
+        console.log(error.message, 'holaaa')
         req.flash('alert-danger', `error.message`);
         res.redirect('/');
    }
@@ -212,19 +214,15 @@ export const deleteAppointment = async(req, res) => {
     try {
 
         const appointmentID = req.params.id;
-        const appointment = await Appointment.findByIdAndUpdate( appointmentID, { active: false });
+        await Appointment.findByIdAndUpdate( appointmentID, { active: false });
 
         return res.status(200).send({
             ok: true,
-            message: 'Usuario eliminado con éxito',
-            appointment,
+            message: 'Cita eliminada con éxito',
         });
 
     } catch (error) {
-        return res.status(500).send({
-            ok: false,
-            message: 'Error al intentar eliminar el usuario',
-            error
-        });
+        req.flash('alert-danger', `${error.message}`)
+        res.redirect('/appointment')
     }
 };

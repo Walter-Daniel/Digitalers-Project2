@@ -1,30 +1,25 @@
-// import Swal from 'sweetalert2.js';
-// Swal = require('sweetalert2.js');
+(() => {
+  "use strict";
 
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll(".needs-validation");
 
+  // Loop over them and prevent submission
+  Array.from(forms).forEach((form) => {
+    form.addEventListener(
+      "submit",
+      (event) => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
 
-// (() => {
-//   "use strict";
-
-//   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-//   const forms = document.querySelectorAll(".needs-validation");
-
-//   // Loop over them and prevent submission
-//   Array.from(forms).forEach((form) => {
-//     form.addEventListener(
-//       "submit",
-//       (event) => {
-//         if (!form.checkValidity()) {
-//           event.preventDefault();
-//           event.stopPropagation();
-//         }
-
-//         form.classList.add("was-validated");
-//       },
-//       false
-//     );
-//   });
-// })();
+        form.classList.add("was-validated");
+      },
+      false
+    );
+  });
+})();
 
 //PASSWORD VALIDATION
 
@@ -65,15 +60,23 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
+  //Eliminar doctores
   const actions = document.getElementById('action');
   if(actions){
     actions.addEventListener('click', actionList);
   };
 
+  //Eliminar usuarios
   const userEdit = document.getElementById('userEdit');
   if(userEdit){
     userEdit.addEventListener('click', deleteUser);
+  }
+
+  //Eliminar citas
+
+  const appointment = document.getElementById('appointment');
+  if(appointment){
+    appointment.addEventListener('click', deleteAppointment);
   }
   
 });
@@ -106,6 +109,20 @@ const deleteUser = e => {
   }
 }
 
+//Eliminar citas
+const deleteAppointment = e => {
+  e.preventDefault();
+  if(e.target.dataset.id){
+    const title = "Deseas eliminar la cita?";
+    const text = "Una vez eliminada, no se puede recuperar.";
+    const id = e.target.dataset.id;
+    const route = "appointment"
+    alert(title,text, route, id);
+  }else if(e.target.dataset.edit){
+    window.location.href = e.target.href;
+  }
+}
+
 function alert(title, text, route, id ){
   Swal.fire({
     title: title,
@@ -119,6 +136,7 @@ function alert(title, text, route, id ){
   }).then((result) => {
     if (result.isConfirmed) {
       const url = `${location.origin}/${route}/${id}`;
+      console.log(url)
       fetch(url, {
         method: 'DELETE'
       })

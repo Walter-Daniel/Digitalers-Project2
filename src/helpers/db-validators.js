@@ -2,6 +2,7 @@ import Role from '../model/role.schema.js';
 import User from '../model/user.schema.js';
 import Category from '../model/category.schema.js';
 import Doctor from '../model/doctor.schema.js';
+import Admin from '../model/user.schema.js';
 import { response } from 'express';
 
 export const isRole = async(role = '', {req})  => {
@@ -22,7 +23,8 @@ export const emailExist = async(email = '') => {
 export const findUserId = async( id ) => {
     const existUser= await User.findById( id );
     const existDoctor = await Doctor.findById( id );
-    if( !existUser && !existDoctor ){
+    const existAdmin = await Admin.find({ '_id': id, 'role': 'ADMIN_ROLE' });
+    if( !existUser && !existDoctor && !existAdmin ){
         throw new Error(`El id: ${id} no existe.`);
     }
 };

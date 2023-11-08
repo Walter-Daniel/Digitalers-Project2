@@ -4,7 +4,7 @@ import { check } from 'express-validator';
 import { isRole, findUserId } from '../helpers/db-validators.js';
 import { validateFields, isAdminRole, validateJWT, hasARole } from '../middleware/index.js';
 import { tokenInHeader } from '../middleware/jwtHeader.js';
-import { createAppointment, deleteAppointment, getAppointment, renderCreate, showConsultation, updateAppointment } from '../controllers/appointment.controller.js';
+import { createAppointment, deleteAppointment, getAppointment, renderCreate, renderUpdate, showConsultation, updateAppointment } from '../controllers/appointment.controller.js';
 
 const router = express.Router();
 
@@ -29,6 +29,12 @@ router.post('/create', [
 ], createAppointment);
 
 // UPDATE USER
+router.get('/:id',[
+    tokenInHeader,
+    validateJWT,
+    isAdminRole,
+    validateFields
+], renderUpdate);
 router.put('/:id', [
 
     tokenInHeader,

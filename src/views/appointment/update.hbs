@@ -1,14 +1,8 @@
-{{#if edit}}
-  <form action="/appointment/{{data.doctor}}?_method=PUT" method="POST" class="fade-in mb-2 pb-3 needs-validation" novalidate>
-          <input type="hidden" name="_method" value="PUT">
-  <fieldset>
+<form action="/appointment/{{data._id}}?_method=PUT" method="POST" class="fade-in mb-2 pb-3 needs-validation" novalidate>
+    <input type="hidden" name="_method" value="PUT">
+    <fieldset>
     <legend>Modificar cita Médica</legend>
-{{else}}
-  <form action="/appointment/create" method="POST" class="fade-in needs-validation" novalidate>
-  <fieldset>
-    <legend>Crear cita Médica</legend>
-{{/if}}
-  
+
     <div class="row p-2">
       <div class="form-group col-12">
         <label for="doctor" class="form-label mt-3">ID Doctor:</label>
@@ -17,33 +11,23 @@
           class="form-control"
           name="doctor"
           id="doctor"
-          {{#if user.category }}
-            value="{{user._id}}"
-            readonly
-            {{else}}
-            value="{{data.doctor}}"
-          {{/if}}
-            
-          
+          value="{{data.doctor}}"
           required
         />
         {{!-- PACIENTE --}}
-          {{#if user.category}}
-              <label for="client" class="form-label mt-3" hidden>ID Paciente:</label>
-            {{else}}
-              <label for="client" class="form-label mt-3">ID Paciente:</label>
-              <input
-                type="text"
-                class="form-control"
-                name="client"
-                id="client"
-                value="{{data.client._id}}"
-                required
-              />
-              <div class="invalid-feedback">
-                Ingresar ID del paciente
-              </div>
-          {{/if}}
+     
+        <label for="client" class="form-label mt-3">ID Paciente:</label>
+        <input
+            type="text"
+            class="form-control"
+            name="client"
+            id="client"
+            value="{{data.client._id}}"
+            required
+            />
+        <div class="invalid-feedback">
+        Ingresar ID del paciente
+        </div>
         {{!-- PRECIO --}}
         <label for="price" class="form-label mt-3">Precio:</label>
         <input
@@ -70,7 +54,6 @@
             <input type="time" class="form-control" name="appointmentTime" id="appointmentTime" value="{{data.appointmentTime}}">
         </div>
         {{!-- ESTADO --}}
-      {{#isEqual user.role 'ADMIN_ROLE'}}
         <label for="appointmentTime" class="form-label mb-1">Estado</label>
         <select 
             class="form-selec mb-3 w-100 p-2 rounded" 
@@ -82,9 +65,8 @@
              <option value="Completed">Completada</option>
              <option value="Cancelled">Cencelada</option>
         </select>
-      {{/isEqual}}
+
       {{!-- ACTIVA --}}
-      {{#if edit}}
        <fieldset class="form-group col-md-4 text-center">
         <div class="d-flex">
         <p style="padding-right: 1rem;">Estado:</p>
@@ -114,32 +96,18 @@
         </div>
         </div>
         </fieldset>
-      {{/if}}
-
-      {{#isEqual user.role 'ADMIN_ROLE'}}
         <div class="row">
           <div class="col-md-4">
             <button type="reset" class="btn btn-warning mt-1 mb-1 w-100">Resetear</button>
           </div>
           <div class="col-md-4">
-            {{#if edit}}
               <button type="submit" class="btn btn-primary mt-1 mb-1 w-100">Modificar</button>
-            {{else}}
-              <button type="submit" class="btn btn-primary mt-1 mb-1 w-100">Crear</button>
-            {{/if}}
           </div>
           <div class="col-md-4">
             <a href="/appointment" class="btn btn-danger w-100 mt-1">Cancelar</a>
           </div>
         </div>
-        {{else}}
-        <div class="row mt-3">
-            <button type="submit" class="btn btn-primary mt-1 mb-1 w-100">Crear</button>
-            <button type="reset" class="btn btn-warning mt-1 mb-1 w-100">Resetear</button>  
-        </div>
-      {{/isEqual}}
       </div>
     </div>
-
   </fieldset>
 </form>
