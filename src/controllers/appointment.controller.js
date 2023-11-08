@@ -189,7 +189,6 @@ export const updateAppointment = async(req, res) => {
         return res.redirect(`/profile`);
     }else if(user.role == 'ADMIN_ROLE'){
 
-        console.log(id, 'HOLAAAAAAAAAAAAA')
         const dataUpdate = {
             client, 
             doctor, 
@@ -204,8 +203,7 @@ export const updateAppointment = async(req, res) => {
         return res.redirect('/appointment');
     }
    } catch (error) {
-        console.log(error.message, 'holaaa')
-        req.flash('alert-danger', `error.message`);
+        req.flash('alert-danger', `${error.message}`);
         res.redirect('/');
    }
 };

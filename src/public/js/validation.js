@@ -136,7 +136,6 @@ function alert(title, text, route, id ){
   }).then((result) => {
     if (result.isConfirmed) {
       const url = `${location.origin}/${route}/${id}`;
-      console.log(url)
       fetch(url, {
         method: 'DELETE'
       })
