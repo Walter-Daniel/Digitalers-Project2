@@ -3,7 +3,6 @@ import User from '../model/user.schema.js';
 import Category from '../model/category.schema.js';
 import Doctor from '../model/doctor.schema.js';
 import Admin from '../model/user.schema.js';
-import { response } from 'express';
 
 export const isRole = async(role = '', {req})  => {
     role = req.user.role

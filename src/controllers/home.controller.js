@@ -26,7 +26,6 @@ export const home = async(req, res=response) => {
             user
         })
     } catch (error) {
-        console.log(error.message)
         req.flash('alert-warning', `${error.message}`)
         res.redirect('/auth/login')
     }

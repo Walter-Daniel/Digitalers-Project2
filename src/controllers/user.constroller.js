@@ -108,14 +108,7 @@ export const getUsers = async(req, res) => {
             active: (users.length - inactive),
             inactive
         });
-        return res.status(200).send({
-                ok: true,
-                message: 'Usuarios obtenidos correctamente',
-                users,
-                totalPetition: users.length,
-                total
-
-        })
+        
    } catch (error) {
         return res.status(500).send({
             ok: false,
