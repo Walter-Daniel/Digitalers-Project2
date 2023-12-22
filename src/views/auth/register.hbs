@@ -1,71 +1,88 @@
-<!-- CUERPO DEL REGISTER COMPLETO -->
-<div class="container-login rounded shadow fade-in" style="margin: 0.5rem 1rem 0 1rem;">
-  <div class="row align-items-stretch">
-    <div class="col container-form p-5 rounded">
-      <div class="row justify-content-md-end">
-        <img src="/img/logo.png" alt="Logo clínica del sol"  style="width: 15rem;">
-      </div>
-      <h2 class="title-section has-border my-3">Registro</h2>
-      <form action="/auth/register" method="POST">
-        <div class="mb-4">
-          <label for="firstname" class="form-label mt-3">Nombre(s):</label>
-          <input
-            type="text"
-            class="form-control"
-            name="firstname"
-            id="firstname"
-            value="{{data.firstname}}"
+<section class="vh-100 w-100">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12 col-lg-6 text-black">
+
+        <div class="row justify-content-md-end p-3 mt-2">
+          <img
+            src="/img/logo.png"
+            alt="Logo clínica del sol"
+            style="width: 15rem; background-color: #2c3e50; padding: 1rem 2rem; border-radius: 3rem;"
+            class="shadow"
           />
         </div>
-        <div class="mb-4">
-            <label for="lastname" class="form-label">Apellido(s):</label>
-            <input
-              type="text"
-              class="form-control"
-              name="lastname"
-              id="lastname"
-              value="{{data.lastname}}"
-            />
+        <div
+          class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5"
+        >
+
+          <form action="/auth/register" method="POST" style="width: 100%">
+            <div class="form-outline mb-4">
+              <label for="firstname" class="form-label mt-3">Nombre(s):</label>
+              <input
+                type="text"
+                class="form-control"
+                name="firstname"
+                id="firstname"
+                value="{{data.firstname}}"
+              />
+            </div>
+            <div class="form-outline mb-4">
+              <label for="lastname" class="form-label">Apellido(s):</label>
+              <input
+                type="text"
+                class="form-control"
+                name="lastname"
+                id="lastname"
+                value="{{data.lastname}}"
+              />
+            </div>
+            <div class="form-outline mb-4">
+              <label for="exampleInputEmail1" class="form-label">Correo:</label>
+              <input
+                type="email"
+                class="form-control"
+                name="email"
+                id="email"
+                value="{{data.email}}"
+              />
+            </div>
+            <div class="form-outline mb-4">
+              <label for="password" class="form-label">Contraseña:</label>
+              <input
+                type="password"
+                class="form-control"
+                name="password"
+                id="password"
+                autocomplete="off"
+              />
+            </div>
+            <div class="d-grid">
+              <button
+                type="submit"
+                class="btn bg-warning bg-gradient btn-round shadow"
+                style="padding: 10px; font-weight: bold;"
+              >
+                Registrate
+              </button>
+            </div>
+            <div class="mt-3 mb-1">
+              <span>Ya tienes una cuenta?
+                <a href="/auth/login">Inicia Sesión</a>
+              </span>
+            </div>
+          </form>
+
         </div>
-        <div class="mb-4">
-           <label
-              for="exampleInputEmail1"
-              class="form-label"
-            >Correo:</label>
-            <input
-              type="email"
-              class="form-control"
-              name="email"
-              id="email"
-              value="{{data.email}}"
-            />
-        </div>
-        <div class="mb-4">
-          <label
-              for="password"
-              class="form-label"
-            >Contraseña:</label>
-            <input
-              type="password"
-              class="form-control"
-              name="password"
-              id="password"
-              autocomplete="off"
-            />
-        </div>
-        <div class="d-grid">
-          <button type="submit" class="btn bg-warning bg-gradient btn-round" style="padding: 10px; font-weight: bold;">
-            Registrate
-          </button>
-        </div>
-        <div class="mt-3 mb-1" style="color: white;">
-          <span>Ya tienes una cuenta? <a href="/auth/login">Inicia Sesión</a> </span> 
-        </div>
-      </form>
-      <!-- Login con redes sociales -->
+
+      </div>
+      <div class="col-sm-6 px-0 d-none d-md-block">
+        <img
+          src="/img/register.jpg"
+          alt="Login image"
+          class="w-100 vh-100"
+          style="object-fit: cover; object-position: left;"
+        />
+      </div>
     </div>
-    <div
-      class="col bg-register d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded"
-    ></div>
   </div>
-</div>     
+</section>
