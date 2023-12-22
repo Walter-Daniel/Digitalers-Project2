@@ -186,7 +186,7 @@ img {
     background-color: var(--bs-green);
 }
 .admin-container {
-    min-height: 100vh;
+    height: 100%;
     width: 100%;
 }
 
@@ -311,7 +311,10 @@ legend {
 
 .container-login{
     height: 100%;
-    margin: 3rem 1rem 0 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container-form {
