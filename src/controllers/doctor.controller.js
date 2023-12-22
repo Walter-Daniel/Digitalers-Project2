@@ -18,7 +18,7 @@ export const renderProfile = async(req, res) => {
         const doctor = await Doctor.findById(id).lean()
 
         if(!doctor){
-            req.flash('alter-warning', 'No se pudo encontrar al doctor')
+            req.flash('alert-warning', 'No se pudo encontrar al doctor')
             res.redirect('/')
             return
         };

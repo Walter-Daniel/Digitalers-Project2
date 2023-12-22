@@ -60,40 +60,9 @@ export const login = async(req=request, res) => {
                 data: req.body
             })
         }
-
-
-        // if(!user){
-        //     req.flash('alert-danger', 'Credenciales Incorrectas');
-        //     return res.render('auth/login',{
-        //         pageName: 'Iniciar Sesión',
-        //         messages: req.flash(),
-        //         data: req.body
-        //     })
-        // }
-        // if(!user.active){
-        //     req.flash('alert-danger', 'Credenciales Incorrectas');
-        //     return res.render('auth/login',{
-        //         pageName: 'Iniciar Sesión',
-        //         messages: req.flash(),
-        //         data: req.body
-        //     })
-        // }
-        // const validPassword = bcrypt.compareSync( password, user.password )
-        // if(!validPassword){
-        //     req.flash('alert-danger', 'Credenciales Incorrectas');
-        //     return res.render('auth/login',{
-        //         pageName: 'Iniciar Sesión',
-        //         messages: req.flash(),
-        //         data: req.body
-        //     })
-        // }
-        // const token = await createJWT(user._id)
-        // res.cookie('token', token, { httpOnly: true });
-
-        // res.redirect(`/`);
         
     } catch (error) {
-        console.log('estou en error')
+        console.log(error)
     }
 };
 
