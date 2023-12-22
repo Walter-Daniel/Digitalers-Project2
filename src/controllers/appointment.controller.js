@@ -22,7 +22,7 @@ export const createAppointment = async(req, res) => {
 
         const user = req.user;
         
-        if(user.role == 'DOCTOR_ROLE'){
+        if(user.role === 'DOCTOR_ROLE'){
             const appointment = new Appointment({ doctor, price, date, appointmentTime });
             await appointment.save();
             req.flash('alert-success', 'La cita ha sido creada con éxito');
@@ -38,7 +38,7 @@ export const createAppointment = async(req, res) => {
         }
     } catch (error) {
         
-        req.flash('alert-danger', `${error.message},  holaaaaaaaaa`);
+        req.flash('alert-danger', `${error.message}`);
         res.redirect('/');
         
     }
@@ -169,8 +169,8 @@ export const updateAppointment = async(req, res) => {
     const activeAppointment = await Appointment.find(query).countDocuments();
 
     if(activeAppointment >= 1){
-        req.flah('alert-warning', 'Ya posee una cita agendada con el Doctor');
-        return res.redirect(`/doctor/public/${id}`)
+        req.flash('alert-warning', 'Ya posee una cita agendada con el Doctor');
+        return res.redirect(`/profile`)
     }
 
     if(user.role === 'USER_ROLE' && !appointment.client){
@@ -179,7 +179,7 @@ export const updateAppointment = async(req, res) => {
         appointment.save();
 
         req.flash('alert-success', 'Se agendó la cita');
-        return res.redirect(`/doctor/public/${id}`);
+        return res.redirect(`/profile`);
     }else if(user.role === 'USER_ROLE' && appointment.client){
         appointment.client = undefined;
         appointment.status = 'Pending';
@@ -187,7 +187,7 @@ export const updateAppointment = async(req, res) => {
 
         req.flash('alert-success', 'Se eliminó la cita de su agenda');
         return res.redirect(`/profile`);
-    }else if(user.role == 'ADMIN_ROLE'){
+    }else if(user.role === 'ADMIN_ROLE'){
 
         const dataUpdate = {
             client, 
@@ -203,7 +203,7 @@ export const updateAppointment = async(req, res) => {
         return res.redirect('/appointment');
     }
    } catch (error) {
-        req.flash('alert-danger', `${error.message}`);
+        req.flash('alert-danger', `${error.message}, 'holaaa'`);
         res.redirect('/');
    }
 };
